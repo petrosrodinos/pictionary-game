@@ -1,0 +1,17 @@
+.canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.canvas-color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 10px;
+}
+
+.canvas {
+  border: 1px solid black;
+}
