@@ -57,5 +57,7 @@ export const useDraw = (onDraw: ({ ctx, currentPoint, prevPoint }: Draw) => void
     };
   }, [onDraw]);
 
-  return { canvasRef, onMouseDown, clear };
+  const setCanvasContent = (ctx: CanvasRenderingContext2D) => {};
+
+  return { canvasRef, onMouseDown, clear, setCanvasContent };
 };
