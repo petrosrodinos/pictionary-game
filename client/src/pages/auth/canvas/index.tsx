@@ -15,7 +15,6 @@ const Canvas: FC<CanvasProps> = ({}) => {
 
   useEffect(() => {
     const s = io("http://192.168.1.3:5000");
-    console.log("s", s);
     setSocket(s);
 
     return () => {
