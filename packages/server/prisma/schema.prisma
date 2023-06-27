@@ -1,0 +1,20 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  // url      = "mongodb+srv://peter:peter123@cluster0.m00dk.mongodb.net/prisma-test?retryWrites=true&w=majority"
+  url      =  "mongodb://localhost:27017/testprisma?retryWrites=true&w=majority"
+}
+
+model Todo {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  isCompleted Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

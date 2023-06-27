@@ -1,0 +1,15 @@
+{
+  "name": "pictionary",
+  "version": "1.0.0",
+  "description": "pictionary game",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run dev --workspace=client & npm run dev --workspace=server"
+  },
+  "workspaces": [
+    "./packages/client",
+    "./packages/server"
+  ],
+  "author": "Petros Rodinos, Eleftherios Tsoudanis",
+  "license": "ISC"
+}
