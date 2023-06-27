@@ -1,12 +1,64 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useDraw = (onDraw: ({ ctx, currentPoint, prevPoint }: Draw) => void) => {
+export const useDraw = ({ color, emitEvent }: any) => {
   const [mouseDown, setMouseDown] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevPoint = useRef<null | Point>(null);
 
   const onMouseDown = () => setMouseDown(true);
+
+  function onDraw({ prevPoint, currentPoint, ctx }: Draw) {
+    const { x: currX, y: currY } = currentPoint;
+    const lineColor = color;
+    const lineWidth = 5;
+
+    let startPoint = prevPoint ?? currentPoint;
+    ctx.beginPath();
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = lineColor;
+    ctx.moveTo(startPoint.x, startPoint.y);
+    ctx.lineTo(currX, currY);
+    ctx.stroke();
+
+    ctx.fillStyle = lineColor;
+    ctx.beginPath();
+    ctx.arc(startPoint.x, startPoint.y, 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    const eventData = {
+      x: startPoint.x,
+      y: startPoint.y,
+      color: lineColor,
+      lineWidth,
+      currX,
+      currY,
+    };
+    emitEvent(eventData);
+  }
+
+  const drawPixel = (data: any) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const { x, y, currX, currY, color, lineWidth } = data;
+
+    ctx.beginPath();
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = color;
+
+    ctx.moveTo(x, y);
+    ctx.lineTo(currX, currY);
+    ctx.stroke();
+
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, 2, 0, 2 * Math.PI);
+    ctx.fill();
+  };
 
   const clear = () => {
     const canvas = canvasRef.current;
@@ -57,7 +109,5 @@ export const useDraw = (onDraw: ({ ctx, currentPoint, prevPoint }: Draw) => void
     };
   }, [onDraw]);
 
-  const setCanvasContent = (ctx: CanvasRenderingContext2D) => {};
-
-  return { canvasRef, onMouseDown, clear, setCanvasContent };
+  return { canvasRef, onMouseDown, clear, drawPixel };
 };
