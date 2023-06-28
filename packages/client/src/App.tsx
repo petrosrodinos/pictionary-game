@@ -5,10 +5,10 @@ import { v4 as uuidV4 } from "uuid";
 import Canvas from "./pages/auth/canvas";
 import { trpc } from "./lib/trpc";
 import { useState } from "react";
-import "./App.scss";
 import Register from "./pages/auth/register";
 import Login from "./pages/auth/login";
 import Users from "./pages/users";
+import "./App.scss";
 
 function App() {
   const isLoggedIn = true;
@@ -18,7 +18,7 @@ function App() {
     return trpc.createClient({
       links: [
         httpBatchLink({
-          url: "http://localhost:5000/trpc",
+          url: import.meta.env.VITE_API_URL,
         }),
       ],
     });
