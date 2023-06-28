@@ -7,8 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  // url      = "mongodb+srv://peter:peter123@cluster0.m00dk.mongodb.net/prisma-test?retryWrites=true&w=majority"
-  url      =  "mongodb://localhost:27017/testprisma?retryWrites=true&w=majority"
+  url      =  env("MONGODB_URI")
 }
 
 model Todo {

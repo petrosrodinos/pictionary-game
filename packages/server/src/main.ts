@@ -1,4 +1,3 @@
-// const app = require("express")();
 import express, { Application, NextFunction, Request, Response } from "express";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { appRouter } from "./router";
@@ -25,12 +24,12 @@ app.use(
 
 const PORT: number = Number(process.env.PORT) || 3000;
 http.listen(PORT, () => {
-  console.log(`🚀 Server running on Port: ${PORT}`);
+  console.log(`Server running on Port: ${PORT}`);
 });
 
 const socket = io(http, {
   cors: {
-    origin: process.env.IO_ORIGIN,
+    origin: process.env.CLIENT_ORIGIN,
     methods: ["GET", "POST"],
   },
 });
