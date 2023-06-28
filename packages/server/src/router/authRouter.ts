@@ -7,11 +7,9 @@ const createError = require("http-errors");
 const bcrypt = require("bcryptjs");
 
 export const authRouter = trpc.router({
-  list: trpc.procedure.query(({ ctx }) => {
-    // console.log(ctx.user)
-    // const todos = await prisma.todo.findMany()
-    // return todos
-    return prisma.todo.findMany();
+  getUsers: trpc.procedure.query(async ({ ctx }) => {
+    const todos = await prisma.user.findMany();
+    return todos;
   }),
   register: trpc.procedure
     .input(z.object({ email: z.string().email(), name: z.string(), password: z.string() }))

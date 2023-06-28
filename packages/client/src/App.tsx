@@ -8,6 +8,7 @@ import { useState } from "react";
 import "./App.scss";
 import Register from "./pages/auth/register";
 import Login from "./pages/auth/login";
+import Users from "./pages/users";
 
 function App() {
   const isLoggedIn = true;
@@ -31,6 +32,8 @@ function App() {
             <Link to="/login">login</Link>
             <br />
             <Link to="/register">register</Link>
+            <br />
+            <Link to="/users">users</Link>
             <Routes>
               {isLoggedIn && (
                 <>
@@ -38,6 +41,7 @@ function App() {
                   <Route path="/room/:id" element={<Canvas />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/users" element={<Users />} />
 
                   <Route path="*" element={<Navigate to="/" />} />
                 </>
