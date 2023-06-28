@@ -2,10 +2,10 @@ import { FC } from "react";
 import { trpc } from "../../../lib/trpc";
 
 const Register: FC = () => {
-  const { isLoading, mutate: registerMutation } = trpc.auth.create.useMutation();
+  const { isLoading, mutate: registerMutation } = trpc.auth.register.useMutation();
   const trpcContext = trpc.useContext();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     registerMutation(
       {
         email: "petdrgfdos@gmail.com",
@@ -26,9 +26,9 @@ const Register: FC = () => {
 
   return (
     <div>
-      <h1>login</h1>
+      <h1>register</h1>
       {isLoading && <div>loading...</div>}
-      <button onClick={handleLogin}>register</button>
+      <button onClick={handleRegister}>register</button>
     </div>
   );
 };

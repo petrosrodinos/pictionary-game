@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { v4 as uuidV4 } from "uuid";
@@ -7,6 +7,7 @@ import { trpc } from "./lib/trpc";
 import { useState } from "react";
 import "./App.scss";
 import Register from "./pages/auth/register";
+import Login from "./pages/auth/login";
 
 function App() {
   const isLoggedIn = true;
@@ -27,12 +28,16 @@ function App() {
       <trpc.Provider queryClient={queryClient} client={trpcClient}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
+            <Link to="/login">login</Link>
+            <br />
+            <Link to="/register">register</Link>
             <Routes>
               {isLoggedIn && (
                 <>
                   <Route path="/" element={<Navigate to={`/room/${uuidV4()}`} />}></Route>
                   <Route path="/room/:id" element={<Canvas />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
 
                   <Route path="*" element={<Navigate to="/" />} />
                 </>

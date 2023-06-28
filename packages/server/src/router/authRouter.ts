@@ -13,7 +13,7 @@ export const authRouter = trpc.router({
     // return todos
     return prisma.todo.findMany();
   }),
-  create: trpc.procedure
+  register: trpc.procedure
     .input(z.object({ email: z.string().email(), name: z.string(), password: z.string() }))
     .mutation(async ({ input }) => {
       const email = input.email;
@@ -30,7 +30,6 @@ export const authRouter = trpc.router({
         });
         const token = await jwt.signAccessToken(user);
 
-        console.log("user", user);
         return {
           token: token,
           user: user,
@@ -38,6 +37,31 @@ export const authRouter = trpc.router({
       } catch (err) {
         throw createError(409, "User already exist");
       }
+    }),
+  login: trpc.procedure
+    .input(z.object({ email: z.string().email(), password: z.string() }))
+    .mutation(async ({ input }) => {
+      const email = input.email;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        throw createError.NotFound("User not exist");
+      }
+
+      const checkPassword = bcrypt.compareSync(input.password, user.password);
+
+      if (!checkPassword) throw createError.Unauthorized("Invalid email or password");
+
+      const { password, ...userWithoutPassword } = user;
+
+      const accessToken = await jwt.signAccessToken(userWithoutPassword);
+
+      return { ...userWithoutPassword, accessToken };
     }),
 });
 
