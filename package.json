@@ -4,7 +4,9 @@
   "description": "pictionary game",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run dev --workspace=client & npm run dev --workspace=server"
+    "dev": "npm run dev --workspace=client & npm run dev --workspace=server",
+    "start-client": "npm run dev --workspace=client",
+    "start-server": "npm run dev --workspace=server"
   },
   "workspaces": [
     "./packages/client",

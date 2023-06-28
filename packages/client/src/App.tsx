@@ -6,6 +6,7 @@ import Canvas from "./pages/auth/canvas";
 import { trpc } from "./lib/trpc";
 import { useState } from "react";
 import "./App.scss";
+import Register from "./pages/auth/register";
 
 function App() {
   const isLoggedIn = true;
@@ -31,6 +32,7 @@ function App() {
                 <>
                   <Route path="/" element={<Navigate to={`/room/${uuidV4()}`} />}></Route>
                   <Route path="/room/:id" element={<Canvas />} />
+                  <Route path="/register" element={<Register />} />
 
                   <Route path="*" element={<Navigate to="/" />} />
                 </>
