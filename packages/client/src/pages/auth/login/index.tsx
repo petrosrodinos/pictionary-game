@@ -45,10 +45,9 @@ const Login: FC = () => {
             });
             navigate("/home");
           }
-          // trpcContext.auth.invalidate();
         },
         onError: (error: any) => {
-          console.log("error", error.message);
+          alert(error.message);
         },
       }
     );

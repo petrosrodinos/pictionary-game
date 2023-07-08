@@ -46,7 +46,7 @@ export const authRouter = trpc.router({
       });
 
       if (!user) {
-        throw createError.NotFound("User not exist");
+        throw createError.NotFound("Invalid email or password");
       }
 
       const checkPassword = bcrypt.compareSync(input.password, user.password);
