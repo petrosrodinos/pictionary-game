@@ -5,6 +5,7 @@ import "./style.scss";
 
 interface ButtonProps {
   title: string;
+  type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
   style?: any;
   onClick?: () => void;
@@ -16,6 +17,7 @@ interface ButtonProps {
 
 const Button: FC<ButtonProps> = ({
   variant = "primary",
+  type = "button",
   style,
   onClick,
   className,
@@ -28,6 +30,7 @@ const Button: FC<ButtonProps> = ({
   const Icon = icon;
   return (
     <button
+      type={type}
       disabled={disabled}
       onClick={onClick}
       className={`button-container button-${variant} ${className}`}

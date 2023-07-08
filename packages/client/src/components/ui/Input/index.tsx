@@ -5,17 +5,18 @@ import "./style.scss";
 interface InputProps {
   value?: string;
   placeholder?: string;
-  name: string;
+  name?: string;
   type?: "text" | "password" | "email" | "number";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   error?: string;
   style?: React.CSSProperties;
   className?: string;
+  register?: any;
 }
 
 const Input: FC<InputProps> = ({
-  value = "",
+  value,
   placeholder = "",
   name,
   type = "text",
@@ -24,6 +25,7 @@ const Input: FC<InputProps> = ({
   error,
   style,
   className,
+  register,
 }) => {
   return (
     <div className={`input-container ${className}`} style={style}>
@@ -31,9 +33,10 @@ const Input: FC<InputProps> = ({
         value={value}
         disabled={disabled}
         onChange={onChange}
-        name={name}
+        // name={name}
         placeholder={placeholder}
         type={type}
+        {...register(name)}
       ></input>
       {error && <Typography className="input-error">{error}</Typography>}
     </div>

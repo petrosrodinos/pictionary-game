@@ -2,7 +2,6 @@ import { prisma } from "../lib/prismaClient";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
 const jwt = require("../utils/jwt");
-
 const createError = require("http-errors");
 const bcrypt = require("bcryptjs");
 
@@ -12,20 +11,19 @@ export const authRouter = trpc.router({
     return todos;
   }),
   register: trpc.procedure
-    .input(z.object({ email: z.string().email(), name: z.string(), password: z.string() }))
+    .input(z.object({ username: z.string(), password: z.string() }))
     .mutation(async ({ input }) => {
-      const email = input.email;
-      const name = input.name;
+      const username = input.username;
       const password = bcrypt.hashSync(input.password, 8);
 
       try {
         const user = await prisma.user.create({
           data: {
-            email: email,
-            name: name,
+            username: username,
             password: password,
           },
         });
+
         const token = await jwt.signAccessToken(user);
 
         return {
@@ -37,13 +35,13 @@ export const authRouter = trpc.router({
       }
     }),
   login: trpc.procedure
-    .input(z.object({ email: z.string().email(), password: z.string() }))
+    .input(z.object({ username: z.string(), password: z.string() }))
     .mutation(async ({ input }) => {
-      const email = input.email;
+      const username = input.username;
 
       const user = await prisma.user.findUnique({
         where: {
-          email,
+          username,
         },
       });
 

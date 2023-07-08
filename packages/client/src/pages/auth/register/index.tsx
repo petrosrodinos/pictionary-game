@@ -12,9 +12,8 @@ const Login: FC = () => {
   const handleRegister = async () => {
     registerMutation(
       {
-        email: "petdrgfdos@gmail.com",
         password: "123456",
-        name: "petros rodinos",
+        username: "rodinos",
       },
       {
         onSuccess: (data: any) => {
@@ -32,7 +31,7 @@ const Login: FC = () => {
     <div className="login-page-container">
       <div className="login-container">
         <Typography variant="sub-header-main">Register</Typography>
-        <Button icon={BsPerson} title="Register" variant="primary" />
+        <Button onClick={handleRegister} icon={BsPerson} title="Register" variant="primary" />
       </div>
     </div>
   );

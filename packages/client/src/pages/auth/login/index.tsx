@@ -4,20 +4,43 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiLogIn } from "react-icons/bi";
 import Input from "../../../components/ui/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { LoginValidationSchema } from "../../../validation-schemas/user";
+import { UserLogin } from "../../../types/user";
+import { authStore } from "../../../store/authStore";
 import "./style.scss";
 
 const Login: FC = () => {
   const { isLoading, mutate: loginMutation } = trpc.auth.login.useMutation();
+  const { logIn } = authStore((state) => state);
 
-  const handleLogin = async () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserLogin>({
+    resolver: yupResolver(LoginValidationSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const handleLogin = async (values: UserLogin) => {
     loginMutation(
       {
-        email: "petros@gmail.com",
-        password: "123456",
+        username: values.username,
+        password: values.password,
       },
       {
         onSuccess: (data: any) => {
-          console.log("login user", data);
+          console.log(data);
+          logIn({
+            userId: data.id,
+            username: data.username,
+            token: data.accessToken,
+          });
           // trpcContext.auth.invalidate();
         },
         onError: (error: any) => {
@@ -28,11 +51,23 @@ const Login: FC = () => {
   };
 
   return (
-    <div className="login-page-container">
-      <Typography variant="sub-header-main">Login</Typography>
-      <Input name="username" placeholder="@username" />
-      <Input name="password" placeholder="Password" />
-      <Button icon={BiLogIn} title="Login" variant="primary" />
+    <div>
+      <form className="login-page-container" onSubmit={handleSubmit(handleLogin)}>
+        <Typography variant="sub-header-main">Login</Typography>
+        <Input
+          error={errors.username?.message}
+          name="username"
+          register={register}
+          placeholder="@username"
+        />
+        <Input
+          error={errors.password?.message}
+          name="password"
+          register={register}
+          placeholder="Password"
+        />
+        <Button type="submit" loading={isLoading} icon={BiLogIn} title="Login" variant="primary" />
+      </form>
     </div>
   );
 };
