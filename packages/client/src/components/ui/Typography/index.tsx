@@ -6,11 +6,18 @@ interface TypographyProps {
   variant?: string;
   style?: any;
   children: any;
+  onClick?: () => void;
 }
 
-const Typography: FC<TypographyProps> = ({ className, style, children, variant }) => {
+const Typography: FC<TypographyProps> = ({
+  className = "",
+  style,
+  children,
+  variant = "",
+  onClick,
+}) => {
   return (
-    <span style={style} className={`typography ${variant} ${className}`}>
+    <span onClick={onClick} style={style} className={`typography ${variant} ${className}`}>
       {children}
     </span>
   );

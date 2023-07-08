@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { v4 as uuidV4 } from "uuid";
@@ -9,6 +9,7 @@ import Register from "./pages/auth/register";
 import Login from "./pages/auth/login";
 import Users from "./pages/users";
 import "./App.scss";
+import AuthPage from "./pages/auth";
 
 function App() {
   const isLoggedIn = true;
@@ -32,11 +33,12 @@ function App() {
             <Routes>
               {isLoggedIn && (
                 <>
-                  <Route path="/" element={<Navigate to={`/room/${uuidV4()}`} />}></Route>
+                  <Route path="/" element={<Navigate to={`user/login`} />}></Route>
                   <Route path="/room/:id" element={<Canvas />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/users" element={<Users />} />
+                  <Route path="/user" element={<AuthLayout />}>
+                    <Route path="register" element={<Register />} />
+                    <Route path="login" element={<Login />} />
+                  </Route>
 
                   <Route path="*" element={<Navigate to="/" />} />
                 </>
@@ -50,5 +52,13 @@ function App() {
     </div>
   );
 }
+
+const AuthLayout = () => {
+  return (
+    <AuthPage>
+      <Outlet />
+    </AuthPage>
+  );
+};
 
 export default App;
