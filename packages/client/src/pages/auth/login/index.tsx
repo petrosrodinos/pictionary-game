@@ -9,11 +9,13 @@ import { useForm } from "react-hook-form";
 import { LoginValidationSchema } from "../../../validation-schemas/user";
 import { UserLogin } from "../../../types/user";
 import { authStore } from "../../../store/authStore";
+import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const Login: FC = () => {
   const { isLoading, mutate: loginMutation } = trpc.auth.login.useMutation();
   const { logIn } = authStore((state) => state);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -35,12 +37,14 @@ const Login: FC = () => {
       },
       {
         onSuccess: (data: any) => {
-          console.log(data);
-          logIn({
-            userId: data.id,
-            username: data.username,
-            token: data.accessToken,
-          });
+          if (data.accessToken) {
+            logIn({
+              userId: data.id,
+              username: data.username,
+              token: data.accessToken,
+            });
+            navigate("/home");
+          }
           // trpcContext.auth.invalidate();
         },
         onError: (error: any) => {

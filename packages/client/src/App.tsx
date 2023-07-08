@@ -10,6 +10,7 @@ import Login from "./pages/auth/login";
 import Users from "./pages/users";
 import "./App.scss";
 import AuthPage from "./pages/auth";
+import Home from "./pages/home";
 
 function App() {
   const isLoggedIn = true;
@@ -34,6 +35,7 @@ function App() {
               {isLoggedIn && (
                 <>
                   <Route path="/" element={<Navigate to={`user/login`} />}></Route>
+                  <Route path="/home" element={<Home />} />
                   <Route path="/room/:id" element={<Canvas />} />
                   <Route path="/user" element={<AuthLayout />}>
                     <Route path="register" element={<Register />} />
