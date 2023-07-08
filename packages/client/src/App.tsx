@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { v4 as uuidV4 } from "uuid";
-import Canvas from "./pages/auth/canvas";
+import Canvas from "./pages/canvas";
 import { trpc } from "./lib/trpc";
 import { useState } from "react";
 import Register from "./pages/auth/register";
@@ -25,15 +25,10 @@ function App() {
   });
 
   return (
-    <>
+    <div className="main-container">
       <trpc.Provider queryClient={queryClient} client={trpcClient}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <Link to="/login">login</Link>
-            <br />
-            <Link to="/register">register</Link>
-            <br />
-            <Link to="/users">users</Link>
             <Routes>
               {isLoggedIn && (
                 <>
@@ -52,7 +47,7 @@ function App() {
           </BrowserRouter>
         </QueryClientProvider>
       </trpc.Provider>
-    </>
+    </div>
   );
 }
 

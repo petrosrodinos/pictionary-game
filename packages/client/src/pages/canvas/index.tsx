@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import { useDraw } from "../../../hooks/useDraw";
+import { useDraw } from "../../hooks/useDraw";
 import { ChromePicker } from "react-color";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";

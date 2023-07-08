@@ -1,0 +1,35 @@
+@use "../../../styles/mixins";
+
+.typography {
+  font-family: "Averia Libre", cursive;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.header-main {
+  @include mixins.header-main;
+}
+
+.sub-header-main {
+  @include mixins.sub-header-main;
+}
+
+.text-main {
+  @include mixins.text-main;
+}
+
+.text-accent {
+  @include mixins.text-accent;
+}
+
+.small-text-main {
+  @include mixins.small-text-main;
+}
+
+.small-text-accent {
+  @include mixins.small-text-accent;
+}
+
+.description-accent {
+  @include mixins.description-accent;
+}

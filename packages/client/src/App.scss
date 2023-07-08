@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("./assets/background-image.jpg");
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main-container {
+  max-width: 900px;
+  background-color: var(--primary-color);
+  display: flex;
+  margin: 0 auto;
+}

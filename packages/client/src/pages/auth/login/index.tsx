@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { trpc } from "../../../lib/trpc";
+import "./style.scss";
+import Typography from "../../../components/ui/Typography";
 
 const Login: FC = () => {
   const { isLoading, mutate: loginMutation } = trpc.auth.login.useMutation();
@@ -23,8 +25,8 @@ const Login: FC = () => {
   };
 
   return (
-    <div>
-      <h1>login</h1>
+    <div className="login-page-container">
+      <Typography variant="sub-header-main">Login</Typography>
       {isLoading && <div>loading...</div>}
       <button onClick={handleLogin}>login</button>
     </div>
