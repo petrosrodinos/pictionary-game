@@ -1,7 +1,11 @@
 import { FC } from "react";
 import { trpc } from "../../../lib/trpc";
-import "./style.scss";
 import Typography from "../../../components/ui/Typography";
+import Button from "../../../components/ui/Button";
+import { BiLogIn } from "react-icons/bi";
+
+import "./style.scss";
+import Input from "../../../components/ui/Input";
 
 const Login: FC = () => {
   const { isLoading, mutate: loginMutation } = trpc.auth.login.useMutation();
@@ -17,7 +21,7 @@ const Login: FC = () => {
           console.log("login user", data);
           // trpcContext.auth.invalidate();
         },
-        onError: (error) => {
+        onError: (error: any) => {
           console.log("error", error.message);
         },
       }
@@ -27,8 +31,9 @@ const Login: FC = () => {
   return (
     <div className="login-page-container">
       <Typography variant="sub-header-main">Login</Typography>
-      {isLoading && <div>loading...</div>}
-      <button onClick={handleLogin}>login</button>
+      <Input name="username" placeholder="@username" />
+      <Input disabled={true} name="password" placeholder="Password" />
+      <Button icon={BiLogIn} title="Login" variant="primary" />
     </div>
   );
 };

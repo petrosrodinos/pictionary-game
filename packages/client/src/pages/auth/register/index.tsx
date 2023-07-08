@@ -1,7 +1,11 @@
 import { FC } from "react";
 import { trpc } from "../../../lib/trpc";
+import Typography from "../../../components/ui/Typography";
+import Button from "../../../components/ui/Button";
+import { BsPerson } from "react-icons/bs";
+import "./style.scss";
 
-const Register: FC = () => {
+const Login: FC = () => {
   const { isLoading, mutate: registerMutation } = trpc.auth.register.useMutation();
   const trpcContext = trpc.useContext();
 
@@ -17,7 +21,7 @@ const Register: FC = () => {
           console.log("created user", data);
           // trpcContext.auth.invalidate();
         },
-        onError: (error) => {
+        onError: (error: any) => {
           console.log("error", error.message);
         },
       }
@@ -25,12 +29,13 @@ const Register: FC = () => {
   };
 
   return (
-    <div>
-      <h1>register</h1>
-      {isLoading && <div>loading...</div>}
-      <button onClick={handleRegister}>register</button>
+    <div className="login-page-container">
+      <div className="login-container">
+        <Typography variant="sub-header-main">Register</Typography>
+        <Button icon={BsPerson} title="Register" variant="primary" />
+      </div>
     </div>
   );
 };
 
-export default Register;
+export default Login;
