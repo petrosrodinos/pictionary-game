@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { trpc } from "../../../lib/trpc";
+import { trpc } from "../../../utils/trpc";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiLogIn } from "react-icons/bi";
@@ -54,24 +54,22 @@ const Login: FC = () => {
   };
 
   return (
-    <div>
-      <form className="login-page-container" onSubmit={handleSubmit(handleLogin)}>
-        <Typography variant="sub-header-main">Login</Typography>
-        <Input
-          error={errors.username?.message}
-          name="username"
-          register={register}
-          placeholder="@username"
-        />
-        <Input
-          error={errors.password?.message}
-          name="password"
-          register={register}
-          placeholder="Password"
-        />
-        <Button type="submit" loading={isLoading} icon={BiLogIn} title="Login" variant="primary" />
-      </form>
-    </div>
+    <form className="login-page-container" onSubmit={handleSubmit(handleLogin)}>
+      <Typography variant="sub-header-main">Login</Typography>
+      <Input
+        error={errors.username?.message}
+        name="username"
+        register={register}
+        placeholder="@username"
+      />
+      <Input
+        error={errors.password?.message}
+        name="password"
+        register={register}
+        placeholder="Password"
+      />
+      <Button type="submit" loading={isLoading} icon={BiLogIn} title="Login" variant="primary" />
+    </form>
   );
 };
 

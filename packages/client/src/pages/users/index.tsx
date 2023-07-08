@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { trpc } from "../../lib/trpc";
+import { trpc } from "../../utils/trpc";
 
 const Users: FC = () => {
   const { data, isLoading } = trpc.auth.getUsers.useQuery();

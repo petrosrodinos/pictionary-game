@@ -1,16 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { v4 as uuidV4 } from "uuid";
 import Canvas from "./pages/canvas";
-import { trpc } from "./lib/trpc";
+import { trpc } from "./utils/trpc";
 import { useState } from "react";
 import Register from "./pages/auth/register";
 import Login from "./pages/auth/login";
-import Users from "./pages/users";
-import "./App.scss";
 import AuthPage from "./pages/auth";
 import Home from "./pages/home";
+import { API_URL } from "./constants";
+import "./App.scss";
 
 function App() {
   const isLoggedIn = true;
@@ -20,7 +19,7 @@ function App() {
     return trpc.createClient({
       links: [
         httpBatchLink({
-          url: import.meta.env.VITE_API_URL,
+          url: `${API_URL}/trpc`,
         }),
       ],
     });

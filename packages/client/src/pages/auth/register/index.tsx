@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { trpc } from "../../../lib/trpc";
+import { trpc } from "../../../utils/trpc";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BsPerson } from "react-icons/bs";

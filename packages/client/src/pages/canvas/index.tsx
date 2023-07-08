@@ -14,7 +14,7 @@ const Canvas: FC<CanvasProps> = ({}) => {
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
 
   useEffect(() => {
-    const s = io("http://192.168.1.3:5000");
+    const s = io(`${process.env.REACT_APP_API_URL}`);
     setSocket(s);
 
     return () => {
