@@ -1,9 +1,10 @@
 import { FC } from "react";
-import "./style.scss";
 import Button from "../../../components/ui/Button";
+import { ModalType } from "..";
+import "./style.scss";
 
 interface RoomActionsProps {
-  onActionClick: (action: string) => void;
+  onActionClick: (action: ModalType) => void;
 }
 
 const RoomActions: FC<RoomActionsProps> = ({ onActionClick }) => {
