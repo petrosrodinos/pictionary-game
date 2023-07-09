@@ -1,13 +1,16 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import LeaderBoardItem from "./Item";
+import { AvatarGenerator } from "random-avatar-generator";
 import "./style.scss";
+
+const generator = new AvatarGenerator();
 
 const leaderBoardItems: LeaderBoardItem[] = [...new Array(10)].map((_, index) => {
   return {
     id: index,
     rank: index,
-    avatar: "https://i.pravatar.cc/300",
+    avatar: generator.generateRandomAvatar(),
     username: `username${index}`,
     xp: 3500,
     games: 30,

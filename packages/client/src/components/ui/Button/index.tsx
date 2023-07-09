@@ -30,6 +30,7 @@ const Button: FC<ButtonProps> = ({
   const Icon = icon;
   return (
     <button
+      style={style}
       type={type}
       disabled={disabled}
       onClick={onClick}

@@ -13,5 +13,8 @@
     "./packages/server"
   ],
   "author": "Petros Rodinos, Eleftherios Tsoudanis",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "random-avatar-generator": "^2.0.0"
+  }
 }

@@ -18,7 +18,11 @@ const Home: FC = () => {
   return (
     <div className="home-page-container">
       <Modal isOpen={!!activeModal} onClose={() => setActiveModal("")}>
-        <JoinRoom onJoinRoom={handleJoinRoom} />
+        {activeModal === "join" ? (
+          <JoinRoom onJoinRoom={handleJoinRoom} />
+        ) : (
+          <div>create room component</div>
+        )}
       </Modal>
       <div className="first-row">
         <RoomActions onActionClick={handleActionClick} />
