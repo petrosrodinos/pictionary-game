@@ -9,11 +9,10 @@ import Login from "./pages/auth/login";
 import AuthPage from "./pages/auth";
 import Home from "./pages/home";
 import { API_URL } from "./constants";
+import NavBar from "./components/NavBar";
 import "./App.scss";
 
 function App() {
-  const isLoggedIn = true;
-
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() => {
     return trpc.createClient({
@@ -26,31 +25,28 @@ function App() {
   });
 
   return (
-    <div className="main-container">
-      <trpc.Provider queryClient={queryClient} client={trpcClient}>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <Routes>
-              {isLoggedIn && (
-                <>
-                  <Route path="/" element={<Navigate to={`user/login`} />}></Route>
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/room/:id" element={<Canvas />} />
-                  <Route path="/user" element={<AuthLayout />}>
-                    <Route path="register" element={<Register />} />
-                    <Route path="login" element={<Login />} />
-                  </Route>
+    <trpc.Provider queryClient={queryClient} client={trpcClient}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <div className="main-container">
+            <NavBar />
+            <div className="main-content-container">
+              <Routes>
+                <Route path="/" element={<Navigate to={`user/login`} />}></Route>
+                <Route path="/home" element={<Home />} />
+                <Route path="/room/:id" element={<Canvas />} />
+                <Route path="/user" element={<AuthLayout />}>
+                  <Route path="register" element={<Register />} />
+                  <Route path="login" element={<Login />} />
+                </Route>
 
-                  <Route path="*" element={<Navigate to="/" />} />
-                </>
-              )}
-              {!isLoggedIn && <></>}
-              <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/"} />} />
-            </Routes>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </trpc.Provider>
-    </div>
+                <Route path="*" element={<Navigate to="" />} />
+              </Routes>
+            </div>
+          </div>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }
 

@@ -1,20 +1,30 @@
 import { FC } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
 
-interface ModalProps {
-  onClose: () => void;
-  isOpen: boolean;
+interface IProps {
   children: any;
-  style?: any;
-  className?: string;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ onClose, isOpen, children, style = {}, className = "" }) => {
+const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
+  const handleClick = (e: any) => {
+    if (e.target.className === "modal__container") {
+      onClose();
+    }
+  };
+
   return (
     <>
       {isOpen && (
-        <div style={style} className={`${className} modal-container`}>
-          <div className="modal-content">{children}</div>
+        <div onClick={handleClick} className="modal__container">
+          <div className="modal-content__container">
+            <div onClick={onClose} className="close-button">
+              <AiOutlineClose />
+            </div>
+            <>{children}</>
+          </div>
         </div>
       )}
     </>

@@ -33,10 +33,10 @@ const Input: FC<InputProps> = ({
         value={value}
         disabled={disabled}
         onChange={onChange}
-        // name={name}
+        name={name}
         placeholder={placeholder}
         type={type}
-        {...register(name)}
+        {...register?.(name)}
       ></input>
       {error && <Typography className="input-error">{error}</Typography>}
     </div>
