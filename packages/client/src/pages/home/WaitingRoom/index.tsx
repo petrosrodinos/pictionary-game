@@ -46,7 +46,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
 
   return (
     <div className="waiting-room-container">
-      {roomInfo && (
+      {roomInfo ? (
         <>
           <Typography variant="sub-header-main" className="room-stat title">
             WAITING ROOM
@@ -60,6 +60,8 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
           <UsersGrid users={roomInfo.users} />
           <RoomSettings settings={roomInfo.settings} />
         </>
+      ) : (
+        <Typography>Room does not exist :(</Typography>
       )}
       <Button title="LEAVE" onClick={onLeave} />
     </div>

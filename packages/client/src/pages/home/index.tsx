@@ -31,7 +31,8 @@ const Home: FC = () => {
   //the useEffect detects when search params are changing and if exists it will change the activeModal state
   //so as to open the waiting room modal
   const handleJoinRoom = (code: string) => {
-    //search if game exists
+    if (!code) return;
+    //search if game exists then
     setActiveModal("");
     setSearchParams({
       waitingRoom: code,
