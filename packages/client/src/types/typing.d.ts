@@ -15,3 +15,13 @@ interface UserType {
   games?: number;
   level?: number;
 }
+
+interface RoomInfo {
+  creator: string;
+  code: string;
+  settings: {
+    players: number;
+    rounds: number;
+  };
+  users: UserType[];
+}

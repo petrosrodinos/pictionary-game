@@ -1,0 +1,10 @@
+.settings-container {
+  align-self: flex-start;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  color: var(--text-secondary);
+}

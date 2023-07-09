@@ -17,11 +17,6 @@ const Home: FC = () => {
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
     if (waitingRoom) {
-      //1)checks if game exists
-      //2)checks if game is started in case user refreshes the page
-      //if(gameStarted){
-      //ton pame sto game
-      //}
       setActiveModal("waiting-room");
     }
   }, [searchParams]);
