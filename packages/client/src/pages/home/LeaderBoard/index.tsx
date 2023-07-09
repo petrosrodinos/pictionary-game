@@ -3,15 +3,6 @@ import Typography from "../../../components/ui/Typography";
 import LeaderBoardItem from "./Item";
 import "./style.scss";
 
-interface LeaderBoardItem {
-  id: number;
-  rank: number;
-  avatar: string;
-  username: string;
-  xp: number;
-  games: number;
-}
-
 const leaderBoardItems: LeaderBoardItem[] = [...new Array(10)].map((_, index) => {
   return {
     id: index,

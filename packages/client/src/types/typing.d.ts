@@ -5,3 +5,12 @@ type Draw = {
 };
 
 type Point = { x: number; y: number };
+
+interface LeaderBoardItem {
+  id: number;
+  rank: number;
+  avatar: string;
+  username: string;
+  xp: number;
+  games: number;
+}
