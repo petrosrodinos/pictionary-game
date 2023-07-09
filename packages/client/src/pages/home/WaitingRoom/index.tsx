@@ -13,10 +13,10 @@ interface WaitingRoomProps {
 
 const Users: UserType[] = [...new Array(5)].map((_, index) => ({
   id: index,
-  username: `username${index}`,
+  username: `username${index + 1}`,
   avatar: getRandomAvatar(),
-  rank: index,
-  level: index,
+  rank: index + 1,
+  level: index + 1,
 }));
 
 const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {

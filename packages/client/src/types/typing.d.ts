@@ -8,7 +8,7 @@ type Point = { x: number; y: number };
 
 interface UserType {
   id: number;
-  rank: number;
+  rank?: number;
   avatar: string;
   username: string;
   xp?: number;

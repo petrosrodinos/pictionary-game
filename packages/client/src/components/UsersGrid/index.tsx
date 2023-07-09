@@ -4,7 +4,7 @@ import Avatar from "../ui/Avatar";
 import "./style.scss";
 
 interface UsersGridProps {
-  users: any[];
+  users: UserType[];
 }
 
 const UsersGrid: FC<UsersGridProps> = ({ users }) => {
@@ -12,6 +12,11 @@ const UsersGrid: FC<UsersGridProps> = ({ users }) => {
     <div className="users-grid-container">
       {users.map((user, index) => (
         <div className="user-container" key={index}>
+          {user?.rank && (
+            <div className="user-rank">
+              <Typography>{user.rank}</Typography>
+            </div>
+          )}
           <div className="user-content">
             <Avatar image={user.avatar} />
             <Typography>@{user.username}</Typography>
