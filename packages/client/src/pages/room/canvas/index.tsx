@@ -1,9 +1,10 @@
 import { FC, useState, useEffect } from "react";
-import { useDraw } from "../../hooks/useDraw";
+import { useDraw } from "../../../hooks/useDraw";
 import { ChromePicker } from "react-color";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import "./style.scss";
+import { API_URL } from "../../../constants";
 
 interface CanvasProps {}
 
@@ -14,7 +15,7 @@ const Canvas: FC<CanvasProps> = ({}) => {
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
 
   useEffect(() => {
-    const s = io(`${process.env.REACT_APP_API_URL}`);
+    const s = io(`${API_URL}`);
     setSocket(s);
 
     return () => {

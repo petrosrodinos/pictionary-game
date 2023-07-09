@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import Canvas from "./pages/canvas";
 import { trpc } from "./utils/trpc";
 import { useState } from "react";
 import Register from "./pages/auth/register";
@@ -10,6 +9,7 @@ import AuthPage from "./pages/auth";
 import Home from "./pages/home";
 import { API_URL } from "./constants";
 import NavBar from "./components/NavBar";
+import Room from "./pages/room";
 import "./App.scss";
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Navigate to={`user/login`} />}></Route>
                 <Route path="/home" element={<Home />} />
-                <Route path="/room/:id" element={<Canvas />} />
+                <Route path="/room/:id" element={<Room />} />
                 <Route path="/user" element={<AuthLayout />}>
                   <Route path="register" element={<Register />} />
                   <Route path="login" element={<Login />} />
