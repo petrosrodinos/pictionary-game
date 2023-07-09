@@ -1,0 +1,11 @@
+.room-actions-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  gap: 50px;
+
+  button {
+    height: 60px;
+  }
+}

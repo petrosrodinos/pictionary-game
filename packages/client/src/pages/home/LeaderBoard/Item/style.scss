@@ -1,0 +1,24 @@
+.leader-board-item {
+  display: flex;
+  gap: 10px;
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-background-color-medium);
+  align-items: center;
+  padding: 5px;
+}
+
+.rank-container {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

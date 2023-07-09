@@ -24,7 +24,7 @@ const Input: FC<InputProps> = ({
   disabled,
   error,
   style,
-  className,
+  className = "",
   register,
 }) => {
   return (
