@@ -1,6 +1,14 @@
 .join-room-container {
+  padding: 50px;
+}
+
+.join-room-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 20px;
+  width: 100%;
+
+  span {
+    font-size: 20px;
+  }
 }

@@ -12,9 +12,11 @@ const JoinRoom: FC<JoinRoomProps> = ({ onJoinRoom }) => {
   const [code, setCode] = useState<string>("");
   return (
     <div className="join-room-container">
-      <Typography>Enter the code your friends sent you</Typography>
-      <Input placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
-      <Button title="JOIN" onClick={() => onJoinRoom(code)} />
+      <div className="join-room-content">
+        <Typography>Enter the code your friends sent you</Typography>
+        <Input placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
+        <Button title="JOIN" onClick={() => onJoinRoom(code)} />
+      </div>
     </div>
   );
 };

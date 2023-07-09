@@ -11,8 +11,8 @@ const Home: FC = () => {
     setActiveModal(action);
   };
 
-  const handleJoinRoom = () => {
-    console.log("join room");
+  const handleJoinRoom = (code: string) => {
+    console.log("join room", code);
   };
 
   return (
