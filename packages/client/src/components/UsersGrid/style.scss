@@ -1,0 +1,27 @@
+.users-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
+  // @media (max-width: 1024px) {
+  //   grid-template-columns: repeat(2, 1fr);
+  // }
+
+  // @media (max-width: 768px) {
+  //   grid-template-columns: 1fr;
+  // }
+}
+
+.user-container {
+  display: flex;
+  background-color: var(--secondary-background-color-dark);
+  border-radius: var(--border-radius);
+}
+
+.user-content {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}

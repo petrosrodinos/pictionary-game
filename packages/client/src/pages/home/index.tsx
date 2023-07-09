@@ -4,7 +4,7 @@ import LeaderBoard from "./LeaderBoard";
 import Modal from "../../components/ui/Modal";
 import JoinRoom from "./JoinRoom";
 import { useSearchParams } from "react-router-dom";
-import WaitingRoom from "../waiting-room";
+import WaitingRoom from "./WaitingRoom";
 import "./style.scss";
 
 export type ModalType = "join" | "create" | "waiting-room" | "";
@@ -43,7 +43,10 @@ const Home: FC = () => {
     });
   };
 
-  const handleLeave = () => {};
+  //when user leaves the waiting room
+  const handleLeave = () => {
+    setActiveModal("");
+  };
 
   const ModalComponents: any = {
     ["join"]: <JoinRoom onJoinRoom={handleJoinRoom} />,

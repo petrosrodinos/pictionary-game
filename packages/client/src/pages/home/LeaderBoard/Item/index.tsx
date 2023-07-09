@@ -4,7 +4,7 @@ import Typography from "../../../../components/ui/Typography";
 import "./style.scss";
 
 interface LeaderBoardItemProps {
-  item: LeaderBoardItem;
+  item: UserType;
 }
 
 const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {

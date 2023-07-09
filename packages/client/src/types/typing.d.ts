@@ -6,11 +6,12 @@ type Draw = {
 
 type Point = { x: number; y: number };
 
-interface LeaderBoardItem {
+interface UserType {
   id: number;
   rank: number;
   avatar: string;
   username: string;
-  xp: number;
-  games: number;
+  xp?: number;
+  games?: number;
+  level?: number;
 }

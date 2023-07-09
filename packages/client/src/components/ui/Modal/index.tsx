@@ -9,16 +9,10 @@ interface IProps {
 }
 
 const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
-  const handleClick = (e: any) => {
-    if (e.target.className === "modal__container") {
-      onClose();
-    }
-  };
-
   return (
     <>
       {isOpen && (
-        <div onClick={handleClick} className="modal__container">
+        <div className="modal__container">
           <div className="modal-content__container">
             <div onClick={onClose} className="close-button">
               <AiOutlineClose />

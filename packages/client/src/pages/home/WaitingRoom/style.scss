@@ -1,0 +1,15 @@
+.waiting-room-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding: 30px;
+}
+
+.room-stat {
+  color: #611515;
+}
+
+.title {
+  color: black;
+}
