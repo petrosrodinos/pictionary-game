@@ -3,8 +3,9 @@ import RoomActions from "./RoomActions";
 import LeaderBoard from "./LeaderBoard";
 import Modal from "../../components/ui/Modal";
 import JoinRoom from "./JoinRoom";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import WaitingRoom from "./WaitingRoom";
+import Container from "../../components/Container";
 import "./style.scss";
 
 export type ModalType = "join" | "create" | "waiting-room" | "";
@@ -12,6 +13,7 @@ export type ModalType = "join" | "create" | "waiting-room" | "";
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
+  const navigate = useNavigate();
 
   //useEffect detects for searchParams change and sets the activeModal to waiting-room so as for the waiting-room modal appears
   useEffect(() => {
@@ -40,8 +42,11 @@ const Home: FC = () => {
   };
 
   //when user leaves the waiting room
+  //for now i am using it as a way to start a game to navigate to room page
   const handleLeave = () => {
-    setActiveModal("");
+    console.log("asd", searchParams.get("waitingRoom"));
+    navigate(`/room/${searchParams.get("waitingRoom")}`);
+    // setActiveModal("");
   };
 
   const ModalComponents: any = {
@@ -51,7 +56,7 @@ const Home: FC = () => {
   };
 
   return (
-    <div className="home-page-container">
+    <Container className="home-page-container">
       <Modal isOpen={!!activeModal} onClose={() => setActiveModal("")}>
         {ModalComponents?.[activeModal]}
       </Modal>
@@ -60,7 +65,7 @@ const Home: FC = () => {
         <LeaderBoard />
       </div>
       {/* <RecentGames/> component goes here */}
-    </div>
+    </Container>
   );
 };
 

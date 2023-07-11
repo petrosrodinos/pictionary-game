@@ -1,16 +1,13 @@
 .auth-page-container {
   max-width: 450px;
-  width: 100%;
-  margin: 0 auto;
+  width: 100vw;
   padding: 20px;
 }
 
 .auth-page-content {
   display: flex;
   height: 50px;
-  margin-top: 10%;
   background-color: var(--secondary-background-color-dark);
-  color: white;
   border-radius: var(--border-radius);
 }
 

@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import Typography from "../../components/ui/Typography";
 import "./style.scss";
+import Container from "../../components/Container";
 
 interface AuthPageProps {
   children: React.ReactNode;
@@ -10,7 +11,7 @@ interface AuthPageProps {
 const AuthPage: FC<AuthPageProps> = ({ children }) => {
   const [selectedOption, setSelectedOption] = useState<string>("login");
   return (
-    <div className="auth-page-container">
+    <Container className="auth-page-container">
       <div className="auth-page-content">
         <Link
           className={`auth-option ${selectedOption == "login" ? "selected" : ""}`}
@@ -28,7 +29,7 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
         </Link>
       </div>
       {children}
-    </div>
+    </Container>
   );
 };
 

@@ -11,7 +11,7 @@ interface WaitingRoomProps {
   onLeave: () => void;
 }
 
-const Users: UserType[] = [...new Array(5)].map((_, index) => ({
+const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
   id: index,
   username: `username${index + 1}`,
   avatar: getRandomAvatar(),
@@ -33,9 +33,9 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       //ton pame sto game
       //}
       setRoomInfo({
-        creator: Users[0].username,
+        creator: TestUsers[0].username,
         code: waitingRoomCode,
-        users: Users,
+        users: TestUsers,
         settings: {
           players: 5,
           rounds: 5,
@@ -63,7 +63,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       ) : (
         <Typography>Room does not exist :(</Typography>
       )}
-      <Button title="LEAVE" onClick={onLeave} />
+      <Button title="START" onClick={onLeave} />
     </div>
   );
 };

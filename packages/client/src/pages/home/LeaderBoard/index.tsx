@@ -4,7 +4,7 @@ import LeaderBoardItem from "./Item";
 import { getRandomAvatar } from "../../../utils/avatar";
 import "./style.scss";
 
-const leaderBoardItems: UserType[] = [...new Array(10)].map((_, index) => {
+const TestLeaderBoardItems: UserType[] = [...new Array(10)].map((_, index) => {
   return {
     id: index,
     rank: 10 - index,
@@ -20,7 +20,7 @@ const LeaderBoard: FC = () => {
     <div className="leader-board-container">
       <Typography variant="sub-header-main">LEADER BOARD</Typography>
       <div className="leader-board-content">
-        {leaderBoardItems.map((item: any, index: number) => {
+        {TestLeaderBoardItems.map((item: any, index: number) => {
           return <LeaderBoardItem key={index} item={item} />;
         })}
       </div>

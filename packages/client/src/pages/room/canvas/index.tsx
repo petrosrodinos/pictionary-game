@@ -61,17 +61,14 @@ const Canvas: FC<CanvasProps> = ({}) => {
 
   return (
     <div className="canvas-container">
-      <div className="canvas-color-picker">
-        <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
-        <button type="button" className="p-2 rounded-md border border-black" onClick={clear}>
-          Clear canvas
-        </button>
-      </div>
+      {/* <div className="canvas-color-picker"> */}
+      {/* <ChromePicker color={color} onChange={(e) => setColor(e.hex)} /> */}
+      {/* </div> */}
       <canvas
+        width={840}
+        height={700}
         ref={canvasRef}
         onMouseDown={onMouseDown}
-        width={750}
-        height={750}
         className="canvas"
       />
     </div>
