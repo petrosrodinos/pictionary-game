@@ -67,6 +67,7 @@ const Login: FC = () => {
         name="password"
         register={register}
         placeholder="Password"
+        type="password"
       />
       <Button type="submit" loading={isLoading} icon={BiLogIn} title="Login" variant="primary" />
     </form>

@@ -1,19 +1,37 @@
 import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
-import { ChromePicker } from "react-color";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import "./style.scss";
 import { API_URL } from "../../../constants";
+import "./style.scss";
 
 interface CanvasProps {}
 
 const Canvas: FC<CanvasProps> = ({}) => {
   const [color, setColor] = useState<string>("#000");
+  const [canvasWidth, setCanvasWidth] = useState(1030);
+  const [canvasHeight, setCanvasHeight] = useState(900);
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState<any>();
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
 
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      const canvasElement = canvasRef.current?.parentNode as HTMLElement;
+      if (canvasElement) {
+        const { width, height } = canvasElement.getBoundingClientRect();
+        setCanvasWidth(width * 0.7);
+        setCanvasHeight(height * 0.9);
+      }
+    };
+
+    window.addEventListener("resize", updateCanvasSize);
+    updateCanvasSize();
+
+    return () => {
+      window.removeEventListener("resize", updateCanvasSize);
+    };
+  }, []);
   useEffect(() => {
     const s = io(`${API_URL}`);
     setSocket(s);
@@ -47,26 +65,14 @@ const Canvas: FC<CanvasProps> = ({}) => {
     socket.emit("get-document", documentId);
   }, [socket, documentId]);
 
-  // useEffect(() => {
-  //   if (socket == null) return;
-
-  //   const interval = setInterval(() => {
-  //     socket.emit("save-document", "");
-  //   }, 5000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [socket]);
-
   return (
     <div className="canvas-container">
-      {/* <div className="canvas-color-picker"> */}
-      {/* <ChromePicker color={color} onChange={(e) => setColor(e.hex)} /> */}
-      {/* </div> */}
+      <div className="canvas-tools">
+        <div className="canvas-tools-content"></div>
+      </div>
       <canvas
-        width={840}
-        height={700}
+        width={canvasWidth}
+        height={canvasHeight}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         className="canvas"

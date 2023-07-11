@@ -1,7 +1,9 @@
 .room-page-container {
-  margin-top: 50px;
+  margin: 20px;
   border-radius: var(--border-radius);
   max-width: 1400px;
-  max-height: 1200px;
+  width: 100vw;
+  max-height: 900px;
+  height: 100vh;
   background-color: var(--primary-background-color-rgba);
 }
