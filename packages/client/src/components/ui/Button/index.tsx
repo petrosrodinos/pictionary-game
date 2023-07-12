@@ -3,7 +3,7 @@ import Typography from "../Typography";
 import { ImSpinner6 } from "react-icons/im";
 import "./style.scss";
 
-interface ButtonProps {
+interface ButtonProps { //props gia to button
   title: string;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
@@ -15,7 +15,7 @@ interface ButtonProps {
   icon?: any;
 }
 
-const Button: FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({   //prepei na kanw props
   variant = "primary",
   type = "button",
   style,

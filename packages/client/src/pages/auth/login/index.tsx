@@ -18,8 +18,8 @@ const Login: FC = () => {
   const navigate = useNavigate();
 
   const {
-    register,
-    handleSubmit,
+    register, //einai diko toy onoma den exei na kanei me to button 
+    handleSubmit,// toy library
     formState: { errors },
   } = useForm<UserLogin>({
     resolver: yupResolver(LoginValidationSchema),
@@ -62,7 +62,9 @@ const Login: FC = () => {
         register={register}
         placeholder="@username"
       />
+      
       <Input
+        
         error={errors.password?.message}
         name="password"
         register={register}
@@ -73,5 +75,6 @@ const Login: FC = () => {
     </form>
   );
 };
+
 
 export default Login;
