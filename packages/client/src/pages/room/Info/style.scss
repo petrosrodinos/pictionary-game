@@ -1,0 +1,33 @@
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+
+.artist-container {
+  margin-left: 30px;
+  display: flex;
+  gap: 5px;
+
+  .artist-label {
+    color: var(--text-primary);
+  }
+
+  .artist-text {
+    color: var(--text-secondary-light);
+  }
+}
+
+.time-container {
+  margin-left: 30px;
+  display: flex;
+  gap: 5px;
+
+  .time-label {
+    color: var(--text-primary);
+  }
+
+  .time-text {
+    color: var(--text-secondary-light);
+  }
+}

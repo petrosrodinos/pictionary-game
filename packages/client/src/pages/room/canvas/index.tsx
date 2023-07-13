@@ -24,7 +24,7 @@ const Canvas: FC<CanvasProps> = ({ word, artistIsPlaying }) => {
       const canvasElement = canvasRef.current?.parentNode as HTMLElement;
       if (canvasElement) {
         const { width, height } = canvasElement.getBoundingClientRect();
-        setCanvasWidth(width * 0.7);
+        setCanvasWidth(width);
         setCanvasHeight(height * 0.9);
       }
     };
