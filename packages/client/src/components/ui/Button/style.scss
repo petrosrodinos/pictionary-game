@@ -21,7 +21,7 @@
 
 .button-secondary {
   background-color: var(--fill-secondary);
-  color: white;
+  color: white !important;
 }
 
 .button-container:hover {

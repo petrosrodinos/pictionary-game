@@ -3,11 +3,15 @@ import { useDraw } from "../../../hooks/useDraw";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { API_URL } from "../../../constants";
+import Typography from "../../../components/ui/Typography";
 import "./style.scss";
 
-interface CanvasProps {}
+interface CanvasProps {
+  word: string;
+  artistIsPlaying: boolean;
+}
 
-const Canvas: FC<CanvasProps> = ({}) => {
+const Canvas: FC<CanvasProps> = ({ word, artistIsPlaying }) => {
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
@@ -67,6 +71,16 @@ const Canvas: FC<CanvasProps> = ({}) => {
 
   return (
     <div className="canvas-container">
+      {artistIsPlaying && (
+        <div className="word-container">
+          <Typography variant="text-accent" className="word-label">
+            WORD:
+          </Typography>
+          <Typography variant="small-text-main" className="word-text">
+            {word}
+          </Typography>
+        </div>
+      )}
       <div className="canvas-tools">
         <div className="canvas-tools-content"></div>
       </div>

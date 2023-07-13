@@ -1,6 +1,8 @@
 .canvas-container {
   position: relative;
   // margin-left: 10px;
+  // display: flex;
+  // align-items: center;
   border-radius: var(--border-radius);
   width: 100%;
   height: 100%;
@@ -15,9 +17,24 @@
 .canvas-tools {
   position: absolute;
   left: 10px;
-  // top: 50px;
+  top: 10%;
   width: 100px;
-  height: 90%;
+  height: 70%;
   background-color: red;
   border-radius: 50px;
+}
+
+.word-container {
+  position: relative;
+  top: 35px;
+  margin-left: 30px;
+  display: flex;
+  gap: 5px;
+  .word-label {
+    color: var(--text-secondary);
+  }
+
+  .word-text {
+    color: var(--text-primary);
+  }
 }
