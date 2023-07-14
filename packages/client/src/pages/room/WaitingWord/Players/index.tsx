@@ -10,20 +10,22 @@ interface PlayersProps {
 const Players: FC<PlayersProps> = ({ players }) => {
   return (
     <div className="players-container">
-      {players.map((player, index) => (
-        <div className="player-container">
-          <div className="players-content">
-            <div className="player-rank">
-              <Typography>{index}</Typography>
-            </div>
-            <Avatar image={player.avatar} />
-            <div className="player-info">
-              <Typography variant="text-main">{player.username}</Typography>
-              <Typography>points: {player.points}</Typography>
+      {players
+        .sort((a, b) => b.points - a.points)
+        .map((player, index) => (
+          <div key={index} className="player-container">
+            <div className="players-content">
+              <div className="player-rank">
+                <Typography>{index + 1}</Typography>
+              </div>
+              <Avatar image={player.avatar} />
+              <div className="player-info">
+                <Typography variant="text-main">{player.username}</Typography>
+                <Typography>points: {player.points}</Typography>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

@@ -13,6 +13,10 @@ interface WaitingWordsProps {
 }
 
 const WaitingWord: FC<WaitingWordsProps> = ({ round, artist, players, time }) => {
+  const handleTimerFinish = () => {
+    console.log("Timer Finished");
+  };
+
   return (
     <div className="waiting-word-container">
       <div className="artist-container">
@@ -25,7 +29,7 @@ const WaitingWord: FC<WaitingWordsProps> = ({ round, artist, players, time }) =>
       <Typography variant="text-main" className="waiting-label">
         WAITING FOR THE ARTIST TO CHOOSE A WORD
       </Typography>
-      <Loader time={time} />
+      <Loader time={time} onFinish={handleTimerFinish} />
       <Players players={players} />
     </div>
   );
