@@ -11,29 +11,20 @@ const Info: FC<InfoProps> = ({ artist, time }) => {
   const [countDown, setCountDown] = useState<string>(time);
 
   useEffect(() => {
-    const targetTime = new Date();
-    const [hours, minutes] = time.split(":");
-    targetTime.setHours(Number(hours));
-    targetTime.setMinutes(Number(minutes));
-    targetTime.setSeconds(0);
+    const [minutes, seconds] = time.split(":").map(Number);
+    const countDownTime = minutes * 60 + seconds;
 
+    let remainingTime = countDownTime;
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetTime.getTime() - now;
+      remainingTime--;
 
-      if (distance <= 0) {
-        // Countdown is complete, perform necessary actions
+      if (remainingTime <= 0) {
         clearInterval(interval);
         setCountDown("00:00");
-        // Additional logic here if needed
       } else {
-        // Calculate remaining minutes and seconds
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-          2,
-          "0"
-        )}`;
+        const formattedTime = `${String(Math.floor(remainingTime / 60)).padStart(2, "0")}:${String(
+          remainingTime % 60
+        ).padStart(2, "0")}`;
         setCountDown(formattedTime);
       }
     }, 1000);

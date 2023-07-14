@@ -9,7 +9,7 @@ const Room: FC = () => {
   const { username } = authStore((state) => state);
   const [word, setWord] = useState<string>("");
   const [artist, setArtist] = useState<string>("");
-  const [time, setTime] = useState<string>("05:00");
+  const [time, setTime] = useState<string>("10:00");
   const [round, setRound] = useState<number>(1);
   const [players, setPlayers] = useState<string[]>([]);
 
