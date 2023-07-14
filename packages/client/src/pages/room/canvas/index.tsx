@@ -8,10 +8,10 @@ import "./style.scss";
 
 interface CanvasProps {
   word: string;
-  artistIsPlaying: boolean;
+  currentUserIsPlaying: boolean;
 }
 
-const Canvas: FC<CanvasProps> = ({ word, artistIsPlaying }) => {
+const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
@@ -71,7 +71,7 @@ const Canvas: FC<CanvasProps> = ({ word, artistIsPlaying }) => {
 
   return (
     <div className="canvas-container">
-      {artistIsPlaying && (
+      {currentUserIsPlaying && (
         <div className="word-container">
           <Typography variant="text-accent" className="word-label">
             WORD:

@@ -16,6 +16,13 @@ interface UserType {
   level?: number;
 }
 
+interface InGameUser {
+  id: number;
+  avatar: string;
+  username: string;
+  points: number;
+}
+
 interface RoomInfo {
   creator: string;
   code: string;

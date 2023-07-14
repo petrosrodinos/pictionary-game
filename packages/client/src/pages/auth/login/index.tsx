@@ -7,7 +7,7 @@ import Input from "../../../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { LoginValidationSchema } from "../../../validation-schemas/user";
-import { UserLogin } from "../../../types/user";
+import { UserLogin } from "../../../interfaces/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";

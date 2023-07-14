@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useTimer = (time: string) => {
+export const useTimer = (time: string, onTimerFinish: () => void) => {
   const [countDown, setCountDown] = useState<string>(time);
 
   useEffect(() => {
@@ -14,6 +14,7 @@ export const useTimer = (time: string) => {
       if (remainingTime <= 0) {
         clearInterval(interval);
         setCountDown("00:00");
+        onTimerFinish();
       } else {
         const formattedTime = `${String(Math.floor(remainingTime / 60)).padStart(2, "0")}:${String(
           remainingTime % 60

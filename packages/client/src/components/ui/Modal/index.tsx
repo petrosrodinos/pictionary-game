@@ -5,7 +5,7 @@ import "./style.scss";
 interface IProps {
   children: any;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
@@ -14,9 +14,11 @@ const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
       {isOpen && (
         <div className="modal__container">
           <div className="modal-content__container">
-            <div onClick={onClose} className="close-button">
-              <AiOutlineClose />
-            </div>
+            {onClose && (
+              <div onClick={onClose} className="close-button">
+                <AiOutlineClose />
+              </div>
+            )}
             <>{children}</>
           </div>
         </div>
