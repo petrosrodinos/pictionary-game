@@ -1,5 +1,6 @@
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
+import { useTimer } from "../../../hooks/timer";
 import "./style.scss";
 
 interface InfoProps {
@@ -8,31 +9,7 @@ interface InfoProps {
 }
 
 const Info: FC<InfoProps> = ({ artist, time }) => {
-  const [countDown, setCountDown] = useState<string>(time);
-
-  useEffect(() => {
-    const [minutes, seconds] = time.split(":").map(Number);
-    const countDownTime = minutes * 60 + seconds;
-
-    let remainingTime = countDownTime;
-    const interval = setInterval(() => {
-      remainingTime--;
-
-      if (remainingTime <= 0) {
-        clearInterval(interval);
-        setCountDown("00:00");
-      } else {
-        const formattedTime = `${String(Math.floor(remainingTime / 60)).padStart(2, "0")}:${String(
-          remainingTime % 60
-        ).padStart(2, "0")}`;
-        setCountDown(formattedTime);
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [time]);
+  const { countDown } = useTimer(time);
 
   return (
     <div className="info-container">
