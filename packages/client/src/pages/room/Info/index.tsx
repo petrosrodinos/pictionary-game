@@ -6,10 +6,11 @@ import "./style.scss";
 interface InfoProps {
   artist: string;
   time: string;
+  choosingWord: boolean;
   onTimerFinish: () => void;
 }
 
-const Info: FC<InfoProps> = ({ artist, time, onTimerFinish }) => {
+const Info: FC<InfoProps> = ({ artist, time, choosingWord, onTimerFinish }) => {
   const { countDown } = useTimer(time, onTimerFinish);
 
   return (
@@ -27,7 +28,7 @@ const Info: FC<InfoProps> = ({ artist, time, onTimerFinish }) => {
           TIME:
         </Typography>
         <Typography variant="small-text-main" className="time-text">
-          {countDown}
+          {choosingWord ? time : countDown}
         </Typography>
       </div>
     </div>

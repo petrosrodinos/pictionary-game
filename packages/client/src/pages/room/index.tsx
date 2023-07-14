@@ -54,7 +54,12 @@ const Room: FC = () => {
       <div className="room-page-container">
         <button onClick={onTimerFinish}>finish</button>
         <div className="drawing-area-container">
-          <Info onTimerFinish={onTimerFinish} artist={artist} time={timer} />
+          <Info
+            onTimerFinish={onTimerFinish}
+            artist={artist}
+            time={timer}
+            choosingWord={timerFinish}
+          />
           <Canvas word={word} currentUserIsPlaying={currentUserIsPlaying} />
         </div>
       </div>
