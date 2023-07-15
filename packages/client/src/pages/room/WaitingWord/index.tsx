@@ -6,13 +6,12 @@ import Players from "./Players";
 import "./style.scss";
 
 interface WaitingWordsProps {
-  round: number;
   artist: InGameUser;
   players: InGameUser[];
   time: number;
 }
 
-const WaitingWord: FC<WaitingWordsProps> = ({ round, artist, players, time }) => {
+const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time }) => {
   const handleTimerFinish = () => {
     console.log("Timer Finished");
   };

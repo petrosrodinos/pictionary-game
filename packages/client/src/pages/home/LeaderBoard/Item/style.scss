@@ -15,6 +15,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  span {
+    font-weight: 700;
+  }
 }
 
 .user-info-container {

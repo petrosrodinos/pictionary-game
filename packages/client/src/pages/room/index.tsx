@@ -5,6 +5,8 @@ import Info from "./Info";
 import Modal from "../../components/ui/Modal";
 import WaitingWord from "./WaitingWord";
 import { getRandomAvatar } from "../../utils/avatar";
+import { CHOOSING_WORD_TIME, ROUNDS } from "../../constants/game";
+import ChoosingWord from "./ChoosingWord";
 import "./style.scss";
 
 const Players: InGameUser[] = [...new Array(5)].map((_, index) => ({
@@ -16,11 +18,12 @@ const Players: InGameUser[] = [...new Array(5)].map((_, index) => ({
 
 const Room: FC = () => {
   const { username } = authStore((state) => state);
-  const [time, setTime] = useState<number>(1);
+  const [time, setTime] = useState<number>(CHOOSING_WORD_TIME);
   const [word, setWord] = useState<string>("");
   const [artist, setArtist] = useState<string>("");
   const [timer, setTimer] = useState<string>("00:00");
-  const [round, setRound] = useState<number>(1);
+  const [rounds, setRounds] = useState<number>(ROUNDS);
+  const [currentRound, setCurrentRound] = useState<number>(1);
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [players, setPlayers] = useState<InGameUser[]>([]);
   const [timerFinish, setTimerFinish] = useState<boolean>(false);
@@ -39,17 +42,22 @@ const Room: FC = () => {
   };
 
   const handleWordSelected = () => {
-    setRound(round + 1);
+    setCurrentRound(currentRound + 1);
     setTimerFinish(false);
     setTimer("05:00");
     setWord("carrot");
-    setArtist(Players[round + 1].username);
+    setArtist(Players[currentRound + 1].username);
+  };
+
+  const GameOptions = {
+    "choosing-word": <ChoosingWord />,
+    "waiting-word": <WaitingWord time={time} artist={Players[0]} players={players} />,
   };
 
   return (
     <>
-      <Modal isOpen={timerFinish}>
-        <WaitingWord time={time} artist={Players[0]} round={round} players={players} />
+      <Modal title={`ROUND ${currentRound}/${rounds} finished`} isOpen={timerFinish}>
+        {GameOptions[currentUserIsPlaying ? "choosing-word" : "waiting-word"]}
       </Modal>
       <div className="room-page-container">
         <button onClick={onTimerFinish}>finish</button>
