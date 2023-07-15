@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import Canvas from "./canvas";
+import Canvas from "./Canvas";
 import { authStore } from "../../store/authStore";
 import Info from "./Info";
 import Modal from "../../components/ui/Modal";
@@ -8,6 +8,7 @@ import { getRandomAvatar } from "../../utils/avatar";
 import { CHOOSING_WORD_TIME, ROUNDS } from "../../constants/game";
 import ChoosingWord from "./ChoosingWord";
 import GameFinished from "./GameFinished";
+import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const Room: FC = () => {
@@ -21,6 +22,7 @@ const Room: FC = () => {
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [players, setPlayers] = useState<InGameUser[]>([]);
   const [timerFinish, setTimerFinish] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   //test players
   const Players: InGameUser[] = [...new Array(5)].map((_, index) => ({
@@ -33,7 +35,6 @@ const Room: FC = () => {
 
   //should get data from the socket connection first to set the settings
   useEffect(() => {
-    console.log(Players);
     const artist = "rodinos";
     setTimer("05:00");
     setWord("carrot");
@@ -42,25 +43,25 @@ const Room: FC = () => {
     setPlayers(Players);
   }, []);
 
-  const onTimerFinish = () => {
+  const onRoundFinish = () => {
     setTimerFinish(true);
   };
 
-  const handleWordSelected = () => {
+  const handleWordSelected = (word: string) => {
     setCurrentRound(currentRound + 1);
     setTimerFinish(false);
     setTimer("05:00");
-    setWord("carrot");
-    setArtist(Players[currentRound + 1].username);
+    setWord(word);
+    setArtist(players[currentRound + 1].username);
   };
 
   const handleExit = () => {
-    console.log("exit");
+    navigate("/home");
   };
 
   const GameOptions = {
     "choosing-word": <ChoosingWord />,
-    "waiting-word": <WaitingWord time={time} artist={Players[0]} players={players} />,
+    "waiting-word": <WaitingWord time={time} artist={players[0]} players={players} />,
     "game-finished": <GameFinished onExit={handleExit} users={players} />,
   };
 
@@ -75,10 +76,10 @@ const Room: FC = () => {
         {GameOptions[chooseOption()]}
       </Modal>
       <div className="room-page-container">
-        <button onClick={onTimerFinish}>finish</button>
+        <button onClick={onRoundFinish}>finish</button>
         <div className="drawing-area-container">
           <Info
-            onTimerFinish={onTimerFinish}
+            onTimerFinish={onRoundFinish}
             artist={artist}
             time={timer}
             choosingWord={timerFinish}
