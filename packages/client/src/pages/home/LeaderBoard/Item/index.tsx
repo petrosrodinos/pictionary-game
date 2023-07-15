@@ -15,7 +15,9 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
       </span>
       <Avatar image={item.avatar} />
       <div className="user-info-container">
-        <Typography>@{item.username}</Typography>
+        <Typography variant="text-main" className="info-username-label">
+          @{item.username}
+        </Typography>
         <span>
           <Typography>xp:</Typography>
           <Typography>{item.xp}</Typography>
