@@ -1,0 +1,30 @@
+.points-earned-container {
+  width: 100%;
+}
+
+.points-label {
+  color: var(--text-secondary-light);
+}
+
+.points-text {
+  color: var(--text-secondary);
+}
+
+.level-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: var(--border-radius);
+  background-color: red;
+  height: 40px;
+  // margin: 0 0 20px 0;
+
+  .level-loader {
+    width: 100px;
+    border-radius: var(--border-radius);
+    background-color: black;
+    height: 40px;
+  }
+}

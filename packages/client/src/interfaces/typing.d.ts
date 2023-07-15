@@ -21,6 +21,7 @@ interface InGameUser {
   avatar: string;
   username: string;
   points: number;
+  rank: number;
 }
 
 interface RoomInfo {

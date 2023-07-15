@@ -1,0 +1,20 @@
+.game-finished-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 50px;
+}
+
+.finish-message {
+  // max-width: 200px;
+  width: 100%;
+  .msg-primary {
+    color: var(--text-secondary-light);
+  }
+
+  .msg-secondary {
+    color: var(--text-secondary);
+  }
+}

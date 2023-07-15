@@ -20,7 +20,7 @@ const UsersGrid: FC<UsersGridProps> = ({ users }) => {
           <div className="user-content">
             <Avatar image={user.avatar} />
             <Typography>@{user.username}</Typography>
-            <Typography>level:{user.level}</Typography>
+            {user.level && <Typography>level:{user.level}</Typography>}
           </div>
         </div>
       ))}
