@@ -1,14 +1,16 @@
 import { FC } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
+import Typography from "../Typography";
 
 interface IProps {
   children: any;
   isOpen: boolean;
+  title?: string;
   onClose?: () => void;
 }
 
-const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
+const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
   return (
     <>
       {isOpen && (
@@ -17,6 +19,11 @@ const Modal: FC<IProps> = ({ children, isOpen, onClose }) => {
             {onClose && (
               <div onClick={onClose} className="close-button">
                 <AiOutlineClose />
+              </div>
+            )}
+            {title && (
+              <div className="title-container">
+                <Typography variant="text-main">{title}</Typography>
               </div>
             )}
             <>{children}</>

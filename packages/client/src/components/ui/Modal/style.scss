@@ -24,6 +24,25 @@
   position: relative;
 }
 
+.title-container {
+  position: relative;
+  align-self: center;
+  margin-top: 20px;
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  width: 100%;
+  background-color: var(--secondary-background-color-dark);
+  border-radius: var(--border-radius);
+  height: 40px;
+
+  span {
+    color: var(--text-secondary-light);
+  }
+}
+
 .close-button {
   position: absolute;
   right: 0px;
