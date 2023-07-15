@@ -1,0 +1,62 @@
+.star-main-container {
+  position: relative;
+  span {
+    position: absolute;
+    top: -3px;
+    left: 17px;
+    z-index: 100;
+    color: var(--text-secondary-light);
+    font-size: 20px;
+  }
+}
+
+.star-container {
+  --star-division: 4;
+  --star-size: calc(100px / var(--star-division));
+  --triangle-size: calc(70px / var(--star-division));
+  --triangle-border: calc(30px / var(--star-division));
+  --triangle-top: calc(-45px / var(--star-division));
+  --triangle-left: calc(-65px / var(--star-division));
+  --star-bottom: calc(3px / var(--star-division));
+  --star-left: calc(-105px / var(--star-division));
+
+  //   margin: 50px 0;
+  position: relative;
+  display: block;
+  color: var(--secondary-background-color-dark);
+  width: 0;
+  height: 0;
+  border-right: var(--star-size) solid transparent;
+  border-bottom: var(--triangle-size) solid var(--secondary-background-color-dark);
+  border-left: var(--star-size) solid transparent;
+  transform: rotate(35deg);
+}
+
+.star-container:before {
+  border-bottom: calc(var(--triangle-size) + 10px) solid var(--secondary-background-color-dark);
+  border-left: var(--triangle-border) solid transparent;
+  border-right: var(--triangle-border) solid transparent;
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: var(--triangle-top);
+  left: var(--triangle-left);
+  display: block;
+  content: "";
+  transform: rotate(-35deg);
+}
+
+.star-container:after {
+  position: absolute;
+  display: block;
+  color: var(--secondary-background-color-dark);
+  top: var(--star-bottom);
+  left: var(--star-left);
+  width: 0;
+  height: 0;
+  border-right: var(--star-size) solid transparent;
+  border-bottom: var(--triangle-size) solid var(--secondary-background-color-dark);
+  border-left: var(--star-size) solid transparent;
+  transform: rotate(-70deg);
+  content: "";
+}
