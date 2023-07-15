@@ -10,21 +10,32 @@
   color: var(--text-secondary);
 }
 
-.level-container {
+.progress-container {
+  margin-top: 10px;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 30px;
   justify-content: space-between;
   width: 100%;
   border-radius: var(--border-radius);
-  background-color: red;
-  height: 40px;
-  // margin: 0 0 20px 0;
+  background-color: var(--text-secondary);
+  height: 30px;
 
-  .level-loader {
+  .progress-loader {
+    background-color: var(--secondary-background-color-medium);
     width: 100px;
     border-radius: var(--border-radius);
-    background-color: black;
-    height: 40px;
+    height: 30px;
+  }
+
+  .star-item-left {
+    position: absolute;
+    left: -20px;
+  }
+
+  .star-item-right {
+    position: absolute;
+    right: -20px;
   }
 }

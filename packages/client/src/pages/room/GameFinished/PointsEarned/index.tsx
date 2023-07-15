@@ -1,15 +1,15 @@
 import { FC } from "react";
 import { authStore } from "../../../../store/authStore";
 import Typography from "../../../../components/ui/Typography";
-import "./style.scss";
 import Star from "../../../../components/ui/Star";
+import "./style.scss";
 
 interface PointsEarnedProps {
   points: number;
 }
 
 const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
-  const { level } = authStore((state) => state);
+  const { level, points: currentPoints } = authStore((state) => state);
 
   return (
     <div className="points-earned-container">
@@ -19,10 +19,13 @@ const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
           +{points}
         </Typography>
       </Typography>
-      <div className="level-container">
-        {/* <Star label={level} /> */}
-        <div className="level-loader"></div>
-        {/* <Star label={level + 1} /> */}
+      <div className="progress-container">
+        <div
+          style={{ width: `${currentPoints + points * 3.7}px` }}
+          className="progress-loader"
+        ></div>
+        <Star className="star-item-left" label={level} />
+        <Star className="star-item-right" label={level + 1} />
       </div>
     </div>
   );
