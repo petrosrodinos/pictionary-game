@@ -6,6 +6,7 @@ interface AuthState {
   token: string;
   userId: string;
   username: string;
+  level: number;
   logOut: () => void;
   logIn: (payload: any) => void;
 }
@@ -15,6 +16,7 @@ const initialStateValues = {
   token: "",
   username: "",
   userId: "",
+  level: 0,
 };
 
 export const authStore = create<AuthState>()(
@@ -33,6 +35,7 @@ export const authStore = create<AuthState>()(
             token: payload.token,
             userId: payload.userId,
             username: payload.username,
+            level: payload.level,
           }),
       }),
       {

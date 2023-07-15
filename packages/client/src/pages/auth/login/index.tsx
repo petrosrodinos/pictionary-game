@@ -42,6 +42,7 @@ const Login: FC = () => {
               userId: data.id,
               username: data.username,
               token: data.accessToken,
+              level: data.level || 4,
             });
             navigate("/home");
           }
