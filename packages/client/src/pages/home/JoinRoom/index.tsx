@@ -13,7 +13,7 @@ const JoinRoom: FC<JoinRoomProps> = ({ onJoinRoom }) => {
   return (
     <div className="join-room-container">
       <div className="join-room-content">
-        <Typography>Enter the code your friends sent you</Typography>
+        <Typography variant="text-accent">Enter the code your friends sent you</Typography>
         <Input placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
         <Button title="JOIN" onClick={() => onJoinRoom(code)} />
       </div>

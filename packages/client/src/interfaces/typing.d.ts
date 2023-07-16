@@ -6,6 +6,11 @@ type Draw = {
 
 type Point = { x: number; y: number };
 
+interface UserLogin {
+  username: string;
+  password: string;
+}
+
 interface UserType {
   id: number;
   rank?: number;
@@ -24,12 +29,14 @@ interface InGameUser {
   rank: number;
 }
 
+interface GameSettings {
+  players: number;
+  rounds: number;
+}
+
 interface RoomInfo {
   creator: string;
   code: string;
-  settings: {
-    players: number;
-    rounds: number;
-  };
+  settings: GameSettings;
   users: UserType[];
 }

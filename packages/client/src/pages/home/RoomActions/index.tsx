@@ -10,8 +10,12 @@ interface RoomActionsProps {
 const RoomActions: FC<RoomActionsProps> = ({ onActionClick }) => {
   return (
     <div className="room-actions-container">
-      <Button title="JOIN ROOM" onClick={() => onActionClick("join")} />
-      <Button variant="secondary" title="CREATE ROOM" onClick={() => onActionClick("create")} />
+      <Button title="JOIN ROOM" onClick={() => onActionClick("join-room")} />
+      <Button
+        variant="secondary"
+        title="CREATE ROOM"
+        onClick={() => onActionClick("create-room")}
+      />
     </div>
   );
 };

@@ -66,35 +66,44 @@ const Room: FC = () => {
     setTime(0);
   };
 
-  const GameOptions = {
-    "choosing-word": (
-      <ChoosingWord
-        time={time}
-        words={words}
-        onTimerFinish={handleTimerFinish}
-        onWordSelected={handleWordSelected}
-      />
-    ),
-    "waiting-word": (
-      <WaitingWord
-        onTimerFinish={handleTimerFinish}
-        time={time}
-        artist={players[0]}
-        players={players}
-      />
-    ),
-    "game-finished": <GameFinished onExit={handleExit} users={players} />,
+  const ModalComponents = {
+    "choosing-word": {
+      title: `ROUND ${currentRound}/${rounds} finished`,
+      component: (
+        <ChoosingWord
+          time={time}
+          words={words}
+          onTimerFinish={handleTimerFinish}
+          onWordSelected={handleWordSelected}
+        />
+      ),
+    },
+    "waiting-word": {
+      title: `ROUND ${currentRound}/${rounds} finished`,
+      component: (
+        <WaitingWord
+          onTimerFinish={handleTimerFinish}
+          time={time}
+          artist={players[0]}
+          players={players}
+        />
+      ),
+    },
+    "game-finished": {
+      title: "GAME FINISHED",
+      component: <GameFinished onExit={handleExit} users={players} />,
+    },
   };
 
-  const chooseOption = (): keyof typeof GameOptions => {
+  const chooseOption = (): keyof typeof ModalComponents => {
     if (currentRound >= rounds) return "game-finished";
     return currentUserIsPlaying ? "choosing-word" : "waiting-word";
   };
 
   return (
     <>
-      <Modal title={`ROUND ${currentRound}/${rounds} finished`} isOpen={timerFinish}>
-        {GameOptions[chooseOption()]}
+      <Modal title={ModalComponents[chooseOption()].title} isOpen={timerFinish}>
+        {ModalComponents[chooseOption()].component}
       </Modal>
       <div className="room-page-container">
         <button onClick={onRoundFinish}>finish</button>

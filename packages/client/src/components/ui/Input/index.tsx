@@ -3,7 +3,7 @@ import Typography from "../Typography";
 import "./style.scss";
 
 interface InputProps {
-  value?: string;
+  value?: string | number;
   placeholder?: string;
   name?: string;
   type?: "text" | "password" | "email" | "number";

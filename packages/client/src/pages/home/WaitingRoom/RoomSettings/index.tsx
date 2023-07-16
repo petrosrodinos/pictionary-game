@@ -12,7 +12,9 @@ interface RoomSettingsProps {
 const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
   return (
     <div className="settings-container">
-      <Typography variant="sub-header-main">Settings</Typography>
+      <Typography className="settings-label" variant="header-main">
+        Settings
+      </Typography>
       <div className="settings-content">
         <Typography>
           PLAYERS:<Typography>{settings.players}</Typography>

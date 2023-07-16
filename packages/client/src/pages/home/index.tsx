@@ -6,9 +6,10 @@ import JoinRoom from "./JoinRoom";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import WaitingRoom from "./WaitingRoom";
 import Container from "../../components/Container";
+import CreateRoom from "./CreateRoom";
 import "./style.scss";
 
-export type ModalType = "join" | "create" | "waiting-room" | "";
+export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -49,16 +50,38 @@ const Home: FC = () => {
     // setActiveModal("");
   };
 
+  const handleCancelRoomCreation = () => {
+    setActiveModal("");
+  };
+
+  const handleCreateRoom = (settings: GameSettings) => {
+    if (!settings.players || !settings.rounds) return;
+    console.log(settings);
+  };
+
   const ModalComponents: any = {
-    ["join"]: <JoinRoom onJoinRoom={handleJoinRoom} />,
-    ["create"]: <JoinRoom onJoinRoom={handleJoinRoom} />,
-    ["waiting-room"]: <WaitingRoom onLeave={handleLeave} />,
+    ["join-room"]: {
+      title: "JOIN A ROOM",
+      component: <JoinRoom onJoinRoom={handleJoinRoom} />,
+    },
+    ["create-room"]: {
+      title: "CREATE A ROOM",
+      component: <CreateRoom onCancel={handleCancelRoomCreation} onCreate={handleCreateRoom} />,
+    },
+    ["waiting-room"]: {
+      title: "WAITING ROOM",
+      component: <WaitingRoom onLeave={handleLeave} />,
+    },
   };
 
   return (
     <Container className="home-page-container">
-      <Modal isOpen={!!activeModal} onClose={() => setActiveModal("")}>
-        {ModalComponents?.[activeModal]}
+      <Modal
+        title={ModalComponents?.[activeModal]?.title}
+        isOpen={!!activeModal}
+        onClose={() => setActiveModal("")}
+      >
+        {ModalComponents?.[activeModal]?.component}
       </Modal>
       <div className="first-row">
         <RoomActions onActionClick={handleActionClick} />

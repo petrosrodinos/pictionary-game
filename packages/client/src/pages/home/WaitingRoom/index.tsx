@@ -5,6 +5,7 @@ import { getRandomAvatar } from "../../../utils/avatar";
 import Button from "../../../components/ui/Button";
 import { useSearchParams } from "react-router-dom";
 import RoomSettings from "./RoomSettings";
+import { CLIENT_URL } from "../../../constants";
 import "./style.scss";
 
 interface WaitingRoomProps {
@@ -48,14 +49,26 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     <div className="waiting-room-container">
       {roomInfo ? (
         <>
-          <Typography variant="sub-header-main" className="room-stat title">
-            WAITING ROOM
+          <Typography className="room-stat">
+            <Typography variant="text-accent" className="waiting-room-label">
+              Code:
+            </Typography>{" "}
+            {roomInfo.code}
           </Typography>
-          <Typography variant="text-accent" className="room-stat">
-            Code: {roomInfo.code}
+          <Typography className="room-stat">
+            <Typography variant="text-accent" className="waiting-room-label">
+              Link:
+            </Typography>{" "}
+            <Typography className="room-stat waiting-room-link">
+              {CLIENT_URL}room/
+              {roomInfo.code}
+            </Typography>
           </Typography>
-          <Typography variant="text-accent" className="room-stat">
-            Creator:{roomInfo.creator}
+          <Typography className="room-stat">
+            <Typography variant="text-accent" className="waiting-room-label">
+              Creator:
+            </Typography>
+            {roomInfo.creator}
           </Typography>
           <UsersGrid users={roomInfo.users} />
           <RoomSettings settings={roomInfo.settings} />

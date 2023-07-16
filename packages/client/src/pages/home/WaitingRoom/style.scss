@@ -9,10 +9,14 @@
   padding-bottom: 30px;
 }
 
-.room-stat {
+.waiting-room-label {
   color: var(--text-secondary);
 }
 
-.title {
-  color: black;
+.waiting-room-link {
+  text-decoration: underline;
+}
+
+.room-stat {
+  color: var(--text-secondary-light);
 }
