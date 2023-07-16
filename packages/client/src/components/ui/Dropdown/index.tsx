@@ -7,6 +7,7 @@ interface DropdownProps { //props gia to button
   style?: React.CSSProperties;
   className?: string;
   error?: string;
+  //onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
@@ -15,6 +16,7 @@ const  Dropdown: FC<DropdownProps> = ({
   style,
   className = "",
   error,
+  //onChange,
 
 }) => {
     return (
