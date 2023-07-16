@@ -1,4 +1,6 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
+import ProgressBar from "@ramonak/react-progress-bar";
+import { TEXT_SECONDARY } from "../../../constants/colors";
 import "./style.scss";
 
 interface LoaderProps {
@@ -8,14 +10,12 @@ interface LoaderProps {
 
 const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
   const [timeLeft, setTimeLeft] = useState(0);
-  const intervalRef = useRef<any>(null);
 
   useEffect(() => {
     let timeToTimer = 0;
     const x = setInterval(() => {
       timeToTimer = timeToTimer + 1;
       setTimeLeft(timeToTimer);
-
       if (timeToTimer === time * 60) {
         onFinish();
         clearInterval(x);
@@ -25,7 +25,14 @@ const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
 
   return (
     <div className="loader-container">
-      <div style={{ width: `${timeLeft * 1.7}%` }} ref={intervalRef} className="fill-bar"></div>
+      <ProgressBar
+        isLabelVisible={false}
+        bgColor={TEXT_SECONDARY}
+        height="30px"
+        completed={timeLeft}
+        maxCompleted={time * 60}
+        transitionTimingFunction="linear"
+      />
     </div>
   );
 };
