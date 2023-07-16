@@ -11,17 +11,22 @@ export const authRouter = trpc.router({
     return todos;
   }),
   register: trpc.procedure
-    .input(z.object({ username: z.string(), password: z.string() }))
+    .input(z.object({ username: z.string(), password: z.string(), password2: z.string(), email: z.string() , user_type: z.string()}))
     .mutation(async ({ input }) => {
       const username = input.username;
       const password = bcrypt.hashSync(input.password, 8);
+     // const password2 = bcrypt.hashSync(input.password2, 8);
+      const email = input.email;
+      const user_type = input.user_type;
 
       try {
         const user = await prisma.user.create({
           data: {
             username: username,
             password: password,
-          },
+            email: email,
+            user_type: user_type,
+          }
         });
 
         const token = await jwt.signAccessToken(user);
