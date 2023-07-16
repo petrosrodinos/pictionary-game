@@ -9,14 +9,6 @@
   padding-bottom: 30px;
 }
 
-.waiting-room-label {
-  color: var(--text-secondary);
-}
-
-.waiting-room-link {
-  text-decoration: underline;
-}
-
 .room-stat {
-  color: var(--text-secondary-light);
+  color: var(--text-secondary-light) !important;
 }

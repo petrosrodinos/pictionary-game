@@ -17,10 +17,20 @@ const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
       </Typography>
       <div className="settings-content">
         <Typography>
-          PLAYERS:<Typography>{settings.players}</Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            PLAYERS:
+          </Typography>
+          <Typography variant="text-main" className="room-stat">
+            {settings.players}
+          </Typography>
         </Typography>
         <Typography>
-          ROUNDS:<Typography>{settings.rounds}</Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            ROUNDS:
+          </Typography>
+          <Typography variant="text-main" className="room-stat">
+            {settings.rounds}
+          </Typography>
         </Typography>
       </div>
     </div>

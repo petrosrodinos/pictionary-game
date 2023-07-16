@@ -1,0 +1,14 @@
+.room-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.waiting-room-label {
+  color: var(--text-secondary);
+}
+
+.waiting-room-link {
+  text-decoration: underline;
+}
