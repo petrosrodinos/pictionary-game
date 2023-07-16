@@ -15,10 +15,11 @@ const Room: FC = () => {
   const { username } = authStore((state) => state);
   const [time, setTime] = useState<number>(CHOOSING_WORD_TIME);
   const [word, setWord] = useState<string>("");
+  const [words, setWords] = useState<string[]>([]);
   const [artist, setArtist] = useState<string>("");
   const [timer, setTimer] = useState<string>("00:00");
   const [rounds, setRounds] = useState<number>(ROUNDS);
-  const [currentRound, setCurrentRound] = useState<number>(5);
+  const [currentRound, setCurrentRound] = useState<number>(1);
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [players, setPlayers] = useState<InGameUser[]>([]);
   const [timerFinish, setTimerFinish] = useState<boolean>(false);
@@ -41,6 +42,7 @@ const Room: FC = () => {
     setArtist(artist);
     setCurrentUserIsPlaying(username === artist);
     setPlayers(Players);
+    setWords(["carrot", "apple", "banana", "orange", "pineapple"]);
   }, []);
 
   const onRoundFinish = () => {
@@ -48,6 +50,7 @@ const Room: FC = () => {
   };
 
   const handleWordSelected = (word: string) => {
+    console.log(word);
     setCurrentRound(currentRound + 1);
     setTimerFinish(false);
     setTimer("05:00");
@@ -59,9 +62,27 @@ const Room: FC = () => {
     navigate("/home");
   };
 
+  const handleTimerFinish = () => {
+    setTime(0);
+  };
+
   const GameOptions = {
-    "choosing-word": <ChoosingWord />,
-    "waiting-word": <WaitingWord time={time} artist={players[0]} players={players} />,
+    "choosing-word": (
+      <ChoosingWord
+        time={time}
+        words={words}
+        onTimerFinish={handleTimerFinish}
+        onWordSelected={handleWordSelected}
+      />
+    ),
+    "waiting-word": (
+      <WaitingWord
+        onTimerFinish={handleTimerFinish}
+        time={time}
+        artist={players[0]}
+        players={players}
+      />
+    ),
     "game-finished": <GameFinished onExit={handleExit} users={players} />,
   };
 

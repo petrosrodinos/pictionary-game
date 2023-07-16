@@ -9,13 +9,10 @@ interface WaitingWordsProps {
   artist: InGameUser;
   players: InGameUser[];
   time: number;
+  onTimerFinish: () => void;
 }
 
-const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time }) => {
-  const handleTimerFinish = () => {
-    console.log("Timer Finished");
-  };
-
+const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, onTimerFinish }) => {
   return (
     <div className="waiting-word-container">
       <div className="artist-container">
@@ -28,7 +25,7 @@ const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time }) => {
       <Typography variant="text-main" className="waiting-label">
         WAITING FOR THE ARTIST TO CHOOSE A WORD
       </Typography>
-      <Loader time={time} onFinish={handleTimerFinish} />
+      <Loader time={time} onFinish={onTimerFinish} />
       <Players players={players} />
     </div>
   );
