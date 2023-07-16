@@ -2,15 +2,23 @@ import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import Loader from "../../../components/ui/Loader";
 import "./style.scss";
+import Players from "../WaitingWord/Players";
 
 interface ChoosingWordProps {
   time: number;
   words: string[];
+  players: InGameUser[];
   onWordSelected: (word: string) => void;
   onTimerFinish: () => void;
 }
 
-const ChoosingWord: FC<ChoosingWordProps> = ({ time, onTimerFinish, onWordSelected, words }) => {
+const ChoosingWord: FC<ChoosingWordProps> = ({
+  time,
+  players,
+  words,
+  onTimerFinish,
+  onWordSelected,
+}) => {
   return (
     <div className="choosing-word-container">
       <Typography variant="sub-header-main" className="choosing-word-label">
@@ -27,6 +35,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({ time, onTimerFinish, onWordSelect
           </div>
         ))}
       </div>
+      <Players players={players} />
     </div>
   );
 };

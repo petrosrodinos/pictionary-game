@@ -75,6 +75,7 @@ const Room: FC = () => {
           words={words}
           onTimerFinish={handleTimerFinish}
           onWordSelected={handleWordSelected}
+          players={players}
         />
       ),
     },
