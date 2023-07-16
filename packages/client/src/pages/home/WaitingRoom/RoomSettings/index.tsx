@@ -14,8 +14,12 @@ const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
     <div className="settings-container">
       <Typography variant="sub-header-main">Settings</Typography>
       <div className="settings-content">
-        <Typography>PLAYERS:{settings.players}</Typography>
-        <Typography>ROUNDS:{settings.rounds}</Typography>
+        <Typography>
+          PLAYERS:<Typography>{settings.players}</Typography>
+        </Typography>
+        <Typography>
+          ROUNDS:<Typography>{settings.rounds}</Typography>
+        </Typography>
       </div>
     </div>
   );
