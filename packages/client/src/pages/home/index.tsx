@@ -71,7 +71,13 @@ const Home: FC = () => {
     ["waiting-room"]: {
       title: "WAITING ROOM",
       component: <WaitingRoom onLeave={handleLeave} />,
+      onClose: () => setSearchParams({}),
     },
+  };
+
+  const handleModalClose = (item: any) => {
+    setActiveModal("");
+    item?.onClose?.();
   };
 
   return (
@@ -79,7 +85,7 @@ const Home: FC = () => {
       <Modal
         title={ModalComponents?.[activeModal]?.title}
         isOpen={!!activeModal}
-        onClose={() => setActiveModal("")}
+        onClose={() => handleModalClose(ModalComponents?.[activeModal])}
       >
         {ModalComponents?.[activeModal]?.component}
       </Modal>
