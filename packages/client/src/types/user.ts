@@ -9,5 +9,5 @@ export interface UserRegister {
   password: string;
   password2: string;
   email: string;
-  user_type: string;
+  role: string;
 }

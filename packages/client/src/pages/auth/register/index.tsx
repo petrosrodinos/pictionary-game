@@ -4,52 +4,64 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiRegistered } from "react-icons/bi";
 import Input from "../../../components/ui/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
+//import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import {RegisterValidationSchema } from "../../../validation-schemas/user";
+//import {RegisterValidationSchema } from "../../../validation-schemas/user";
 import { UserRegister } from "../../../types/user";
-//import { authStore } from "../../../store/authStore";
+import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import Dropdown from "../../../components/ui/Dropdown";
 
+
 const Register: FC = () => {
-  const { isLoading, mutate: RegisterMutation } = trpc.auth.register.useMutation();
-  //const { Register } = authStore((state) => state);
+  const { isLoading, mutate: registerMutation } = trpc.auth.register.useMutation();
+  const { logIn } = authStore((state) => state);
   const navigate = useNavigate();
 
   const {
     register, //einai diko toy onoma den exei na kanei me to button 
     handleSubmit,// toy library
     formState: { errors },
+    setValue
   } = useForm<UserRegister>({
-    resolver: yupResolver(RegisterValidationSchema),
+    //resolver: yupResolver(RegisterValidationSchema),
     defaultValues: {
       username: "",
       password: "",
       password2: "",
       email: "",
-      user_type: "",
+      role: "",
     },
   });
 
+
+  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    setValue("role", e.target.value);
+
+
+  }
+
+
   const handleRegister = async (values: UserRegister) => {
-    RegisterMutation(
+    console.log("fae kaka" , values )
+    registerMutation(
       {
         username: values.username,
         password: values.password,
         password2: values.password2,
         email: values.email,
-        user_type: values.user_type,
+        role: values.role,
       },
       {
         onSuccess: (data: any) => {
           if (data.accessToken) {
-            Register({
+            logIn({
               userId: data.id,
               username: data.username,
               token: data.accessToken,
-              user_type: data.user_type,
+              role: data.role,
             });
             navigate("/home");
           }
@@ -90,11 +102,10 @@ const Register: FC = () => {
         error={errors.email?.message}
         name="email"
         register={register}
-        placeholder="email"
+        placeholder="Email"
       />
       <Dropdown
-        error={errors.user_type?.message}
-        // register={register}
+        onChange={handleRoleChange}
       />
       <Button type="submit" loading={isLoading} icon={BiRegistered} title="Register    " variant="primary" />
     </form>
