@@ -105,7 +105,7 @@ const Register: FC = () => {
       />
       <Input
         error={errors.passwordConfirmation?.message}
-        name="confirm-password"
+        name="paswwordConfirmation"
         register={register}
         placeholder="Confirm Password"
         type="password"

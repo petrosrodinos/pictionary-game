@@ -27,7 +27,7 @@ const DatePicker: FC<DatePickerProps> = ({
             <Typography variant="h1" className="datepickerTypo">Birtday:</Typography>
             <input
                 className='dateInput'
-                type="date"
+                type='date'
                 onChange={onChange}
             
             ></input>
