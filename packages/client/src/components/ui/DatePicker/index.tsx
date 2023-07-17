@@ -8,7 +8,7 @@ interface DatePickerProps {
     value?: string;
     className?: string;
     style?: React.CSSProperties;
-    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLDataElement>) => void;
 }
 
 const DatePicker: FC<DatePickerProps> = ({

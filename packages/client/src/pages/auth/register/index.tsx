@@ -44,7 +44,7 @@ const Register: FC = () => {
 
   }
 
-  const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleAgeChange = (e: React.ChangeEvent<HTMLDataElement>) => {
     console.log(e.target.value);
     setValue("age", e.target.value);
   }
@@ -79,10 +79,10 @@ const Register: FC = () => {
     );
   };
   const options = [
-  { value: '1', label: 'Role' },
-  { value: '2', label: 'Student' },
-  { value: '3', label: 'Teacher' },
-  { value: '4', label: 'Parent' },
+  { value: 'Role', label: 'Role' },
+  { value: 'Student', label: 'Student' },
+  { value: 'Teacher', label: 'Teacher' },
+  { value: 'Parent', label: 'Parent' },
 ];
 
   //edw bazw ta props 

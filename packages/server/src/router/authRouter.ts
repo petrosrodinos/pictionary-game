@@ -18,7 +18,8 @@ export const authRouter = trpc.router({
      // const passwordConfirmation = bcrypt.hashSync(input.passwordConfirmation, 8);
       const email = input.email;
       const role = input.role;
-
+      const age = input.age;
+      
       try {
         const user = await prisma.user.create({
           data: {
@@ -26,7 +27,7 @@ export const authRouter = trpc.router({
             password: password,
             email: email,
             role: role,
-            age: input.age,
+            age: age,
           }
         });
 
