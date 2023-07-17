@@ -8,32 +8,29 @@ interface DropdownProps { //props gia to button
   style?: React.CSSProperties;
   className?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
- 
+  options: { value: string; label: string }[];
 }
 
 
 
 const Dropdown: FC<DropdownProps> = ({
-  //parametroi
   style,
-  className = "",
-  onChange
-
+  className = '',
+  onChange,
+  options,
 }) => {
-    return (
-      <div className={`dropdown ${className}`} style={style}>
-        <select onChange={onChange} >
-          
-          <option value="1">Role</option>
-          <option value="2">Student</option>
-          <option value="3">Teacher</option>
-          <option value="4">Parent</option>
-        </select>       
-      </div>
-      
+  return (
+    <div className={`dropdown ${className}`} style={style}>
+      <select onChange={onChange}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
-
 
 
 export default Dropdown;

@@ -72,6 +72,12 @@ const Register: FC = () => {
       }
     );
   };
+  const options = [
+  { value: '1', label: 'Role' },
+  { value: '2', label: 'Student' },
+  { value: '3', label: 'Teacher' },
+  { value: '4', label: 'Parent' },
+];
 
   //edw bazw ta props 
   return (
@@ -104,7 +110,8 @@ const Register: FC = () => {
         register={register}
         placeholder="Email"
       />
-      <Dropdown
+      
+      <Dropdown options={options}
         onChange={handleRoleChange}
       />
       <Button type="submit" loading={isLoading} icon={BiRegistered} title="Register    " variant="primary" />
