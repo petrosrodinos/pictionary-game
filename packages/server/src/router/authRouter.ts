@@ -11,11 +11,11 @@ export const authRouter = trpc.router({
     return todos;
   }),
   register: trpc.procedure
-    .input(z.object({ username: z.string(), password: z.string(), password2: z.string(), email: z.string() , role: z.string()   }))
+    .input(z.object({ username: z.string(), password: z.string(), passwordConfirmation: z.string(), email: z.string() , role: z.string() , age : z.string() }))
     .mutation(async ({ input }) => {
       const username = input.username;
       const password = bcrypt.hashSync(input.password, 8);
-     // const password2 = bcrypt.hashSync(input.password2, 8);
+     // const passwordConfirmation = bcrypt.hashSync(input.passwordConfirmation, 8);
       const email = input.email;
       const role = input.role;
 
@@ -26,6 +26,7 @@ export const authRouter = trpc.router({
             password: password,
             email: email,
             role: role,
+            age: input.age,
           }
         });
 

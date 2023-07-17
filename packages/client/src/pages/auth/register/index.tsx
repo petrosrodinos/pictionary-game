@@ -12,7 +12,7 @@ import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import Dropdown from "../../../components/ui/Dropdown";
-
+import DatePicker from "../../../components/ui/DatePicker";
 
 const Register: FC = () => {
   const { isLoading, mutate: registerMutation } = trpc.auth.register.useMutation();
@@ -29,9 +29,10 @@ const Register: FC = () => {
     defaultValues: {
       username: "",
       password: "",
-      password2: "",
+      passwordConfirmation: "",
       email: "",
       role: "",
+      age: "",
     },
   });
 
@@ -43,6 +44,10 @@ const Register: FC = () => {
 
   }
 
+  const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    setValue("age", e.target.value);
+  }
 
   const handleRegister = async (values: UserRegister) => {
     console.log("fae kaka" , values )
@@ -50,9 +55,10 @@ const Register: FC = () => {
       {
         username: values.username,
         password: values.password,
-        password2: values.password2,
+        passwordConfirmation: values.passwordConfirmation,
         email: values.email,
         role: values.role,
+        age: values.age,
       },
       {
         onSuccess: (data: any) => {
@@ -98,7 +104,7 @@ const Register: FC = () => {
         type="password"
       />
       <Input
-        error={errors.password2?.message}
+        error={errors.passwordConfirmation?.message}
         name="confirm-password"
         register={register}
         placeholder="Confirm Password"
@@ -113,6 +119,9 @@ const Register: FC = () => {
       
       <Dropdown options={options}
         onChange={handleRoleChange}
+      />
+      <DatePicker
+        onChange={handleAgeChange}
       />
       <Button type="submit" loading={isLoading} icon={BiRegistered} title="Register    " variant="primary" />
     </form>

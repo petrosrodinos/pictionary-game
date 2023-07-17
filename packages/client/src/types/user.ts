@@ -7,7 +7,8 @@ export interface UserLogin {
 export interface UserRegister {
   username: string;
   password: string;
-  password2: string;
+  passwordConfirmation: string;
   email: string;
   role: string;
+  age: string;
 }

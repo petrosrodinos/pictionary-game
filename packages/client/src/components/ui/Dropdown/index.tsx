@@ -21,7 +21,7 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
   return (
     <div className={`dropdown ${className}`} style={style}>
-      <select onChange={onChange}>
+      <select onChange={onChange} className='dropdownSelect'>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
