@@ -6,7 +6,7 @@ import "./style.scss";
 
 const TestLeaderBoardItems: UserType[] = [...new Array(10)].map((_, index) => {
   return {
-    id: index,
+    userId: index,
     rank: 10 - index,
     avatar: getRandomAvatar(),
     username: `username${index}`,

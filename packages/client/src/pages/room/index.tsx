@@ -27,7 +27,7 @@ const Room: FC = () => {
 
   //test players
   const Players: InGameUser[] = [...new Array(5)].map((_, index) => ({
-    id: index + 1,
+    userId: index + 1,
     username: `${username}${index !== 0 ? index : ""}`,
     points: index + 20,
     avatar: getRandomAvatar(),
