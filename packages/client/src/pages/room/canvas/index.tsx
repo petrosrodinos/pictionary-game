@@ -66,7 +66,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   useEffect(() => {
     if (socket == null) return;
 
-    socket.emit("get-document", documentId);
+    socket.emit("join-room", documentId);
   }, [socket, documentId]);
 
   return (

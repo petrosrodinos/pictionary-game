@@ -32,11 +32,10 @@ interface InGameUser {
 interface GameSettings {
   players: number;
   rounds: number;
+  code: string;
 }
 
-interface RoomInfo {
+interface RoomInfo extends GameSettings {
   creator: string;
-  code: string;
-  settings: GameSettings;
   users: UserType[];
 }

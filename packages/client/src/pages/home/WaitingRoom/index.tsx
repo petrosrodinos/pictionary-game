@@ -35,12 +35,10 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       //}
       setRoomInfo({
         creator: TestUsers[0].username,
-        code: waitingRoomCode,
         users: TestUsers,
-        settings: {
-          players: 5,
-          rounds: 5,
-        },
+        players: 5,
+        rounds: 5,
+        code: waitingRoomCode,
       });
     }
   }, [searchParams]);
@@ -51,7 +49,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
         <>
           <RoomInfo roomInfo={roomInfo} />
           <UsersGrid users={roomInfo.users} />
-          <RoomSettings settings={roomInfo.settings} />
+          <RoomSettings roomInfo={roomInfo} />
         </>
       ) : (
         <Typography>Room does not exist :(</Typography>

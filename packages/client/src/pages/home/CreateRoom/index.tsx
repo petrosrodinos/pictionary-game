@@ -12,14 +12,15 @@ interface CreateRoomProps {
 }
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
-  const [settings, setSettings] = useState<GameSettings>({
-    players: MAX_PLAYERS,
-    rounds: ROUNDS,
-  });
-
   const getCode = useMemo(() => {
     return Math.random().toString(36).substring(2, 7).toUpperCase();
   }, []);
+
+  const [settings, setSettings] = useState<GameSettings>({
+    players: MAX_PLAYERS,
+    rounds: ROUNDS,
+    code: getCode,
+  });
 
   const handleSettingsChanged = ({ name, value }: { name: string; value: number }) => {
     setSettings({

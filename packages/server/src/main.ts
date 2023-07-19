@@ -3,6 +3,7 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import { appRouter } from "./router";
 import cors from "cors";
 import { createContext } from "./lib/trpc";
+import { Room } from "./interfaces/room";
 const io = require("socket.io");
 
 const app: Application = express();
@@ -35,11 +36,28 @@ const socket = io(http, {
 });
 
 socket.on("connection", (socket: any) => {
-  socket.on("get-document", async (documentId: string) => {
-    console.log("get-document", documentId);
+  let rooms: { [code: string]: Room } = {};
+  socket.on("join-room", async (documentId: string) => {
+    console.log("join-room", documentId);
     socket.join(documentId);
     socket.on("send-changes", (delta: any) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta);
     });
+  });
+  socket.on("create-room", async (settings: Room) => {
+    rooms[settings.code] = {
+      ...settings,
+      users: [],
+      drawings: [],
+    };
+    console.log("create-room", rooms);
+  });
+  socket.on("join-room", async (code: string, user: any) => {
+    if (rooms[code]) {
+      rooms[code].users.push(user);
+      console.log("join-room", rooms[code]);
+      socket.join(code);
+      socket.broadcast.to(code).emit("user-joined", user);
+    }
   });
 });

@@ -3,13 +3,10 @@ import Typography from "../../../../components/ui/Typography";
 import "./style.scss";
 
 interface RoomSettingsProps {
-  settings: {
-    players: number;
-    rounds: number;
-  };
+  roomInfo: RoomInfo;
 }
 
-const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
+const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
   return (
     <div className="settings-container">
       <Typography className="settings-label" variant="header-main">
@@ -21,7 +18,7 @@ const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
             PLAYERS:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {settings.players}
+            {roomInfo.players}
           </Typography>
         </Typography>
         <Typography>
@@ -29,7 +26,7 @@ const RoomSettings: FC<RoomSettingsProps> = ({ settings }) => {
             ROUNDS:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {settings.rounds}
+            {roomInfo.rounds}
           </Typography>
         </Typography>
       </div>

@@ -7,14 +7,28 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import WaitingRoom from "./WaitingRoom";
 import Container from "../../components/Container";
 import CreateRoom from "./CreateRoom";
+import { io } from "socket.io-client";
+import { API_URL } from "../../constants";
+import { authStore } from "../../store/authStore";
 import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
+  const { userId } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
+  const [socket, setSocket] = useState<any>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const s = io(`${API_URL}`);
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, []);
 
   //useEffect detects for searchParams change and sets the activeModal to waiting-room so as for the waiting-room modal appears
   useEffect(() => {
@@ -45,7 +59,6 @@ const Home: FC = () => {
   //when user leaves the waiting room
   //for now i am using it as a way to start a game to navigate to room page
   const handleLeave = () => {
-    console.log("asd", searchParams.get("waitingRoom"));
     navigate(`/room/${searchParams.get("waitingRoom")}`);
     // setActiveModal("");
   };
@@ -56,7 +69,14 @@ const Home: FC = () => {
 
   const handleCreateRoom = (settings: GameSettings) => {
     if (!settings.players || !settings.rounds) return;
-    console.log(settings);
+    if (socket == null) return;
+    socket.emit("create-room", {
+      ...settings,
+      creator: userId,
+    });
+    setSearchParams({
+      waitingRoom: settings.code,
+    });
   };
 
   const ModalComponents: any = {
