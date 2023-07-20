@@ -33,6 +33,11 @@ export const authStore = create<AuthState>()(
             token: payload.token,
             userId: payload.userId,
             username: payload.username,
+            // role: payload.role,
+            // age: payload.age,
+            // avatar: payload.avatar,
+            // level: payload.level,
+            // points: payload.points,
           }),
       }),
       {

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import Dropdown from "../../../components/ui/Dropdown";
 import DatePicker from "../../../components/ui/DatePicker";
+import Label from "../../../components/ui/Label";
 
 const Register: FC = () => {
   const { isLoading, mutate: registerMutation } = trpc.auth.register.useMutation();
@@ -120,6 +121,7 @@ const Register: FC = () => {
       <Dropdown options={options}
         onChange={handleRoleChange}
       />
+      <Label value="Select your birthday:" /> 
       <DatePicker
         onChange={handleAgeChange}
       />

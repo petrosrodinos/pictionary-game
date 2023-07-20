@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./style.scss";
-import Typography from "../Typography";
+//import Typography from "../Typography";
 
 
 interface DatePickerProps { 
@@ -24,7 +24,7 @@ const DatePicker: FC<DatePickerProps> = ({
 
 
         <div className={`datepicker ${className}`} style={style}  >
-            <Typography variant="h1" className="datepickerTypo">Birtday:</Typography>
+            {/* <Typography variant="h1" className="datepickerTypo">Birtday:</Typography> */}
             <input
                 className='dateInput'
                 type='date'

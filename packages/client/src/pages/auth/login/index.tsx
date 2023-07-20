@@ -41,6 +41,12 @@ const Login: FC = () => {
             logIn({
               userId: data.id,
               username: data.username,
+              email: data.email,
+              role: data.role,
+              points: data.points,
+              level: data.level,
+              avatar: data.avatar,
+              age: data.age,
               token: data.accessToken,
             });
             navigate("/home");
