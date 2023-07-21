@@ -28,40 +28,42 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
   // const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const [searchParams, _] = useSearchParams();
-  // const [socket, setSocket] = useState<any>();
   const { socket } = useSocket();
-  // useEffect(() => {
-  //   const s = io(`${API_URL}`);
-  //   setSocket(s);
-
-  //   return () => {
-  //     s.disconnect();
-  //   };
-  // }, []);
-
-  //useEffect detects for searchParams and getting the rooms info
-  useEffect(() => {
-    const waitingRoomCode = searchParams.get("waitingRoom");
-    if (waitingRoomCode && socket) {
-      console.log(":asdd", socket, waitingRoomCode);
-      socket.emit("join-waiting-room", waitingRoomCode);
-    }
-  }, [socket]);
 
   useEffect(() => {
     if (!socket) return;
     socket.on("user-joined", (roomInfo: RoomInfo) => {
-      // setRoomInfo(roomInfo);
       console.log("user-joined", roomInfo);
     });
-    // setRoomInfo({
-    //   creator: TestUsers[0].username,
-    //   users: TestUsers,
-    //   players: 5,
-    //   rounds: 5,
-    //   code: waitingRoomCode,
-    // });
-  }, [socket]);
+
+    return () => {
+      socket.off("user-joined");
+    };
+  }, [socket, searchParams]);
+
+  //useEffect detects for searchParams and getting the rooms info
+  // useEffect(() => {
+  //   const waitingRoomCode = searchParams.get("waitingRoom");
+  //   if (waitingRoomCode && socket) {
+  //     console.log(":asdd", socket, waitingRoomCode);
+  //     socket.emit("join-waiting-room", waitingRoomCode);
+  //   }
+  // }, [socket, searchParams]);
+
+  // useEffect(() => {
+  //   if (!socket) return;
+  //   socket.on("user-joined", (roomInfo: RoomInfo) => {
+  //     // setRoomInfo(roomInfo);
+  //     console.log("user-joined", roomInfo);
+  //   });
+  //   // setRoomInfo({
+  //   //   creator: TestUsers[0].username,
+  //   //   users: TestUsers,
+  //   //   players: 5,
+  //   //   rounds: 5,
+  //   //   code: waitingRoomCode,
+  //   // });
+  // }, [socket]);
 
   return (
     <div className="waiting-room-container">

@@ -51,15 +51,15 @@ socket.on("connection", (socket: any) => {
       drawings: [],
       gameStarted: false,
     };
-    console.log("create-room", rooms);
   });
-  socket.on("join-waiting-room", async (code: string) => {
+  socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
     if (rooms[code]) {
+      console.log("join-waiting-room", code);
       const room = rooms[code];
-      // room.users.push(user);
-      console.log("join-waiting-room", room);
+      room.users.push(user);
       socket.join(code);
-      socket.broadcast.to(code).emit("user-joined", room);
+      socket.emit("user-joined", room);
+      // socket.broadcast.to(code).emit("user-joined", room);
     }
   });
 });

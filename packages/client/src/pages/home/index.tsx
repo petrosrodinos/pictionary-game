@@ -7,8 +7,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import WaitingRoom from "./WaitingRoom";
 import Container from "../../components/Container";
 import CreateRoom from "./CreateRoom";
-import { io } from "socket.io-client";
-import { API_URL } from "../../constants";
 import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
 import "./style.scss";
@@ -20,25 +18,28 @@ const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
-  // const [socket, setSocket] = useState<any>();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const s = io(`${API_URL}`);
-  //   setSocket(s);
-
-  //   return () => {
-  //     s.disconnect();
-  //   };
-  // }, []);
-
-  //useEffect detects for searchParams change and sets the activeModal to waiting-room so as for the waiting-room modal appears
+  //useEffect detects for searchParams change emits even to join waiting room
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
-    if (waitingRoom) {
-      setActiveModal("waiting-room");
+    if (waitingRoom && socket) {
+      socket.emit("join-waiting-room", waitingRoom);
     }
-  }, [searchParams]);
+  }, [searchParams, socket]);
+
+  //waits for user to join a room and opens the waiting room modal
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("user-joined", (roomInfo: RoomInfo) => {
+      if (activeModal === "waiting-room") return;
+      setActiveModal("waiting-room");
+    });
+
+    return () => {
+      socket.off("user-joined");
+    };
+  }, [socket, searchParams]);
 
   //setting modal type for opening specific modal depending on the action
   const handleActionClick = (action: ModalType) => {
