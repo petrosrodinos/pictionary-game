@@ -21,5 +21,11 @@ model Todo {
 model User {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
   username    String  @unique
-  password String?
+  password String
+  email String
+  role String
+  points    Int     @default(0)
+  level    Int     @default(1)
+  avatar String?
+  age String
 }
