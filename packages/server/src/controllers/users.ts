@@ -1,9 +1,10 @@
 import { prisma } from "../lib/prismaClient";
+import { NextFunction, Request, Response } from "express";
+
 const jwt = require("../utils/jwt");
-const createError = require("http-errors");
 const bcrypt = require("bcryptjs");
 
-export const register = async (req: any, res: any, next: any) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password, email, role, age } = req.body;
 
   //checks if user exists here
@@ -31,11 +32,13 @@ export const register = async (req: any, res: any, next: any) => {
       user: userWithoutPassword,
     });
   } catch (err) {
-    throw createError(409, "User already exist");
+    res.status(409).json({
+      message: "Could not create user",
+    });
   }
 };
 
-export const login = async (req: any, res: any, next: any) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password: userPassword } = req.body;
 
   const user = await prisma.user.findUnique({
@@ -45,14 +48,14 @@ export const login = async (req: any, res: any, next: any) => {
   });
 
   if (!user) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Invalid username/password compination",
     });
   } else {
     const checkPassword = bcrypt.compareSync(userPassword, user.password);
 
     if (!checkPassword) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Invalid username/password compination",
       });
     }
@@ -61,9 +64,9 @@ export const login = async (req: any, res: any, next: any) => {
 
     const accessToken = await jwt.signAccessToken(userWithoutPassword);
 
-    res.status(201).json({
+    return res.status(201).json({
       token: accessToken,
-      user: user,
+      ...user,
     });
   }
 };

@@ -11,6 +11,15 @@ interface UserLogin {
   password: string;
 }
 
+interface UserRegister {
+  username: string;
+  password: string;
+  passwordConfirmation: string;
+  email: string;
+  role: string;
+  age: string;
+}
+
 interface UserType {
   userId: number;
   avatar: string;

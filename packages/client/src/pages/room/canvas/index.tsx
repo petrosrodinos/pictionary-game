@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import { API_URL } from "../../../constants";
+import { API_BASE_URL } from "../../../constants";
 import Typography from "../../../components/ui/Typography";
 import "./style.scss";
 
@@ -37,7 +37,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
     };
   }, []);
   useEffect(() => {
-    const s = io(`${API_URL}`);
+    const s = io(`${API_BASE_URL}`);
     setSocket(s);
 
     return () => {

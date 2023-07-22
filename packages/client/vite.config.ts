@@ -6,5 +6,8 @@ export default defineConfig({
   server: {
     open: true,
   },
+  optimizeDeps: {
+    exclude: ["js-big-decimal"],
+  },
   plugins: [react()],
 });

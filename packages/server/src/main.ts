@@ -1,6 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from "express";
-import cors from "cors";
 import { ConnectedUser, Room } from "./interfaces/room";
+import cors from "cors";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors());
 
-app.use("/api/user", usersRoutes);
+app.use("/api/auth", usersRoutes);
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.json({ message: "Hello world!" });

@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { trpc } from "../../../utils/trpc";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiLogIn } from "react-icons/bi";
@@ -9,10 +8,11 @@ import { useForm } from "react-hook-form";
 import { LoginValidationSchema } from "../../../validation-schemas/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { loginUser } from "../../../services/auth";
 import "./style.scss";
 
 const Login: FC = () => {
-  const { isLoading, mutate: loginMutation } = trpc.auth.login.useMutation();
   const { logIn } = authStore((state) => state);
   const navigate = useNavigate();
 
@@ -28,6 +28,10 @@ const Login: FC = () => {
     },
   });
 
+  const { mutate: loginMutation, isLoading } = useMutation((user: UserLogin) => {
+    return loginUser(user);
+  });
+
   const handleLogin = async (values: UserLogin) => {
     loginMutation(
       {
@@ -36,15 +40,18 @@ const Login: FC = () => {
       },
       {
         onSuccess: (data: any) => {
-          if (data.accessToken) {
+          console.log(data);
+          if (data?.token) {
             logIn({
               userId: data.id,
               username: data.username,
-              token: data.accessToken,
-              level: data.level || 4,
-              points: data.points || 50,
+              token: data.token,
+              level: data.level,
+              points: data.points,
             });
             navigate("/home");
+          } else {
+            alert("Invalid username or password");
           }
         },
         onError: (error: any) => {
