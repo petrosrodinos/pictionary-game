@@ -10,9 +10,9 @@ export const loginUser = async (paylaod: UserLogin): Promise<any> => {
   }
 };
 
-export const registerUser = (paylaod: UserLogin): any => {
+export const registerUser = async (paylaod: UserLogin): Promise<any> => {
   try {
-    const result = axios.post(`${API_URL}auth/register`, paylaod);
+    const result = await axios.post(`${API_URL}auth/register`, paylaod);
     return result.data;
   } catch (err) {
     console.log("err", err);

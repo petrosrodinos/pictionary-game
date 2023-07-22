@@ -40,7 +40,6 @@ const Login: FC = () => {
       },
       {
         onSuccess: (data: any) => {
-          console.log(data);
           if (data?.token) {
             logIn({
               userId: data.id,
