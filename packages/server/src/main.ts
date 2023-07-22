@@ -1,27 +1,23 @@
 import express, { Application, NextFunction, Request, Response } from "express";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import { appRouter } from "./router";
 import cors from "cors";
-import { createContext } from "./lib/trpc";
 import { ConnectedUser, Room } from "./interfaces/room";
+const usersRoutes = require("./routes/users");
+const bodyParser = require("body-parser");
 const io = require("socket.io");
 
 const app: Application = express();
 const http = require("http").Server(app);
 
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
 app.use(cors());
+
+app.use("/api/user", usersRoutes);
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.json({ message: "Hello world!" });
 });
-
-app.use(
-  "/trpc",
-  trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext: createContext,
-  })
-);
 
 const PORT: number = Number(process.env.PORT) || 3000;
 http.listen(PORT, () => {
