@@ -17,28 +17,16 @@ const Home: FC = () => {
   const { userId, username, avatar, level } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
-  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
-  //useEffect detects for searchParams change emits event to join waiting room
+  //useEffect detects for searchParams change and opens the waiting room modal
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
-    if (waitingRoom && socket) {
-      const joinedUser = {
-        userId,
-        username,
-        avatar,
-        level,
-      };
-      socket
-        .emit("join-waiting-room", waitingRoom, joinedUser)
-        .on("user-joined", (roomInfo: RoomInfo) => {
-          console.log("user-joined-waiting", roomInfo);
-          setRoomInfo(roomInfo);
-        });
+    if (waitingRoom) {
+      setActiveModal("waiting-room");
     }
-  }, [searchParams, socket]);
+  }, [searchParams]);
 
   //setting modal type for opening specific modal depending on the action
   const handleActionClick = (action: ModalType) => {
@@ -49,8 +37,6 @@ const Home: FC = () => {
   //the search param is ?waitingRoom=code
   const handleJoinRoom = (code: string) => {
     if (!code) return;
-    //search if game exists then
-    setActiveModal("");
     setSearchParams({
       waitingRoom: code,
     });
@@ -77,7 +63,6 @@ const Home: FC = () => {
     setSearchParams({
       waitingRoom: settings.code,
     });
-    setActiveModal("waiting-room");
   };
 
   const ModalComponents: any = {
@@ -91,7 +76,7 @@ const Home: FC = () => {
     },
     ["waiting-room"]: {
       title: "WAITING ROOM",
-      component: <WaitingRoom roomInfo={roomInfo} onLeave={handleLeave} />,
+      component: <WaitingRoom onLeave={handleLeave} />,
       onClose: () => setSearchParams({}),
     },
   };

@@ -12,7 +12,7 @@ import "./style.scss";
 
 interface WaitingRoomProps {
   onLeave: () => void;
-  roomInfo: RoomInfo | undefined;
+  // roomInfo: RoomInfo | undefined;
 }
 
 const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
@@ -23,28 +23,29 @@ const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
   level: index + 1,
 }));
 
-const WaitingRoom: FC<WaitingRoomProps> = ({ roomInfo, onLeave }) => {
-  // const { userId, username, avatar, level } = authStore((state) => state);
-  // const [roomInfo, setRoomInfo] = useState<RoomInfo>();
+const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
+  const { userId, username, avatar, level } = authStore((state) => state);
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const [searchParams, _] = useSearchParams();
   const { socket } = useSocket();
 
-  // useEffect(() => {
-  //   const waitingRoom = searchParams.get("waitingRoom");
-  //   if (waitingRoom && socket) {
-  //     console.log("joining", waitingRoom, socket);
-  //     const joinedUser = {
-  //       userId,
-  //       username,
-  //       avatar,
-  //       level,
-  //     };
-  //     socket.emit("join-waiting-room", waitingRoom).on("user-joined", (roomInfo: RoomInfo) => {
-  //       console.log("user-joined-waiting", roomInfo);
-  //       // setActiveModal("waiting-room");
-  //     });
-  //   }
-  // }, [searchParams, socket]);
+  useEffect(() => {
+    const waitingRoom = searchParams.get("waitingRoom");
+    if (waitingRoom && socket) {
+      const joinedUser = {
+        userId,
+        username,
+        avatar,
+        level,
+      };
+      socket
+        .emit("join-waiting-room", waitingRoom, joinedUser)
+        .on("user-joined", (roomInfo: RoomInfo) => {
+          console.log("user-joined-waiting", roomInfo);
+          setRoomInfo(roomInfo);
+        });
+    }
+  }, [searchParams, socket]);
 
   // useEffect(() => {
   //   if (!socket) return;

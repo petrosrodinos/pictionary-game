@@ -31,8 +31,8 @@ const socket = io(http, {
   },
 });
 
+let rooms: { [code: string]: Room } = {};
 socket.on("connection", (socket: any) => {
-  let rooms: { [code: string]: Room } = {};
   socket.on("join-room", async (code: string) => {
     console.log("join-room", code);
     socket.join(code);
@@ -52,7 +52,9 @@ socket.on("connection", (socket: any) => {
     if (rooms[code]) {
       console.log("join-waiting-room", code);
       const room = rooms[code];
-      room.users.push(user);
+      if (!room.users.find((u) => u.userId === user.userId)) {
+        room.users.push(user);
+      }
       socket.join(code);
       socket.emit("user-joined", room);
       // socket.broadcast.to(code).emit("user-joined", room);
