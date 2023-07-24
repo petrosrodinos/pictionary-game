@@ -33,7 +33,7 @@ const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
         <Typography variant="text-accent" className="waiting-room-label">
           Creator:
         </Typography>
-        {creatorUsername}
+        @{creatorUsername}
       </Typography>
     </div>
   );
