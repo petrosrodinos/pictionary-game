@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { getRandomAvatar } from "../utils/avatar";
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -41,7 +42,7 @@ export const authStore = create<AuthState>()(
             username: payload.username,
             level: payload.level,
             points: payload.points,
-            avatar: payload.avatar,
+            avatar: payload?.avatar || getRandomAvatar(),
           }),
       }),
       {

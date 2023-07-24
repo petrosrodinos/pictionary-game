@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import Typography from "../../../../components/ui/Typography";
 import { CLIENT_URL } from "../../../../constants";
 import "./style.scss";
@@ -8,6 +8,10 @@ interface RoomInfoProps {
 }
 
 const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
+  const creatorUsername = useMemo(() => {
+    return roomInfo.users.find((user: any) => user.userId === roomInfo.creator)?.username;
+  }, [roomInfo.creator]);
+
   return (
     <div className="room-info-container">
       <Typography className="room-stat">
@@ -29,7 +33,7 @@ const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
         <Typography variant="text-accent" className="waiting-room-label">
           Creator:
         </Typography>
-        {roomInfo.creator}
+        {creatorUsername}
       </Typography>
     </div>
   );

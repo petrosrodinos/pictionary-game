@@ -3,7 +3,7 @@ export interface Room {
   creator: string;
   players: number;
   rounds: number;
-  users: any[];
+  users: ConnectedUser[];
   drawings: any[];
   gameStarted: boolean;
 }
@@ -12,6 +12,6 @@ export interface ConnectedUser {
   userId: string;
   username: string;
   avatar: string;
-  level: number;
-  rank: number;
+  level?: number;
+  rank?: number;
 }

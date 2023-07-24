@@ -14,32 +14,31 @@ import "./style.scss";
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
-  const { userId } = authStore((state) => state);
+  const { userId, username, avatar, level } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
-  //useEffect detects for searchParams change emits even to join waiting room
+  //useEffect detects for searchParams change emits event to join waiting room
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
     if (waitingRoom && socket) {
-      socket.emit("join-waiting-room", waitingRoom);
+      const joinedUser = {
+        userId,
+        username,
+        avatar,
+        level,
+      };
+      socket
+        .emit("join-waiting-room", waitingRoom, joinedUser)
+        .on("user-joined", (roomInfo: RoomInfo) => {
+          console.log("user-joined-waiting", roomInfo);
+          setRoomInfo(roomInfo);
+        });
     }
   }, [searchParams, socket]);
-
-  //waits for user to join a room and opens the waiting room modal
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("user-joined", (roomInfo: RoomInfo) => {
-      if (activeModal === "waiting-room") return;
-      setActiveModal("waiting-room");
-    });
-
-    return () => {
-      socket.off("user-joined");
-    };
-  }, [socket, searchParams]);
 
   //setting modal type for opening specific modal depending on the action
   const handleActionClick = (action: ModalType) => {
@@ -48,8 +47,6 @@ const Home: FC = () => {
 
   //when code is entered we are adding search params in the url
   //the search param is ?waitingRoom=code
-  //the useEffect detects when search params are changing and if exists it will change the activeModal state
-  //so as to open the waiting room modal
   const handleJoinRoom = (code: string) => {
     if (!code) return;
     //search if game exists then
@@ -80,6 +77,7 @@ const Home: FC = () => {
     setSearchParams({
       waitingRoom: settings.code,
     });
+    setActiveModal("waiting-room");
   };
 
   const ModalComponents: any = {
@@ -93,7 +91,7 @@ const Home: FC = () => {
     },
     ["waiting-room"]: {
       title: "WAITING ROOM",
-      component: <WaitingRoom onLeave={handleLeave} />,
+      component: <WaitingRoom roomInfo={roomInfo} onLeave={handleLeave} />,
       onClose: () => setSearchParams({}),
     },
   };

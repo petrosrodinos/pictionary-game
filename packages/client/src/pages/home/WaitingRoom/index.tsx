@@ -8,12 +8,11 @@ import RoomSettings from "./RoomSettings";
 import RoomInfo from "./RoomInfo";
 import { useSocket } from "../../../hooks/socket";
 import { authStore } from "../../../store/authStore";
-import { io } from "socket.io-client";
-import { API_URL } from "../../../constants";
 import "./style.scss";
 
 interface WaitingRoomProps {
   onLeave: () => void;
+  roomInfo: RoomInfo | undefined;
 }
 
 const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
@@ -24,46 +23,39 @@ const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
   level: index + 1,
 }));
 
-const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
+const WaitingRoom: FC<WaitingRoomProps> = ({ roomInfo, onLeave }) => {
   // const { userId, username, avatar, level } = authStore((state) => state);
-  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
+  // const [roomInfo, setRoomInfo] = useState<RoomInfo>();
   const [searchParams, _] = useSearchParams();
   const { socket } = useSocket();
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("user-joined", (roomInfo: RoomInfo) => {
-      console.log("user-joined", roomInfo);
-    });
-
-    return () => {
-      socket.off("user-joined");
-    };
-  }, [socket, searchParams]);
-
-  //useEffect detects for searchParams and getting the rooms info
   // useEffect(() => {
-  //   const waitingRoomCode = searchParams.get("waitingRoom");
-  //   if (waitingRoomCode && socket) {
-  //     console.log(":asdd", socket, waitingRoomCode);
-  //     socket.emit("join-waiting-room", waitingRoomCode);
+  //   const waitingRoom = searchParams.get("waitingRoom");
+  //   if (waitingRoom && socket) {
+  //     console.log("joining", waitingRoom, socket);
+  //     const joinedUser = {
+  //       userId,
+  //       username,
+  //       avatar,
+  //       level,
+  //     };
+  //     socket.emit("join-waiting-room", waitingRoom).on("user-joined", (roomInfo: RoomInfo) => {
+  //       console.log("user-joined-waiting", roomInfo);
+  //       // setActiveModal("waiting-room");
+  //     });
   //   }
-  // }, [socket, searchParams]);
+  // }, [searchParams, socket]);
 
   // useEffect(() => {
   //   if (!socket) return;
   //   socket.on("user-joined", (roomInfo: RoomInfo) => {
-  //     // setRoomInfo(roomInfo);
-  //     console.log("user-joined", roomInfo);
+  //     console.log("user-joined-waiting", roomInfo);
   //   });
-  //   // setRoomInfo({
-  //   //   creator: TestUsers[0].username,
-  //   //   users: TestUsers,
-  //   //   players: 5,
-  //   //   rounds: 5,
-  //   //   code: waitingRoomCode,
-  //   // });
-  // }, [socket]);
+
+  //   // return () => {
+  //   //   socket.off("user-joined");
+  //   // };
+  // }, [socket, searchParams]);
 
   return (
     <div className="waiting-room-container">
