@@ -23,7 +23,7 @@ const Dropdown: FC<DropdownProps> = ({
     <div className={`dropdown ${className}`} style={style}>
       <select onChange={onChange} className='dropdownSelect'>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} className='dropdownOption'>
             {option.label}
           </option>
         ))}
