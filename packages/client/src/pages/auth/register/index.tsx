@@ -115,9 +115,13 @@ const Register: FC = () => {
       />
       <Input error={errors.email?.message} name="email" register={register} placeholder="Email" />
 
-      <Dropdown options={options} onChange={handleRoleChange} />
+      <Dropdown
+        options={options} onChange={handleRoleChange}
+        error={errors.role?.message}
+      />
       <Label value="Select your birthday:" />
-      <DatePicker onChange={handleAgeChange} />
+      <DatePicker onChange={handleAgeChange}
+        error={errors.age?.message}/>
       <Button
         type="submit"
         loading={isLoading}

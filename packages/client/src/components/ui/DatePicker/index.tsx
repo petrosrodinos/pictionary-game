@@ -9,12 +9,14 @@ interface DatePickerProps {
     className?: string;
     style?: React.CSSProperties;
     onChange?: (e: React.ChangeEvent<HTMLDataElement>) => void;
+     error?: string;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
 
     className = '',
     style,
+    error,
     onChange
 
 }) => {
@@ -31,7 +33,7 @@ const DatePicker: FC<DatePickerProps> = ({
                 onChange={onChange}
             
             ></input>
-
+            {error && <p className="input-error">{error}</p>}
         </div>
     )
 }

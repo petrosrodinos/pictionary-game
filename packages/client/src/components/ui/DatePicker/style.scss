@@ -13,11 +13,15 @@
 }
 
 .datepicker{
-    display: flex;
-    flex-direction: row;
     width:100%;
 }
 
 .datepickerTypo{
     margin: 12px 10px;
+}
+
+.input-error {
+    color: red;
+    font-size: 15px;
+    margin-top: 5px;
 }
