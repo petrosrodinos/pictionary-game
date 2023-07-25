@@ -36,6 +36,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       window.removeEventListener("resize", updateCanvasSize);
     };
   }, []);
+
   useEffect(() => {
     const s = io(`${API_BASE_URL}`);
     setSocket(s);
@@ -44,6 +45,15 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       s.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (socket == null) return;
+
+    socket.emit("join-room", documentId);
+    socket.on("joined", (data: any) => {
+      console.log("dat", data);
+    });
+  }, [socket, documentId]);
 
   useEffect(() => {
     if (socket == null) return;
@@ -62,12 +72,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
     if (!socket) return;
     socket.emit("send-changes", data);
   }
-
-  useEffect(() => {
-    if (socket == null) return;
-
-    socket.emit("join-room", documentId);
-  }, [socket, documentId]);
 
   return (
     <div className="canvas-container">

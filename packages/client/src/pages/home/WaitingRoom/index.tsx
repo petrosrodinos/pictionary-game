@@ -31,32 +31,24 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
 
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
-    if (waitingRoom && socket) {
-      const joinedUser = {
-        userId,
-        username,
-        avatar,
-        level,
-      };
-      socket
-        .emit("join-waiting-room", waitingRoom, joinedUser)
-        .on("user-joined", (roomInfo: RoomInfo) => {
-          console.log("user-joined-waiting", roomInfo);
-          setRoomInfo(roomInfo);
-        });
-    }
-  }, [searchParams, socket]);
+    if (!waitingRoom || !socket) return;
 
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   socket.on("user-joined", (roomInfo: RoomInfo) => {
-  //     console.log("user-joined-waiting", roomInfo);
-  //   });
+    const joinedUser = {
+      userId,
+      username,
+      avatar,
+      level,
+    };
+    socket.emit("join-waiting-room", waitingRoom, joinedUser);
+    socket.on("user-joined", (roomInfo: RoomInfo) => {
+      console.log("user-joined", roomInfo);
+      setRoomInfo(roomInfo);
+    });
 
-  //   // return () => {
-  //   //   socket.off("user-joined");
-  //   // };
-  // }, [socket, searchParams]);
+    return () => {
+      socket.off("user-joined");
+    };
+  }, [socket, searchParams]);
 
   return (
     <div className="waiting-room-container">

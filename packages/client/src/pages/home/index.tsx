@@ -14,10 +14,11 @@ import "./style.scss";
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
-  const { userId, username, avatar, level } = authStore((state) => state);
+  const { userId } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
+
   const navigate = useNavigate();
 
   //useEffect detects for searchParams change and opens the waiting room modal

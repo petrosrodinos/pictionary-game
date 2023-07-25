@@ -50,14 +50,15 @@ socket.on("connection", (socket: any) => {
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
     if (rooms[code]) {
-      console.log("join-waiting-room", code);
       const room = rooms[code];
       if (!room.users.find((u) => u.userId === user.userId)) {
+        console.log("join-waiting-room", code);
         room.users.push(user);
       }
       socket.join(code);
-      socket.emit("user-joined", room);
       // socket.broadcast.to(code).emit("user-joined", room);
+      socket.in(code).emit("user-joined", room);
+      // socket.emit("user-joined", room);
     }
   });
 });
