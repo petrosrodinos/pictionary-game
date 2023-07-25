@@ -71,7 +71,7 @@ const Register: FC = () => {
               role: data.role,
               
             });
-            navigate("/home");
+            navigate("/auth/login");
           }
         },
         onError: (error: any) => {
