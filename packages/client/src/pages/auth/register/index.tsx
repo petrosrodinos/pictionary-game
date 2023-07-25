@@ -63,11 +63,11 @@ const Register: FC = () => {
       {
         onSuccess: (data: any) => {
           console.log("values", values);
-          if (data.accessToken) {
+          if (data?.token) {
             logIn({
               userId: data.id,
               username: data.username,
-              token: data.accessToken,
+              token: data.token,
               role: data.role,
               
             });
