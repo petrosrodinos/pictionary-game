@@ -49,4 +49,6 @@ interface RoomInfo extends GameSettings {
   users: UserType[];
   drawings?: any[];
   gameStarted?: boolean;
+  word: string;
+  round: number;
 }

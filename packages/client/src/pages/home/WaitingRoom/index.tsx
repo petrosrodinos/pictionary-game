@@ -73,7 +73,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
   }, [socket]);
 
   function startGame() {
-    navigate(`/room/123gg`);
+    navigate(`/room/${searchParams.get("waitingRoom")}`);
   }
 
   return (

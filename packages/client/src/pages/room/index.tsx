@@ -9,9 +9,12 @@ import { CHOOSING_WORD_TIME, ROUNDS } from "../../constants/game";
 import ChoosingWord from "./ChoosingWord";
 import GameFinished from "./GameFinished";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../hooks/socket";
+import { useParams } from "react-router-dom";
 import "./style.scss";
 
 const Room: FC = () => {
+  const { id: roomId } = useParams();
   const { username } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [time, setTime] = useState<number>(CHOOSING_WORD_TIME);
@@ -21,6 +24,7 @@ const Room: FC = () => {
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [timerFinish, setTimerFinish] = useState<boolean>(false);
+  const { socket } = useSocket();
   const navigate = useNavigate();
 
   //test players
@@ -32,16 +36,26 @@ const Room: FC = () => {
     rank: index + 1,
   }));
 
-  //should get data from the socket connection first to set the settings
   useEffect(() => {
-    const artist = "rodinos";
-    setWord("carrot");
-    setArtist(artist);
-    setCurrentUserIsPlaying(username === artist);
-  }, []);
+    if (!socket) return;
+    socket.emit("get-info", roomId).on("send-info", (roomInfo: RoomInfo) => {
+      console.log("get-info", roomInfo);
+      setRoomInfo(roomInfo);
+      setCurrentRound(roomInfo.round);
+      const artist = roomInfo.users[roomInfo.round].username;
+      setWord(roomInfo.word);
+      setArtist(artist);
+      setCurrentUserIsPlaying(username === artist);
+    });
+
+    return () => {
+      socket.off("get-info");
+    };
+  }, [socket, roomId]);
 
   const onRoundFinish = () => {
     setTimerFinish(true);
+    setCurrentRound(currentRound + 1);
   };
 
   const handleWordSelected = (word: string) => {

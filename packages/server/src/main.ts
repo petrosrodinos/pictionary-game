@@ -40,6 +40,9 @@ socket.on("connection", (socket: any) => {
       socket.broadcast.to(code).emit("receive-changes", delta);
     });
   });
+  socket.on("get-info", async (code: string) => {
+    socket.emit("send-info", rooms[code]);
+  });
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
       ...settings,
