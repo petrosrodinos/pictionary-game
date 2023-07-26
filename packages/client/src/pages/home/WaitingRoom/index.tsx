@@ -11,6 +11,7 @@ import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "../../../hooks/timer";
 import "./style.scss";
+import { STARTING_TIME } from "../../../constants/game";
 
 interface WaitingRoomProps {
   onLeave: () => void;
@@ -47,11 +48,10 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     socket.emit("join-waiting-room", waitingRoom, joinedUser);
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
-      if (roomInfo.gameStarted) {
-        startGame();
-        return;
-      }
       setRoomInfo(roomInfo);
+      if (roomInfo.gameStarted) {
+        // startGame();
+      }
     });
 
     return () => {
@@ -64,7 +64,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     if (!socket) return;
 
     socket.on("game-started", () => {
-      startCountDown(5);
+      startCountDown(STARTING_TIME);
     });
 
     return () => {
@@ -87,7 +87,13 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       ) : (
         <Typography>Room does not exist :(</Typography>
       )}
-      <Button title={countDownInSeconds.toString()} onClick={onLeave} />
+      {countDownInSeconds > 0 && (
+        <Button
+          disabled={true}
+          title={`GAME STARTING IN ${countDownInSeconds.toString()}`}
+          onClick={onLeave}
+        />
+      )}
     </div>
   );
 };
