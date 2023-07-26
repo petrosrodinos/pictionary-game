@@ -7,21 +7,21 @@ import PointsEarned from "./PointsEarned";
 import "./style.scss";
 
 interface GameFinishedProps {
-  users: InGameUser[];
+  players: UserType[];
   onExit: () => void;
 }
 
-const GameFinished: FC<GameFinishedProps> = ({ users, onExit }) => {
-  const [currentUserStats, setCurrentUserStats] = useState<InGameUser>();
+const GameFinished: FC<GameFinishedProps> = ({ players, onExit }) => {
+  const [currentUserStats, setCurrentUserStats] = useState<UserType>();
   const { username } = authStore((state) => state);
 
   useEffect(() => {
-    const user = users.find((user) => user.username === username);
+    const user = players.find((player) => player.username === username);
     console.log("user", user);
     if (user) {
       setCurrentUserStats(user);
     }
-  }, [users]);
+  }, [players]);
 
   const division: any = {
     1: "FIRST",
@@ -44,12 +44,12 @@ const GameFinished: FC<GameFinishedProps> = ({ users, onExit }) => {
         </Typography>{" "}
         <Typography className="msg-secondary">YOU CAME IN </Typography>
         <Typography className="msg-primary" variant="text-accent">
-          {division?.[currentUserStats?.rank || 0]}
+          {division?.[(Math.random() ** 100).toFixed(1) || 0]}
         </Typography>
       </Typography>
       <Button style={{ maxWidth: "100px" }} onClick={onExit} title="EXIT" />
       <PointsEarned points={currentUserStats?.points || 0} />
-      <UsersGrid users={users} />
+      <UsersGrid users={players} />
     </div>
   );
 };

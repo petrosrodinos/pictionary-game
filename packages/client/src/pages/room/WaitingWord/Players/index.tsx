@@ -4,7 +4,7 @@ import Typography from "../../../../components/ui/Typography";
 import "./style.scss";
 
 interface PlayersProps {
-  players: InGameUser[];
+  players: UserType[];
 }
 
 const Players: FC<PlayersProps> = ({ players }) => {
@@ -15,7 +15,7 @@ const Players: FC<PlayersProps> = ({ players }) => {
       </Typography>
       <div className="players-container">
         {players
-          .sort((a, b) => b.points - a.points)
+          // .sort((a, b) => b.points - a.points)
           .map((player, index) => (
             <div key={index} className="player-container">
               <div className="players-content">
@@ -24,7 +24,7 @@ const Players: FC<PlayersProps> = ({ players }) => {
                 </div>
                 <Avatar image={player.avatar} />
                 <div className="player-info">
-                  <Typography variant="text-main">{player.username}</Typography>
+                  <Typography variant="text-main">@{player.username}</Typography>
                   <Typography>points: {player.points}</Typography>
                 </div>
               </div>

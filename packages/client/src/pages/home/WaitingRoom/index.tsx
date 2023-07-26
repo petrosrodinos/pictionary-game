@@ -30,7 +30,6 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
   const navigate = useNavigate();
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
-  const [gameStartingCountDown, setGameStartingCountDown] = useState<number>(5);
   const [searchParams, _] = useSearchParams();
   const { socket } = useSocket();
 

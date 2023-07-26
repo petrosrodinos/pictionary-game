@@ -11,7 +11,7 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
   return (
     <div className="leader-board-item">
       <span className="rank-container">
-        <Typography>{item.rank}</Typography>
+        <Typography>5</Typography>
       </span>
       <Avatar image={item.avatar} />
       <div className="user-info-container">

@@ -1,17 +1,17 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import { useTimer } from "../../../hooks/timer";
+import { ROUND_TIME } from "../../../constants/game";
 import "./style.scss";
 
 interface InfoProps {
   artist: string;
-  time: string;
   choosingWord: boolean;
   onTimerFinish: () => void;
 }
 
-const Info: FC<InfoProps> = ({ artist, time, choosingWord, onTimerFinish }) => {
-  const { countDown } = useTimer(time, onTimerFinish);
+const Info: FC<InfoProps> = ({ artist, choosingWord, onTimerFinish }) => {
+  const { countDown } = useTimer(ROUND_TIME, onTimerFinish);
 
   return (
     <div className="info-container">
@@ -28,7 +28,7 @@ const Info: FC<InfoProps> = ({ artist, time, choosingWord, onTimerFinish }) => {
           TIME:
         </Typography>
         <Typography variant="small-text-main" className="time-text">
-          {choosingWord ? time : countDown}
+          {choosingWord ? "00:00" : countDown}
         </Typography>
       </div>
     </div>

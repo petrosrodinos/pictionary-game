@@ -7,7 +7,6 @@ import "./style.scss";
 const TestLeaderBoardItems: UserType[] = [...new Array(10)].map((_, index) => {
   return {
     userId: index,
-    rank: 10 - index,
     avatar: getRandomAvatar(),
     username: `username${index}`,
     xp: 3500,
@@ -20,7 +19,7 @@ const LeaderBoard: FC = () => {
     <div className="leader-board-container">
       <Typography variant="sub-header-main">LEADER BOARD</Typography>
       <div className="leader-board-content">
-        {TestLeaderBoardItems.map((item: any, index: number) => {
+        {TestLeaderBoardItems.map((item: UserType, index: number) => {
           return <LeaderBoardItem key={index} item={item} />;
         })}
       </div>

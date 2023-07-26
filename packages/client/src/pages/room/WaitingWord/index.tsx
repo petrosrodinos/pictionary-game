@@ -6,8 +6,8 @@ import Players from "./Players";
 import "./style.scss";
 
 interface WaitingWordsProps {
-  artist: InGameUser;
-  players: InGameUser[];
+  artist: UserType;
+  players: UserType[];
   time: number;
   onTimerFinish: () => void;
 }

@@ -13,9 +13,9 @@ export const useTimer = (time?: string | number, onTimerFinish?: () => void) => 
       seconds = splitted[1];
     } else {
       minutes = time;
-      seconds = time % 60;
+      seconds = 0;
     }
-    const countDownTime = minutes * 60 + seconds;
+    const countDownTime = minutes + seconds;
 
     let remainingTime = countDownTime;
     const interval = setInterval(() => {

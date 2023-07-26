@@ -13,5 +13,5 @@ export interface ConnectedUser {
   username: string;
   avatar: string;
   level?: number;
-  rank?: number;
+  points?: number;
 }

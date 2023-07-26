@@ -1,24 +1,18 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import Loader from "../../../components/ui/Loader";
-import "./style.scss";
 import Players from "../WaitingWord/Players";
+import { WORDS } from "../../../constants/game";
+import "./style.scss";
 
 interface ChoosingWordProps {
   time: number;
-  words: string[];
-  players: InGameUser[];
+  players: UserType[];
   onWordSelected: (word: string) => void;
   onTimerFinish: () => void;
 }
 
-const ChoosingWord: FC<ChoosingWordProps> = ({
-  time,
-  players,
-  words,
-  onTimerFinish,
-  onWordSelected,
-}) => {
+const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, onTimerFinish, onWordSelected }) => {
   return (
     <div className="choosing-word-container">
       <Typography variant="sub-header-main" className="choosing-word-label">
@@ -29,7 +23,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
         WORDS
       </Typography>
       <div className="words-container">
-        {words.map((word, index) => (
+        {WORDS["animals"].map((word, index) => (
           <div key={index} className="word-item" onClick={() => onWordSelected(word)}>
             <Typography>{word}</Typography>
           </div>

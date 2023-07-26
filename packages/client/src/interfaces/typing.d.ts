@@ -24,19 +24,19 @@ interface UserType {
   userId: number;
   avatar: string;
   username: string;
-  rank?: number;
   xp?: number;
   games?: number;
   level?: number;
+  points?: number;
 }
 
-interface InGameUser {
-  userId: number;
-  avatar: string;
-  username: string;
-  points: number;
-  rank: number;
-}
+// interface InGameUser {
+//   userId: number;
+//   username: string;
+//   avatar: string;
+//   points: number;
+//   level?: number;
+// }
 
 interface GameSettings {
   players: number;
@@ -47,7 +47,6 @@ interface GameSettings {
 interface RoomInfo extends GameSettings {
   creator: string;
   users: UserType[];
-  users?: any[];
   drawings?: any[];
   gameStarted?: boolean;
 }
