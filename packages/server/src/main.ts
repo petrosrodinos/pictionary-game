@@ -54,11 +54,16 @@ socket.on("connection", (socket: any) => {
       if (!room.users.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
         room.users.push(user);
+        if (room.users.length === room.players) {
+          room.gameStarted = true;
+          socket.in(code).emit("game-started", room);
+          socket.emit("game-started", room);
+        }
       }
       socket.join(code);
       // socket.broadcast.to(code).emit("user-joined", room);
       socket.in(code).emit("user-joined", room);
-      // socket.emit("user-joined", room);
+      socket.emit("user-joined", room);
     }
   });
 });

@@ -8,6 +8,8 @@ import RoomSettings from "./RoomSettings";
 import RoomInfo from "./RoomInfo";
 import { useSocket } from "../../../hooks/socket";
 import { authStore } from "../../../store/authStore";
+import { useNavigate } from "react-router-dom";
+import { useTimer } from "../../../hooks/timer";
 import "./style.scss";
 
 interface WaitingRoomProps {
@@ -24,11 +26,15 @@ const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
 }));
 
 const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
+  const { countDownInSeconds, startCountDown } = useTimer("", startGame);
+  const navigate = useNavigate();
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
+  const [gameStartingCountDown, setGameStartingCountDown] = useState<number>(5);
   const [searchParams, _] = useSearchParams();
   const { socket } = useSocket();
 
+  //emits event when user joins waiting room and listens for when new user joins
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
     if (!waitingRoom || !socket) return;
@@ -42,6 +48,10 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     socket.emit("join-waiting-room", waitingRoom, joinedUser);
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
+      if (roomInfo.gameStarted) {
+        startGame();
+        return;
+      }
       setRoomInfo(roomInfo);
     });
 
@@ -49,6 +59,23 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       socket.off("user-joined");
     };
   }, [socket, searchParams]);
+
+  //listening for when game starts and starts the timer
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("game-started", () => {
+      startCountDown(5);
+    });
+
+    return () => {
+      socket.off("game-started");
+    };
+  }, [socket]);
+
+  function startGame() {
+    navigate(`/room/123gg`);
+  }
 
   return (
     <div className="waiting-room-container">
@@ -61,7 +88,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       ) : (
         <Typography>Room does not exist :(</Typography>
       )}
-      <Button title="START" onClick={onLeave} />
+      <Button title={countDownInSeconds.toString()} onClick={onLeave} />
     </div>
   );
 };
