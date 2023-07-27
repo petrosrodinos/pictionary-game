@@ -8,12 +8,13 @@ export const LoginValidationSchema = yup.object({
 export const RegisterValidationSchema = yup.object({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),   //na balw alpharithmitika klp
-  
-  password2: yup.string()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
   email: yup.string().email().required("Email is required"),
-  // role: yup
-  //   .string()
-  //   .notOneOf(['1'], "Please select a valid user type")
-  //   .required("User type is required"),
+ passwordConfirmation: yup
+  .string()
+  .required("Password confirmation is required")
+  .oneOf([yup.ref("password")], "Passwords must match")
+    //.nullable()
+  ,
+  role: yup.string().required("Role is required"),
+  age: yup.string().required("Age is required"),
 });

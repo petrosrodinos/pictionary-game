@@ -1,3 +1,4 @@
+@use "../../../styles/mixins";
 
 .dropdownSelect{
     // width: 100%;
@@ -26,3 +27,11 @@ option{
 .dropdown{
     width: 100%;
 }
+
+.dropdownOption{
+    @include mixins.small-text-accent;
+}
+
+
+
+
