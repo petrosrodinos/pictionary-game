@@ -6,7 +6,7 @@ import Players from "./Players";
 import "./style.scss";
 
 interface WaitingWordsProps {
-  artist: UserType;
+  artist: UserType | undefined;
   players: UserType[];
   time: number;
   onTimerFinish: () => void;
@@ -16,9 +16,9 @@ const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, onTimerFini
   return (
     <div className="waiting-word-container">
       <div className="artist-container">
-        <Avatar image={artist.avatar} />
+        <Avatar image={artist?.avatar || ""} />
         <div className="column-2">
-          <Typography variant="text-accent">{artist.username}</Typography>
+          <Typography variant="text-accent">@{artist?.username || ""}</Typography>
           <Typography>IS CHOOSING WORD</Typography>
         </div>
       </div>

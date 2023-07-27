@@ -16,7 +16,7 @@ const Players: FC<PlayersProps> = ({ players }) => {
       <div className="players-container">
         {players
           // .sort((a, b) => b.points - a.points)
-          .map((player, index) => (
+          ?.map((player, index) => (
             <div key={index} className="player-container">
               <div className="players-content">
                 <div className="player-rank">

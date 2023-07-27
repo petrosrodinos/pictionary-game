@@ -49,6 +49,7 @@ socket.on("connection", (socket: any) => {
       users: [],
       drawings: [],
       gameStarted: false,
+      round: 1,
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {

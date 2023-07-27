@@ -10,8 +10,8 @@ import { useSocket } from "../../../hooks/socket";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "../../../hooks/timer";
-import "./style.scss";
 import { STARTING_TIME } from "../../../constants/game";
+import "./style.scss";
 
 interface WaitingRoomProps {
   onLeave: () => void;
