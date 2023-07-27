@@ -46,14 +46,11 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (socket == null) return;
+  // useEffect(() => {
+  //   if (socket == null) return;
 
-    socket.emit("join-room", documentId);
-    socket.on("joined", (data: any) => {
-      console.log("dat", data);
-    });
-  }, [socket, documentId]);
+  //   socket.emit("join-room", documentId);
+  // }, [socket, documentId]);
 
   useEffect(() => {
     if (socket == null) return;

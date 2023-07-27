@@ -39,10 +39,18 @@ socket.on("connection", (socket: any) => {
     socket.on("send-changes", (delta: any) => {
       socket.broadcast.to(code).emit("receive-changes", delta);
     });
+    socket.on("word-selected", (code: string, word: string) => {
+      console.log("word-selected", word);
+      rooms[code].word = word;
+      rooms[code].round++;
+      socket.emit("send-info", rooms[code]);
+      socket.in(code).emit("send-info", rooms[code]);
+    });
   });
   socket.on("get-info", async (code: string) => {
     socket.emit("send-info", rooms[code]);
   });
+
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
       ...settings,
@@ -50,6 +58,7 @@ socket.on("connection", (socket: any) => {
       drawings: [],
       gameStarted: false,
       round: 1,
+      word: "",
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {

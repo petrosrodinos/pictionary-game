@@ -6,8 +6,8 @@ export interface Room {
   users: ConnectedUser[];
   drawings: any[];
   gameStarted: boolean;
-  word?: string;
-  round?: number;
+  word: string;
+  round: number;
 }
 
 export interface ConnectedUser {
