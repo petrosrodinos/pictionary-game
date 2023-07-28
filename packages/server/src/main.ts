@@ -33,24 +33,6 @@ const socket = io(http, {
 
 let rooms: { [code: string]: Room } = {};
 socket.on("connection", (socket: any) => {
-  socket.on("join-room", async (code: string) => {
-    console.log("join-room", code);
-    socket.join(code);
-    socket.on("send-changes", (delta: any) => {
-      socket.broadcast.to(code).emit("receive-changes", delta);
-    });
-    socket.on("word-selected", (code: string, word: string) => {
-      console.log("word-selected", word);
-      rooms[code].word = word;
-      rooms[code].round++;
-      socket.emit("send-info", rooms[code]);
-      socket.in(code).emit("send-info", rooms[code]);
-    });
-  });
-  socket.on("get-info", async (code: string) => {
-    socket.emit("send-info", rooms[code]);
-  });
-
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
       ...settings,
@@ -78,5 +60,21 @@ socket.on("connection", (socket: any) => {
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
     }
+  });
+  socket.on("join-room", async (code: string) => {
+    console.log("join-room", code);
+    socket.join(code);
+    socket.on("send-changes", (delta: any) => {
+      socket.broadcast.to(code).emit("receive-changes", delta);
+    });
+    socket.on("word-selected", (code: string, word: string) => {
+      rooms[code].word = word;
+      rooms[code].round++;
+      socket.emit("send-info", rooms[code]);
+      socket.in(code).emit("send-info", rooms[code]);
+    });
+    socket.on("get-info", async (code: string) => {
+      socket.emit("send-info", rooms[code]);
+    });
   });
 });

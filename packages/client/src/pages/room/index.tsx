@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Canvas from "./Canvas";
 import { authStore } from "../../store/authStore";
 import Info from "./Info";
@@ -49,9 +49,7 @@ const Room: FC = () => {
       console.log("get-info", roomInfo);
       setRoomData(roomInfo);
       setRounds(roomInfo.rounds);
-      setActiveModal(
-        chooseOption(roomInfo.users[roomInfo.round === 1 ? 0 : roomInfo.round - 1].username)
-      );
+      setActiveModal(chooseOption(getArtist.username));
     });
 
     return () => {
@@ -65,9 +63,7 @@ const Room: FC = () => {
       console.log("get-info2", roomInfo);
       setRoomData(roomInfo);
       setRounds(roomInfo.rounds);
-      setActiveModal(
-        chooseOption(roomInfo.users[roomInfo.round === 1 ? 0 : roomInfo.round - 1].username)
-      );
+      setActiveModal(chooseOption(getArtist.username));
     });
 
     return () => {
@@ -79,10 +75,9 @@ const Room: FC = () => {
     setRoomInfo(roomInfo);
     setCurrentRound(roomInfo.round);
     setWord(roomInfo.word);
-    const artist = roomInfo.users[roomInfo.round === 1 ? 0 : roomInfo.round - 1];
     setArtist(artist);
-    setCurrentUserIsPlaying(username === artist.username);
-    console.log("artist", artist.username, username);
+    setCurrentUserIsPlaying(username === getArtist.username);
+    console.log("artist", getArtist.username, username);
   };
 
   const onRoundFinish = () => {
@@ -106,6 +101,15 @@ const Room: FC = () => {
   const handleExit = () => {
     navigate("/home");
   };
+
+  const getArtist = useMemo(() => {
+    console.log("roomInfo", roomInfo);
+    if (roomInfo) {
+      return roomInfo.users[roomInfo.round === 1 ? 0 : roomInfo.round - 1];
+    } else {
+      return {} as UserType;
+    }
+  }, [roomInfo]);
 
   const ModalComponents = {
     "choosing-word": (
