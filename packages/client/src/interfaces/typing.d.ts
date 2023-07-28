@@ -18,6 +18,7 @@ interface UserRegister {
   email: string;
   role: string;
   age: string;
+  avatar: string;
 }
 
 interface UserType {

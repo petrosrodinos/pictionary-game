@@ -17,4 +17,6 @@ export const RegisterValidationSchema = yup.object({
   ,
   role: yup.string().required("Role is required"),
   age: yup.string().required("Age is required"),
+  
+  avatar: yup.string().required("Avatar is required"),
 });

@@ -26,6 +26,6 @@ model User {
   role String
   points    Int     @default(0)
   level    Int     @default(1)
-  avatar String?
+  avatar String
   age String
 }

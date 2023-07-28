@@ -14,6 +14,7 @@ import Label from "../../../components/ui/Label";
 import { useMutation } from "react-query";
 import { registerUser } from "../../../services/auth";
 import "./style.scss";
+import Avatar from "../../../components/ui/Avatar";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -33,6 +34,7 @@ const Register: FC = () => {
       email: "",
       role: "",
       age: "",
+      avatar: "",
     },
   });
 
@@ -58,24 +60,26 @@ const Register: FC = () => {
         email: values.email,
         role: values.role,
         age: values.age,
+        avatar: values.avatar,
         
       },
       {
         onSuccess: (data: any) => {
           console.log("values", values);
-          if (data?.token) {
             logIn({
               userId: data.id,
               username: data.username,
               token: data.token,
               role: data.role,
-              
+              avatar: data.avatar,
             });
-            navigate("/auth/login");
-          }
+          navigate("auth/login");
+          //navigate("/home"); AYTO THELEI KANONIKA GIA AFTO EXO KAI TO TOKEN ALOSTE
         },
         onError: (error: any) => {
           alert(error.message);
+
+         // alert("username already exists");
           
         },
       }
@@ -121,12 +125,14 @@ const Register: FC = () => {
       />
       <Label value="Select your birthday:" />
       <DatePicker onChange={handleAgeChange}
-        error={errors.age?.message}/>
+        error={errors.age?.message} />
+      <Avatar image="https://res.cloudinary.com/dtu8pnwz4/image/upload/v1690573533/avatars/zl4lfftyj1gj40rzhpbq.png"
+        error={errors.avatar?.message}/>
       <Button
         type="submit"
         loading={isLoading}
         icon={BiRegistered}
-        title="Register    "
+        title="Register"
         variant="primary"
       />
     </form>
