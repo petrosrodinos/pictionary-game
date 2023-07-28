@@ -1,15 +1,15 @@
 import { FC } from "react";
 import "./style.scss";
-import Typography from "../Typography";
+//import Typography from "../Typography";
 
 interface AvatarProps {
   image: string;
-  error?: string;
+  //error?: string;
   value?: string;
 }
 
 const Avatar: FC<AvatarProps> = ({
-  error,
+ // error,
   image,
   
 }) => {
@@ -17,7 +17,7 @@ const Avatar: FC<AvatarProps> = ({
   return (
     <div className="avatar-container">
       <img className="avatar-image" src={image} />
-      {error && <Typography className="input-error">{error}</Typography>}
+      {/* {error && <Typography className="input-error">{error}</Typography>} */}
     </div>
   ) 
   

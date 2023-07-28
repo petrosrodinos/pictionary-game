@@ -3,9 +3,9 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiRegistered } from "react-icons/bi";
 import Input from "../../../components/ui/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
+//import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import {RegisterValidationSchema } from "../../../validation-schemas/user";
+//import {RegisterValidationSchema } from "../../../validation-schemas/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/ui/Dropdown";
@@ -15,6 +15,7 @@ import { useMutation } from "react-query";
 import { registerUser } from "../../../services/auth";
 import "./style.scss";
 import Avatar from "../../../components/ui/Avatar";
+//import avatarImage from '../assets/avatars/avatar1.png';
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -26,7 +27,7 @@ const Register: FC = () => {
     formState: { errors },
     setValue,
   } = useForm<UserRegister>({
-    resolver: yupResolver(RegisterValidationSchema),
+    //resolver: yupResolver(RegisterValidationSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -126,8 +127,10 @@ const Register: FC = () => {
       <Label value="Select your birthday:" />
       <DatePicker onChange={handleAgeChange}
         error={errors.age?.message} />
-      <Avatar image="https://res.cloudinary.com/dtu8pnwz4/image/upload/v1690573533/avatars/zl4lfftyj1gj40rzhpbq.png"
-        error={errors.avatar?.message}/>
+      <Avatar  image="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQP3jLbL-r4YJKJhXtwFYWHpEQhqXMwA5X1Xp5dAbR8IyGviNgnxCOElV0HnX8ZwtC-xp6iiqiqm2RFhSo"
+        //image={avatarImage}
+        //error={errors.avatar?.message}
+      />
       <Button
         type="submit"
         loading={isLoading}
