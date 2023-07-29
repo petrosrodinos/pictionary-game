@@ -5,7 +5,7 @@ import { BiRegistered } from "react-icons/bi";
 import Input from "../../../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import {RegisterValidationSchema } from "../../../validation-schemas/user";
+import { RegisterValidationSchema } from "../../../validation-schemas/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/ui/Dropdown";
@@ -14,6 +14,7 @@ import Label from "../../../components/ui/Label";
 import { useMutation } from "react-query";
 import { registerUser } from "../../../services/auth";
 import "./style.scss";
+import ImageUploader from "../../../components/ui/ImageUploader";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -33,6 +34,7 @@ const Register: FC = () => {
       email: "",
       role: "",
       age: "",
+      avatar: "",
     },
   });
 
@@ -44,9 +46,14 @@ const Register: FC = () => {
     setValue("age", e.target.value);
   };
 
-  const { mutate: registerMutation, isLoading } = useMutation((user: UserRegister) => {
-    return registerUser(user);
-  });
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue("avatar", e.target.value);
+  };
+  const { mutate: registerMutation, isLoading } = useMutation(
+    (user: UserRegister) => {
+      return registerUser(user);
+    }
+  );
 
   const handleRegister = async (values: UserRegister) => {
     console.log("values", values);
@@ -58,25 +65,25 @@ const Register: FC = () => {
         email: values.email,
         role: values.role,
         age: values.age,
-        
+        avatar: values.avatar,
       },
       {
         onSuccess: (data: any) => {
           console.log("values", values);
-          if (data?.token) {
-            logIn({
-              userId: data.id,
-              username: data.username,
-              token: data.token,
-              role: data.role,
-              
-            });
-            navigate("/auth/login");
-          }
+          logIn({
+            userId: data.id,
+            username: data.username,
+            token: data.token,
+            role: data.role,
+            avatar: data.avatar,
+          });
+          navigate("auth/login");
+          //navigate("/home"); AYTO THELEI KANONIKA GIA AFTO EXO KAI TO TOKEN ALOSTE
         },
         onError: (error: any) => {
           alert(error.message);
-          
+
+          // alert("username already exists");
         },
       }
     );
@@ -90,7 +97,10 @@ const Register: FC = () => {
 
   //edw bazw ta props
   return (
-    <form className="register-page-container" onSubmit={handleSubmit(handleRegister)}>
+    <form
+      className="register-page-container"
+      onSubmit={handleSubmit(handleRegister)}
+    >
       <Typography variant="sub-header-main">Register</Typography>
       <Input
         error={errors.username?.message}
@@ -113,20 +123,31 @@ const Register: FC = () => {
         placeholder="Confirm Password"
         type="password"
       />
-      <Input error={errors.email?.message} name="email" register={register} placeholder="Email" />
+      <Input
+        error={errors.email?.message}
+        name="email"
+        register={register}
+        placeholder="Email"
+      />
 
       <Dropdown
-        options={options} onChange={handleRoleChange}
+        options={options}
+        onChange={handleRoleChange}
         error={errors.role?.message}
       />
       <Label value="Select your birthday:" />
-      <DatePicker onChange={handleAgeChange}
-        error={errors.age?.message}/>
+      <DatePicker onChange={handleAgeChange} error={errors.age?.message} />
+      <Label value="Upload avatar image :" />
+      <ImageUploader
+        onChange={handleAvatarChange}
+        error={errors.avatar?.message}
+        name="avatar"
+      />
       <Button
         type="submit"
         loading={isLoading}
         icon={BiRegistered}
-        title="Register    "
+        title="Register"
         variant="primary"
       />
     </form>

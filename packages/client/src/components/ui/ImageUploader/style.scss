@@ -1,0 +1,19 @@
+@use "../../../styles/mixins";
+
+.imageUploader {
+  padding-top: 10px;
+  display: flex;
+  //flex-direction: row;
+  padding-right: 80px;
+}
+
+.inputFile {
+  padding: 10px;
+  @include mixins.small-text-accent;
+}
+
+.avatar-error {
+  color: red;
+  font-size: 15px;
+  margin-top: 5px;
+}
