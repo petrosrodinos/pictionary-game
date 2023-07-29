@@ -1,9 +1,9 @@
 import { FC, useState, useEffect } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
-import UsersGrid from "../../../components/UsersGrid";
 import { authStore } from "../../../store/authStore";
 import PointsEarned from "./PointsEarned";
+import Players from "../WaitingWord/Players";
 import "./style.scss";
 
 interface GameFinishedProps {
@@ -12,18 +12,19 @@ interface GameFinishedProps {
 }
 
 const GameFinished: FC<GameFinishedProps> = ({ players, onExit }) => {
-  const [currentUserStats, setCurrentUserStats] = useState<UserType>();
+  const [pointsEarned, setPointsEarned] = useState<number>(0);
+  const [rank, setRank] = useState<number>(0);
   const { username } = authStore((state) => state);
 
   useEffect(() => {
-    const user = players.find((player) => player.username === username);
-    console.log("user", user);
-    if (user) {
-      setCurrentUserStats(user);
-    }
+    const sortedUsers = players.sort((a, b) => b.points - a.points);
+    const userRank = sortedUsers.findIndex((user) => user.username === username);
+    setRank(userRank);
+    setPointsEarned(sortedUsers[userRank].points);
   }, [players]);
 
   const division: any = {
+    0: "LAST",
     1: "FIRST",
     2: "SECOND",
     3: "THIRD",
@@ -44,12 +45,12 @@ const GameFinished: FC<GameFinishedProps> = ({ players, onExit }) => {
         </Typography>{" "}
         <Typography className="msg-secondary">YOU CAME IN </Typography>
         <Typography className="msg-primary" variant="text-accent">
-          {division?.[(Math.random() ** 100).toFixed(1) || 0]}
+          {division?.[rank]}
         </Typography>
       </Typography>
       <Button style={{ maxWidth: "100px" }} onClick={onExit} title="EXIT" />
-      <PointsEarned points={currentUserStats?.points || 0} />
-      <UsersGrid users={players} />
+      <PointsEarned points={pointsEarned || 0} />
+      <Players players={players} />
     </div>
   );
 };

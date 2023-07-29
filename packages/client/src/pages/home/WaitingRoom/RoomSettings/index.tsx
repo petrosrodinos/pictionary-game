@@ -21,14 +21,14 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
             {roomInfo.players}
           </Typography>
         </Typography>
-        <Typography>
+        {/* <Typography>
           <Typography variant="text-accent" className="waiting-room-label">
             ROUNDS:
           </Typography>
           <Typography variant="text-main" className="room-stat">
             {roomInfo.rounds}
           </Typography>
-        </Typography>
+        </Typography> */}
       </div>
     </div>
   );

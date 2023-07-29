@@ -1,7 +1,4 @@
-export const ROUNDS = 5;
 export const MAX_PLAYERS = 2;
-export const ROUND_TIME = 300;
-export const CHOOSING_WORD_TIME = 1;
 export const STARTING_TIME = 2;
 export const WORDS = {
   space: [

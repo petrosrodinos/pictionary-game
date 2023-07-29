@@ -3,7 +3,7 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { CLIENT_URL } from "../../../constants";
 import GameSettings from "./GameSettings";
-import { MAX_PLAYERS, ROUNDS } from "../../../constants/game";
+import { MAX_PLAYERS } from "../../../constants/game";
 import "./style.scss";
 
 interface CreateRoomProps {
@@ -18,7 +18,6 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
 
   const [settings, setSettings] = useState<GameSettings>({
     players: MAX_PLAYERS,
-    rounds: ROUNDS,
     code: getCode,
   });
 

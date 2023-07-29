@@ -26,8 +26,8 @@ interface UserType {
   username: string;
   xp?: number;
   games?: number;
-  level?: number;
-  points?: number;
+  level: number;
+  points: number;
 }
 
 // interface InGameUser {
@@ -40,7 +40,6 @@ interface UserType {
 
 interface GameSettings {
   players: number;
-  rounds: number;
   code: string;
 }
 

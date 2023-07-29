@@ -51,7 +51,10 @@ socket.on("connection", (socket: any) => {
       const room = rooms[code];
       if (!room.users.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
-        room.users.push(user);
+        room.users.push({
+          ...user,
+          points: 0,
+        });
         if (room.users.length === room.players) {
           room.status = "selecting-word";
           room.currentArtist = room.users[0];
@@ -89,7 +92,7 @@ socket.on("connection", (socket: any) => {
           socket.emit("time-finished", rooms[code]);
           socket.in(code).emit("time-finished", rooms[code]);
         }
-      }, ROUND_TIME);
+      }, ROUND_TIME * 1000);
     });
   });
 });

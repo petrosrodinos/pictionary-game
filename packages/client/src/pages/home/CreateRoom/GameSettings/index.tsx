@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Input from "../../../../components/ui/Input";
 import Typography from "../../../../components/ui/Typography";
-import { MAX_PLAYERS, ROUNDS } from "../../../../constants/game";
+import { MAX_PLAYERS } from "../../../../constants/game";
 import "./style.scss";
 
 interface GameSettingsProps {
@@ -21,12 +21,6 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange }) => {
         type="number"
         name="players"
         placeholder={`Players (default:${MAX_PLAYERS})`}
-        onChange={handleChange}
-      />
-      <Input
-        type="number"
-        name="rounds"
-        placeholder={`Rounds (default:${ROUNDS})`}
         onChange={handleChange}
       />
     </div>

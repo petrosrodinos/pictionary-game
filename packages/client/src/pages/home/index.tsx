@@ -55,7 +55,7 @@ const Home: FC = () => {
   };
 
   const handleCreateRoom = (settings: GameSettings) => {
-    if (!settings.players || !settings.rounds) return;
+    if (!settings.players) return;
     if (socket == null) return;
     socket.emit("create-room", {
       ...settings,

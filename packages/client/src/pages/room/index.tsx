@@ -17,19 +17,9 @@ const Room: FC = () => {
   const { username } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
 
-  const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const { socket } = useSocket();
   const navigate = useNavigate();
-
-  //test players
-  const Players: UserType[] = [...new Array(5)].map((_, index) => ({
-    userId: index + 1,
-    username: `${username}${index !== 0 ? index : ""}`,
-    points: index + 20,
-    avatar: getRandomAvatar(),
-    rank: index + 1,
-  }));
 
   useEffect(() => {
     if (!socket) return;
@@ -91,7 +81,6 @@ const Room: FC = () => {
 
   const setRoomData = (roomInfo: RoomInfo) => {
     setRoomInfo(roomInfo);
-    setCurrentUserIsPlaying(username === roomInfo.currentArtist.username);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
   };
 
@@ -125,7 +114,7 @@ const Room: FC = () => {
   function chooseTitle(): string {
     if (roomInfo.round >= roomInfo?.users?.length && activeModal === "game-finished")
       return "GAME FINISHED";
-    return `ROUND ${roomInfo.round}/${roomInfo.rounds} IS STARTING`;
+    return `ROUND ${roomInfo?.round}/${roomInfo?.users?.length} IS STARTING`;
   }
 
   function chooseOption(player: string): keyof typeof ModalComponents {
@@ -141,9 +130,9 @@ const Room: FC = () => {
           </Modal>
           <div className="room-page-container">
             <div className="drawing-area-container">
-              <Info timer={roomInfo.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
+              <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
               <Canvas
-                word={roomInfo.word}
+                word={roomInfo?.word}
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
               />
             </div>
