@@ -9,16 +9,15 @@ interface ChoosingWordProps {
   time: number;
   players: UserType[];
   onWordSelected: (word: string) => void;
-  onTimerFinish: () => void;
 }
 
-const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, onTimerFinish, onWordSelected }) => {
+const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, onWordSelected }) => {
   return (
     <div className="choosing-word-container">
       <Typography variant="sub-header-main" className="choosing-word-label">
         You are choosing a word!
       </Typography>
-      <Loader onFinish={onTimerFinish} time={time} />
+      <Loader time={time} />
       <Typography variant="text-accent" className="words-label">
         WORDS
       </Typography>

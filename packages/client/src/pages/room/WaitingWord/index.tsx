@@ -9,10 +9,9 @@ interface WaitingWordsProps {
   artist: UserType | undefined;
   players: UserType[];
   time: number;
-  onTimerFinish: () => void;
 }
 
-const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, onTimerFinish }) => {
+const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time }) => {
   return (
     <div className="waiting-word-container">
       <div className="artist-container">
@@ -25,7 +24,7 @@ const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, onTimerFini
       <Typography variant="text-main" className="waiting-label">
         WAITING FOR THE ARTIST TO CHOOSE A WORD
       </Typography>
-      <Loader time={time} onFinish={onTimerFinish} />
+      <Loader time={time} />
       <Players players={players} />
     </div>
   );

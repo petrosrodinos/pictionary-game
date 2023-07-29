@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Room } from "./interfaces/room";
 import cors from "cors";
-import { ROUND_TIME } from "./constants/game";
+import { CHOOSING_WORD_TIME, ROUND_TIME } from "./constants/game";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
@@ -43,6 +43,7 @@ socket.on("connection", (socket: any) => {
       round: 1,
       word: "",
       roundTime: ROUND_TIME,
+      choosingWordTime: CHOOSING_WORD_TIME,
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {

@@ -10,6 +10,7 @@ export interface Room {
   round: number;
   currentArtist: ConnectedUser;
   roundTime: number;
+  choosingWordTime: number;
 }
 
 export type Status = "created" | "waiting" | "selecting-word" | "playing" | "finished";

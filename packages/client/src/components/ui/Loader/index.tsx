@@ -5,7 +5,7 @@ import "./style.scss";
 
 interface LoaderProps {
   time: number;
-  onFinish: () => void;
+  onFinish?: () => void;
 }
 
 const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
@@ -17,7 +17,7 @@ const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
       timeToTimer = timeToTimer + 1;
       setTimeLeft(timeToTimer);
       if (timeToTimer === time * 60) {
-        onFinish();
+        onFinish?.();
         clearInterval(x);
       }
     }, 1000);

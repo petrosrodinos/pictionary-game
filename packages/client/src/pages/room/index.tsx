@@ -5,7 +5,6 @@ import Info from "./Info";
 import Modal from "../../components/ui/Modal";
 import WaitingWord from "./WaitingWord";
 import { getRandomAvatar } from "../../utils/avatar";
-import { CHOOSING_WORD_TIME, ROUNDS } from "../../constants/game";
 import ChoosingWord from "./ChoosingWord";
 import GameFinished from "./GameFinished";
 import { useNavigate } from "react-router-dom";
@@ -17,14 +16,8 @@ const Room: FC = () => {
   const { id: roomId } = useParams();
   const { username } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
-  const [time, setTime] = useState<number>(CHOOSING_WORD_TIME);
 
-  const [word, setWord] = useState<string>("");
-  const [artist, setArtist] = useState<UserType>();
-  const [rounds, setRounds] = useState<number>(ROUNDS);
-  const [currentRound, setCurrentRound] = useState<number>(1);
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
-  const [timerFinish, setTimerFinish] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -60,8 +53,6 @@ const Room: FC = () => {
     socket.on("word-changed", (roomInfo: RoomInfo) => {
       console.log("word-changed", roomInfo);
       setRoomInfo(roomInfo);
-      setWord(roomInfo.word);
-
       setActiveModal("");
     });
 
@@ -100,27 +91,13 @@ const Room: FC = () => {
 
   const setRoomData = (roomInfo: RoomInfo) => {
     setRoomInfo(roomInfo);
-    setRounds(roomInfo.rounds);
-    setCurrentRound(roomInfo.round);
-    setWord(roomInfo.word);
-    setArtist(roomInfo.currentArtist);
     setCurrentUserIsPlaying(username === roomInfo.currentArtist.username);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
-    // console.log("artist", artist.username, username);
-  };
-
-  const onRoundFinish = () => {
-    setTimerFinish(true);
-    setCurrentRound(currentRound + 1);
   };
 
   const handleWordSelected = (word: string) => {
     if (!socket) return;
     socket.emit("word-selected", roomId, word);
-  };
-
-  const handleTimerFinish = () => {
-    // setTime(0);
   };
 
   const handleExit = () => {
@@ -130,16 +107,14 @@ const Room: FC = () => {
   const ModalComponents = {
     "choosing-word": (
       <ChoosingWord
-        time={time}
-        onTimerFinish={handleTimerFinish}
+        time={roomInfo.choosingWordTime}
         onWordSelected={handleWordSelected}
         players={roomInfo.users}
       />
     ),
     "waiting-word": (
       <WaitingWord
-        onTimerFinish={handleTimerFinish}
-        time={time}
+        time={roomInfo.choosingWordTime}
         artist={roomInfo.currentArtist}
         players={roomInfo?.users}
       />
@@ -154,26 +129,27 @@ const Room: FC = () => {
   }
 
   function chooseOption(player: string): keyof typeof ModalComponents {
-    // if (roomInfo.round >= roomInfo.rounds) return "game-finished";
     return player === username ? "choosing-word" : "waiting-word";
   }
 
   return (
     <>
-      <Modal title={chooseTitle()} isOpen={!!activeModal}>
-        {ModalComponents[activeModal || "choosing-word"]}
-      </Modal>
-      <div className="room-page-container">
-        <button onClick={onRoundFinish}>finish</button>
-        <div className="drawing-area-container">
-          <Info
-            timer={roomInfo.roundTime}
-            artist={artist?.username || ""}
-            choosingWord={timerFinish}
-          />
-          <Canvas word={word} currentUserIsPlaying={currentUserIsPlaying} />
-        </div>
-      </div>
+      {roomInfo && (
+        <>
+          <Modal title={chooseTitle()} isOpen={!!activeModal}>
+            {ModalComponents[activeModal || "choosing-word"]}
+          </Modal>
+          <div className="room-page-container">
+            <div className="drawing-area-container">
+              <Info timer={roomInfo.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
+              <Canvas
+                word={roomInfo.word}
+                currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

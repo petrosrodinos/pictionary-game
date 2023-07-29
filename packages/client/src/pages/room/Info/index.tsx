@@ -1,16 +1,14 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import { useTimer } from "../../../hooks/timer";
-import { ROUND_TIME } from "../../../constants/game";
 import "./style.scss";
 
 interface InfoProps {
   artist: string;
-  choosingWord: boolean;
   timer: number;
 }
 
-const Info: FC<InfoProps> = ({ artist, choosingWord, timer }) => {
+const Info: FC<InfoProps> = ({ artist, timer }) => {
   const { countDown } = useTimer(timer);
 
   return (
@@ -28,7 +26,7 @@ const Info: FC<InfoProps> = ({ artist, choosingWord, timer }) => {
           TIME:
         </Typography>
         <Typography variant="small-text-main" className="time-text">
-          {choosingWord ? "00:00" : countDown}
+          {countDown}
         </Typography>
       </div>
     </div>
