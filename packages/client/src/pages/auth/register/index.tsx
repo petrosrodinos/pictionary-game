@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { BiRegistered } from "react-icons/bi";
@@ -14,8 +14,9 @@ import Label from "../../../components/ui/Label";
 import { useMutation } from "react-query";
 import { registerUser } from "../../../services/auth";
 import "./style.scss";
-import Avatar from "../../../components/ui/Avatar";
-//import avatarImage from '../assets/avatars/avatar1.png';
+import ImageUploader from "../../../components/ui/ImageUploader";
+
+
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -93,6 +94,10 @@ const Register: FC = () => {
     { value: "Parent", label: "Parent" },
   ];
 
+  // AVATAR IMAGES ARRAY CREATION
+    //const [avatarImage, setAvatarImage] = useState("");
+  
+
   //edw bazw ta props
   return (
     <form className="register-page-container" onSubmit={handleSubmit(handleRegister)}>
@@ -127,9 +132,11 @@ const Register: FC = () => {
       <Label value="Select your birthday:" />
       <DatePicker onChange={handleAgeChange}
         error={errors.age?.message} />
-      <Avatar  image="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQP3jLbL-r4YJKJhXtwFYWHpEQhqXMwA5X1Xp5dAbR8IyGviNgnxCOElV0HnX8ZwtC-xp6iiqiqm2RFhSo"
-        //image={avatarImage}
-        //error={errors.avatar?.message}
+      <Label value="Upload avatar image :" />
+      <ImageUploader
+        onChange={handleAvatarChange}
+        Image={avatarImage}
+      
       />
       <Button
         type="submit"

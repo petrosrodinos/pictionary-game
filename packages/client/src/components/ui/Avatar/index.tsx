@@ -4,21 +4,19 @@ import "./style.scss";
 
 interface AvatarProps {
   image: string;
-  //error?: string;
-  value?: string;
+  
 }
 
 const Avatar: FC<AvatarProps> = ({
  // error,
-  image,
-  
+ image,
+
 }) => {
-   
+ 
   return (
-    <div className="avatar-container">
-      <img className="avatar-image" src={image} />
-      {/* {error && <Typography className="input-error">{error}</Typography>} */}
-    </div>
+  
+      <img className="avatarImage" src={image} />
+    
   ) 
   
 };

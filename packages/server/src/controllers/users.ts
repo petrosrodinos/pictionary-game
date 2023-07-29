@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prismaClient";
 import { NextFunction, Request, Response } from "express";
-//import cloudinary from "../utils/cloudinary";
+import { cloudinary } from "../utils/cloudinary";
 
 
 const jwt = require("../utils/jwt");
@@ -11,24 +11,20 @@ const bcrypt = require("bcryptjs");
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password, email, role, age,avatar } = req.body;
 
-  //checks if user exists here
-  //you can use the findUnique method on login function
-
   const hasedPassword = bcrypt.hashSync(password, 8);
 
   try {
-
-    //const result = await cloudinary.uploader.upload(image, {
-    //});
-    
-    const user = await prisma.user.create({
+    const result = await cloudinary.uploader.upload(avatar, {
+        folder: "avatars", // να βαλω result.url στο avatar
+      })
+      const user = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
         email: email,
         role: role,
         age: age,
-        avatar: avatar
+        avatar: result.url,
       },
     });
 
@@ -38,7 +34,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
     res.status(201).json({
       token: accessToken,
-      user: userWithoutPassword,
+      ...userWithoutPassword,
     });
   } catch (err) {
     res.status(409).json({
@@ -46,6 +42,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     });
   }
 };
+
 //GIA TO LOGIN
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -80,3 +77,4 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     });
   }
 };
+
