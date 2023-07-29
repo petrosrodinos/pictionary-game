@@ -138,7 +138,11 @@ const Register: FC = () => {
       <Label value="Select your birthday:" />
       <DatePicker onChange={handleAgeChange} error={errors.age?.message} />
       <Label value="Upload avatar image :" />
-      <ImageUploader onChange={handleAvatarChange} />
+      <ImageUploader
+        onChange={handleAvatarChange}
+        error={errors.avatar?.message}
+        name="avatar"
+      />
       <Button
         type="submit"
         loading={isLoading}
