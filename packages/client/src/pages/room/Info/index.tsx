@@ -7,11 +7,11 @@ import "./style.scss";
 interface InfoProps {
   artist: string;
   choosingWord: boolean;
-  onTimerFinish: () => void;
+  timer: number;
 }
 
-const Info: FC<InfoProps> = ({ artist, choosingWord, onTimerFinish }) => {
-  const { countDown } = useTimer(ROUND_TIME, onTimerFinish);
+const Info: FC<InfoProps> = ({ artist, choosingWord, timer }) => {
+  const { countDown } = useTimer(timer);
 
   return (
     <div className="info-container">

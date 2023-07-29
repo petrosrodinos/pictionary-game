@@ -5,10 +5,14 @@ export interface Room {
   rounds: number;
   users: ConnectedUser[];
   drawings: any[];
-  gameStarted: boolean;
+  status: Status;
   word: string;
   round: number;
+  currentArtist: ConnectedUser;
+  roundTime: number;
 }
+
+export type Status = "created" | "waiting" | "selecting-word" | "playing" | "finished";
 
 export interface ConnectedUser {
   userId: string;

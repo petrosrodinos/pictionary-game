@@ -51,4 +51,6 @@ interface RoomInfo extends GameSettings {
   gameStarted?: boolean;
   word: string;
   round: number;
+  currentArtist: UserType;
+  roundTime: number;
 }

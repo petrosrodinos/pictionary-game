@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Canvas from "./Canvas";
 import { authStore } from "../../store/authStore";
 import Info from "./Info";
@@ -18,13 +18,14 @@ const Room: FC = () => {
   const { username } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [time, setTime] = useState<number>(CHOOSING_WORD_TIME);
+
   const [word, setWord] = useState<string>("");
   const [artist, setArtist] = useState<UserType>();
   const [rounds, setRounds] = useState<number>(ROUNDS);
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [currentUserIsPlaying, setCurrentUserIsPlaying] = useState<boolean>(false);
   const [timerFinish, setTimerFinish] = useState<boolean>(false);
-  const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents>();
+  const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
@@ -38,18 +39,14 @@ const Room: FC = () => {
   }));
 
   useEffect(() => {
-    if (socket == null) return;
+    if (!socket) return;
 
     socket.emit("join-room", roomId);
-  }, [socket, roomId]);
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.emit("get-info", roomId).on("send-info", (roomInfo: RoomInfo) => {
+    socket.on("send-info", (roomInfo: RoomInfo) => {
       console.log("get-info", roomInfo);
       setRoomData(roomInfo);
-      setRounds(roomInfo.rounds);
-      setActiveModal(chooseOption(getArtist.username));
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
     });
 
     return () => {
@@ -59,25 +56,57 @@ const Room: FC = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("send-info", (roomInfo: RoomInfo) => {
-      console.log("get-info2", roomInfo);
-      setRoomData(roomInfo);
-      setRounds(roomInfo.rounds);
-      setActiveModal(chooseOption(getArtist.username));
+
+    socket.on("word-changed", (roomInfo: RoomInfo) => {
+      console.log("word-changed", roomInfo);
+      setRoomInfo(roomInfo);
+      setWord(roomInfo.word);
+
+      setActiveModal("");
     });
 
     return () => {
-      socket.off("send-info");
+      socket.off("word-changed");
     };
-  }, [socket]);
+  }, [socket, roomId]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("time-finished", (roomInfo: RoomInfo) => {
+      console.log("time-finished", roomInfo);
+      setRoomInfo(roomInfo);
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    });
+
+    return () => {
+      socket.off("time-finished");
+    };
+  }, [socket, roomId]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("game-finished", (roomInfo: RoomInfo) => {
+      console.log("game-finished", roomInfo);
+      setRoomInfo(roomInfo);
+      setActiveModal("game-finished");
+    });
+
+    return () => {
+      socket.off("game-finished");
+    };
+  }, [socket, roomId]);
 
   const setRoomData = (roomInfo: RoomInfo) => {
     setRoomInfo(roomInfo);
+    setRounds(roomInfo.rounds);
     setCurrentRound(roomInfo.round);
     setWord(roomInfo.word);
-    setArtist(artist);
-    setCurrentUserIsPlaying(username === getArtist.username);
-    console.log("artist", getArtist.username, username);
+    setArtist(roomInfo.currentArtist);
+    setCurrentUserIsPlaying(username === roomInfo.currentArtist.username);
+    setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    // console.log("artist", artist.username, username);
   };
 
   const onRoundFinish = () => {
@@ -87,29 +116,16 @@ const Room: FC = () => {
 
   const handleWordSelected = (word: string) => {
     if (!socket) return;
-    socket.emit("word-selected", roomId, word).on("send-info", (roomInfo: RoomInfo) => {
-      console.log("word-selected", roomInfo);
-      setRoomData(roomInfo);
-      setTimerFinish(false);
-    });
+    socket.emit("word-selected", roomId, word);
   };
 
   const handleTimerFinish = () => {
-    setTime(0);
+    // setTime(0);
   };
 
   const handleExit = () => {
     navigate("/home");
   };
-
-  const getArtist = useMemo(() => {
-    console.log("roomInfo", roomInfo);
-    if (roomInfo) {
-      return roomInfo.users[roomInfo.round === 1 ? 0 : roomInfo.round - 1];
-    } else {
-      return {} as UserType;
-    }
-  }, [roomInfo]);
 
   const ModalComponents = {
     "choosing-word": (
@@ -124,7 +140,7 @@ const Room: FC = () => {
       <WaitingWord
         onTimerFinish={handleTimerFinish}
         time={time}
-        artist={artist}
+        artist={roomInfo.currentArtist}
         players={roomInfo?.users}
       />
     ),
@@ -132,28 +148,26 @@ const Room: FC = () => {
   };
 
   function chooseTitle(): string {
-    if (currentRound >= rounds && activeModal === "game-finished") return "GAME FINISHED";
-    return currentRound === 1
-      ? `ROUND ${currentRound} STARTED`
-      : `ROUND ${currentRound}/${rounds} finished`;
+    if (roomInfo.round >= roomInfo?.users?.length && activeModal === "game-finished")
+      return "GAME FINISHED";
+    return `ROUND ${roomInfo.round}/${roomInfo.rounds} IS STARTING`;
   }
 
   function chooseOption(player: string): keyof typeof ModalComponents {
-    if (currentRound >= rounds) return "game-finished";
-
+    // if (roomInfo.round >= roomInfo.rounds) return "game-finished";
     return player === username ? "choosing-word" : "waiting-word";
   }
 
   return (
     <>
-      <Modal title={chooseTitle()} isOpen={timerFinish || currentRound === 1}>
+      <Modal title={chooseTitle()} isOpen={!!activeModal}>
         {ModalComponents[activeModal || "choosing-word"]}
       </Modal>
       <div className="room-page-container">
         <button onClick={onRoundFinish}>finish</button>
         <div className="drawing-area-container">
           <Info
-            onTimerFinish={onRoundFinish}
+            timer={roomInfo.roundTime}
             artist={artist?.username || ""}
             choosingWord={timerFinish}
           />

@@ -1,6 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Room } from "./interfaces/room";
 import cors from "cors";
+import { ROUND_TIME } from "./constants/game";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
@@ -38,9 +39,10 @@ socket.on("connection", (socket: any) => {
       ...settings,
       users: [],
       drawings: [],
-      gameStarted: false,
+      status: "created",
       round: 1,
       word: "",
+      roundTime: ROUND_TIME,
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
@@ -50,13 +52,13 @@ socket.on("connection", (socket: any) => {
         console.log("join-waiting-room", code);
         room.users.push(user);
         if (room.users.length === room.players) {
-          room.gameStarted = true;
+          room.status = "selecting-word";
+          room.currentArtist = room.users[0];
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
         }
       }
       socket.join(code);
-      // socket.broadcast.to(code).emit("user-joined", room);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
     }
@@ -64,17 +66,29 @@ socket.on("connection", (socket: any) => {
   socket.on("join-room", async (code: string) => {
     console.log("join-room", code);
     socket.join(code);
+    socket.emit("send-info", rooms[code]);
     socket.on("send-changes", (delta: any) => {
       socket.broadcast.to(code).emit("receive-changes", delta);
     });
     socket.on("word-selected", (code: string, word: string) => {
       rooms[code].word = word;
-      rooms[code].round++;
-      socket.emit("send-info", rooms[code]);
-      socket.in(code).emit("send-info", rooms[code]);
-    });
-    socket.on("get-info", async (code: string) => {
-      socket.emit("send-info", rooms[code]);
+      rooms[code].status = "playing";
+      socket.emit("word-changed", rooms[code]);
+      socket.in(code).emit("word-changed", rooms[code]);
+      setTimeout(() => {
+        rooms[code].round++;
+        rooms[code].word = "";
+        if (rooms[code].round > rooms[code].users.length) {
+          rooms[code].status = "finished";
+          socket.emit("game-finished", rooms[code]);
+          socket.in(code).emit("game-finished", rooms[code]);
+        } else {
+          rooms[code].status = "selecting-word";
+          rooms[code].currentArtist = rooms[code].users[rooms[code].round - 1];
+          socket.emit("time-finished", rooms[code]);
+          socket.in(code).emit("time-finished", rooms[code]);
+        }
+      }, ROUND_TIME);
     });
   });
 });
