@@ -3,22 +3,22 @@ import "./style.scss";
 //import Typography from "../Typography";
 
 interface AvatarProps {
-  image: string;
-  
+  image?: string;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 const Avatar: FC<AvatarProps> = ({
- // error,
- image,
-
+  // error,
+  image,
+  style,
+  className = "",
 }) => {
- 
   return (
-  
-      <img className="avatarImage" src={image} />
-    
-  ) 
-  
+    <div className={`avatarIcon ${className}`}>
+      <img className="avatarImage" src={image} style={style} />
+    </div>
+  );
 };
 
 export default Avatar;
