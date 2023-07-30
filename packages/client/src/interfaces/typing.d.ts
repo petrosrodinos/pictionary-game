@@ -47,10 +47,10 @@ interface RoomInfo extends GameSettings {
   creator: string;
   users: UserType[];
   drawings?: any[];
-  gameStarted?: boolean;
   word: string;
   round: number;
   currentArtist: UserType;
   roundTime: number;
   choosingWordTime: number;
+  status: string;
 }

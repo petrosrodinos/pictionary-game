@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import Typography from "../../../components/ui/Typography";
 import UsersGrid from "../../../components/UsersGrid";
-import { getRandomAvatar } from "../../../utils/avatar";
 import Button from "../../../components/ui/Button";
 import { useSearchParams } from "react-router-dom";
 import RoomSettings from "./RoomSettings";
@@ -17,14 +16,6 @@ interface WaitingRoomProps {
   onLeave: () => void;
   // roomInfo: RoomInfo | undefined;
 }
-
-const TestUsers: UserType[] = [...new Array(5)].map((_, index) => ({
-  userId: index,
-  username: `username${index + 1}`,
-  avatar: getRandomAvatar(),
-  rank: index + 1,
-  level: index + 1,
-}));
 
 const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
   const { countDownInSeconds, startCountDown } = useTimer("", startGame);
@@ -49,7 +40,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
       setRoomInfo(roomInfo);
-      if (roomInfo.gameStarted) {
+      if (roomInfo.status !== "waiting-room") {
         // startGame();
       }
     });
