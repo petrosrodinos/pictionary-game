@@ -2,22 +2,25 @@ import { prisma } from "../lib/prismaClient";
 import { NextFunction, Request, Response } from "express";
 import { cloudinary } from "../utils/cloudinary";
 
-
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 
 // GIA TO REGISTER
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password, email, role, age,avatar } = req.body;
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password, email, role, age, avatar } = req.body;
 
   const hasedPassword = bcrypt.hashSync(password, 8);
 
   try {
     const result = await cloudinary.uploader.upload(avatar, {
-        folder: "avatars", // να βαλω result.url στο avatar
-      })
-      const user = await prisma.user.create({
+      folder: "avatars", // να βαλω result.url στο avatar
+    });
+    const user = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
@@ -45,7 +48,11 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 //GIA TO LOGIN
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username, password: userPassword } = req.body;
 
   const user = await prisma.user.findUnique({
@@ -77,4 +84,3 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     });
   }
 };
-
