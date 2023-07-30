@@ -1,0 +1,25 @@
+.recent-leader-board-container {
+  max-width: 900px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 5px;
+  margin: 0 auto; //για να ειναι στη μεση
+}
+
+//container  διαχειρησης των κουτιων
+.recent-leader-board-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  //background-color: var(--secondary-background-color-dark);
+  background-color: var(--secondary-background-color-medium);
+  border-radius: var(--border-radius);
+  padding: 50px;
+  max-height: 300px;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+}
