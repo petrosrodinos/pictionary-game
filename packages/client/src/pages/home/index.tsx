@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import RoomActions from "./RoomActions";
 import LeaderBoard from "./LeaderBoard";
+import RecentGames from "./RecentGames";
 import Modal from "../../components/ui/Modal";
 import JoinRoom from "./JoinRoom";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -73,7 +74,12 @@ const Home: FC = () => {
     },
     ["create-room"]: {
       title: "CREATE A ROOM",
-      component: <CreateRoom onCancel={handleCancelRoomCreation} onCreate={handleCreateRoom} />,
+      component: (
+        <CreateRoom
+          onCancel={handleCancelRoomCreation}
+          onCreate={handleCreateRoom}
+        />
+      ),
     },
     ["waiting-room"]: {
       title: "WAITING ROOM",
@@ -96,11 +102,15 @@ const Home: FC = () => {
       >
         {ModalComponents?.[activeModal]?.component}
       </Modal>
-      <div className="first-row">
-        <RoomActions onActionClick={handleActionClick} />
-        <LeaderBoard />
+      <div className="waiting-room-containers">
+        <div className="first-row">
+          <RoomActions onActionClick={handleActionClick} />
+          <LeaderBoard />
+        </div>
+        <div className="second-row">
+          <RecentGames />
+        </div>
       </div>
-      {/* <RecentGames/> component goes here */}
     </Container>
   );
 };
