@@ -1,11 +1,12 @@
 .room-page-container {
-  margin: 20px;
+  // margin: 20px;
   border-radius: var(--border-radius);
   // max-width: 1400px;
   // width: 90vw;
   // max-width: 1000px;
   // width: 100%;
-  height: 80vh;
+  // height: 80vh;
+  // height: 100%;
   background-color: var(--primary-background-color-rgba);
   display: flex;
   flex-direction: row;
@@ -16,7 +17,13 @@
 }
 
 .drawing-area-container {
-  display: flex;
+  // display: flex;
   flex-direction: column;
-  width: 70%;
+  // width: 50%;
+  background-color: white;
+  height: 100vh;
+}
+
+.temp-chat {
+  background-color: red;
 }

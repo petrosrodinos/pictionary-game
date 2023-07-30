@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export const useDraw = ({ color, emitEvent }: any) => {
   const [mouseDown, setMouseDown] = useState(false);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<any>(null);
   const prevPoint = useRef<null | Point>(null);
 
   const onMouseDown = () => setMouseDown(true);

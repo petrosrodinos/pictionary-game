@@ -72,7 +72,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
 
   return (
     <div className="canvas-panel-container">
-      {currentUserIsPlaying && (
+      {/* {currentUserIsPlaying && (
         <div className="word-container">
           <Typography variant="text-accent" className="word-label">
             WORD:
@@ -81,19 +81,18 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
             {word}
           </Typography>
         </div>
-      )}
-      <div className="canvas-tools">
+      )} */}
+      {/* <div className="canvas-tools">
         <div className="canvas-tools-content"></div>
-      </div>
+      </div> */}
       {/* <div className="canvas-container"> */}
-      <canvas
+      <div
         // width={canvasWidth}
         // height={canvasHeight}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         className="canvas"
-      />
-      {/* </div> */}
+      ></div>
     </div>
   );
 };

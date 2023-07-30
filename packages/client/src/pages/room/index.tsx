@@ -125,18 +125,19 @@ const Room: FC = () => {
     <>
       {roomInfo && (
         <>
-          <Modal title={chooseTitle()} isOpen={!!activeModal}>
+          {/* <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
-          </Modal>
+          </Modal> */}
           <div className="room-page-container">
             <div className="drawing-area-container">
-              <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
-              <Canvas
+              {/* <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} /> */}
+              {/* <Canvas
                 word={roomInfo?.word}
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
-              />
+              /> */}
             </div>
-            <Chat />
+            <div className="temp-chat"></div>
+            {/* <Chat /> */}
           </div>
         </>
       )}
