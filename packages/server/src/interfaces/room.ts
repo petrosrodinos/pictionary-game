@@ -13,7 +13,7 @@ export interface Room {
   choosingWordTime: number;
 }
 
-export type Status = "created" | "waiting" | "selecting-word" | "playing" | "finished";
+export type Status = "created" | "waiting-room" | "selecting-word" | "playing" | "finished";
 
 export interface ConnectedUser {
   userId: string;

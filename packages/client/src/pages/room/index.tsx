@@ -4,13 +4,13 @@ import { authStore } from "../../store/authStore";
 import Info from "./Info";
 import Modal from "../../components/ui/Modal";
 import WaitingWord from "./WaitingWord";
-import { getRandomAvatar } from "../../utils/avatar";
 import ChoosingWord from "./ChoosingWord";
 import GameFinished from "./GameFinished";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../hooks/socket";
 import { useParams } from "react-router-dom";
 import "./style.scss";
+import Chat from "./Chat";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
@@ -136,6 +136,7 @@ const Room: FC = () => {
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
               />
             </div>
+            <Chat />
           </div>
         </>
       )}

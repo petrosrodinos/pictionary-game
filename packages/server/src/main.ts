@@ -55,6 +55,7 @@ socket.on("connection", (socket: any) => {
           ...user,
           points: 0,
         });
+        room.status = "waiting-room";
         if (room.users.length === room.players) {
           room.status = "selecting-word";
           room.currentArtist = room.users[0];
@@ -92,7 +93,7 @@ socket.on("connection", (socket: any) => {
           socket.emit("time-finished", rooms[code]);
           socket.in(code).emit("time-finished", rooms[code]);
         }
-      }, ROUND_TIME * 1000);
+      }, ROUND_TIME * 1000 * 100000);
     });
   });
 });

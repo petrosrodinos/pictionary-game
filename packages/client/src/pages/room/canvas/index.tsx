@@ -15,7 +15,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
-  const { id: documentId } = useParams();
+  const { id: roomId } = useParams();
   const [socket, setSocket] = useState<any>();
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
 
@@ -25,7 +25,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       if (canvasElement) {
         const { width, height } = canvasElement.getBoundingClientRect();
         setCanvasWidth(width);
-        setCanvasHeight(height * 0.9);
+        setCanvasHeight(height * 0.96);
       }
     };
 
@@ -71,7 +71,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   }
 
   return (
-    <div className="canvas-container">
+    <div className="canvas-panel-container">
       {currentUserIsPlaying && (
         <div className="word-container">
           <Typography variant="text-accent" className="word-label">
@@ -85,13 +85,15 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       <div className="canvas-tools">
         <div className="canvas-tools-content"></div>
       </div>
+      {/* <div className="canvas-container"> */}
       <canvas
-        width={canvasWidth}
-        height={canvasHeight}
+        // width={canvasWidth}
+        // height={canvasHeight}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         className="canvas"
       />
+      {/* </div> */}
     </div>
   );
 };
