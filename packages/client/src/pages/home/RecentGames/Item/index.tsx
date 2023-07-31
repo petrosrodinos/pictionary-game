@@ -7,6 +7,7 @@ interface RecentGamesItemProps {
   item: UserType;
 }
 
+
 const RecentGamesItem: FC<RecentGamesItemProps> = ({ item }) => {
   return (
     <div className="recent-leader-board-item">
@@ -23,8 +24,11 @@ const RecentGamesItem: FC<RecentGamesItemProps> = ({ item }) => {
           <Typography>{item.xp}</Typography>
         </span>
         <span>
-          <Typography>games: </Typography>
-          <Typography>{item.games}</Typography>
+        <Typography>Date:</Typography>
+        <Typography>{item.date}</Typography>
+          
+          {/* <Typography>Date: {currDay}/{currMonth}/{currYear} </Typography> */}
+          {/* <Typography>{item.games}</Typography> */}
         </span>
       </div>
     </div>
