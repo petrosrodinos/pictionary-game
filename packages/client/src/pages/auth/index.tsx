@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import Typography from "../../components/ui/Typography";
-import "./style.scss";
 import Container from "../../components/Container";
+import "./style.scss";
 
 interface AuthPageProps {
   children: React.ReactNode;

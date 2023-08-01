@@ -11,12 +11,12 @@ import { useSocket } from "../../hooks/socket";
 import { useParams } from "react-router-dom";
 import "./style.scss";
 import Chat from "./Chat";
+import Container from "../../components/Container";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
   const { username } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
-
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -128,17 +128,16 @@ const Room: FC = () => {
           {/* <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal> */}
-          <div className="room-page-container">
-            <div className="drawing-area-container">
-              {/* <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} /> */}
-              {/* <Canvas
-                word={roomInfo?.word}
-                currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
-              /> */}
-            </div>
-            <div className="temp-chat"></div>
-            {/* <Chat /> */}
-          </div>
+          <Container className="room-page-container">
+            {/* <div className="drawing-area-container"> */}
+            {/* <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} /> */}
+            <Canvas
+              word={roomInfo?.word}
+              currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
+            />
+            {/* </div> */}
+            <Chat />
+          </Container>
         </>
       )}
     </>

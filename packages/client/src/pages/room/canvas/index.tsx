@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { API_BASE_URL } from "../../../constants";
 import Typography from "../../../components/ui/Typography";
+import { useSocket } from "../../../hooks/socket";
 import "./style.scss";
 
 interface CanvasProps {
@@ -16,8 +17,8 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
   const { id: roomId } = useParams();
-  const [socket, setSocket] = useState<any>();
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
+  const { socket } = useSocket();
 
   useEffect(() => {
     const updateCanvasSize = () => {
@@ -36,21 +37,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       window.removeEventListener("resize", updateCanvasSize);
     };
   }, []);
-
-  useEffect(() => {
-    const s = io(`${API_BASE_URL}`);
-    setSocket(s);
-
-    return () => {
-      s.disconnect();
-    };
-  }, []);
-
-  // useEffect(() => {
-  //   if (socket == null) return;
-
-  //   socket.emit("join-room", documentId);
-  // }, [socket, documentId]);
 
   useEffect(() => {
     if (socket == null) return;
@@ -86,13 +72,13 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
         <div className="canvas-tools-content"></div>
       </div> */}
       {/* <div className="canvas-container"> */}
-      <div
-        // width={canvasWidth}
-        // height={canvasHeight}
+      <canvas
+        width={canvasWidth}
+        height={canvasHeight}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         className="canvas"
-      ></div>
+      ></canvas>
     </div>
   );
 };
