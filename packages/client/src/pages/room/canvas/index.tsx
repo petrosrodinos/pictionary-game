@@ -1,8 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import { useParams } from "react-router-dom";
-import { io } from "socket.io-client";
-import { API_BASE_URL } from "../../../constants";
 import Typography from "../../../components/ui/Typography";
 import { useSocket } from "../../../hooks/socket";
 import "./style.scss";
@@ -58,7 +56,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
 
   return (
     <div className="canvas-panel-container">
-      {/* {currentUserIsPlaying && (
+      {currentUserIsPlaying && (
         <div className="word-container">
           <Typography variant="text-accent" className="word-label">
             WORD:
@@ -67,11 +65,10 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
             {word}
           </Typography>
         </div>
-      )} */}
-      {/* <div className="canvas-tools">
+      )}
+      <div className="canvas-tools">
         <div className="canvas-tools-content"></div>
-      </div> */}
-      {/* <div className="canvas-container"> */}
+      </div>
       <canvas
         width={canvasWidth}
         height={canvasHeight}

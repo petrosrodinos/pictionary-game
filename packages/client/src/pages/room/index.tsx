@@ -129,14 +129,14 @@ const Room: FC = () => {
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal> */}
           <Container className="room-page-container">
-            {/* <div className="drawing-area-container"> */}
-            {/* <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} /> */}
-            <Canvas
-              word={roomInfo?.word}
-              currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
-            />
-            {/* </div> */}
-            <Chat />
+            <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
+            <div className="canvas-chat-container">
+              <Canvas
+                word={roomInfo?.word}
+                currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
+              />
+              <Chat />
+            </div>
           </Container>
         </>
       )}

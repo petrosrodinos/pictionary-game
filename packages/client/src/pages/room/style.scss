@@ -6,17 +6,23 @@
   height: 100%;
   background-color: var(--primary-background-color-rgba);
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 10px;
   margin: 10px;
-  gap: 10px;
 }
 
-.drawing-area-container {
-  // display: flex;
-  background-color: white;
+.canvas-chat-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: 768px) {
+  .canvas-chat-container {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
