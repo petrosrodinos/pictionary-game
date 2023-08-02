@@ -5,14 +5,14 @@ export const useTimer = (time?: string | number, onTimerFinish?: () => void) => 
   const [countDownInSeconds, setCountDownInSeconds] = useState<number>(0);
 
   useEffect(() => {
-    if (!time || !onTimerFinish) return;
+    if (!time) return;
     let minutes, seconds;
     if (typeof time === "string") {
       const splitted = time.split(":").map(Number);
       minutes = splitted[0];
       seconds = splitted[1];
     } else {
-      minutes = time;
+      minutes = time * 60;
       seconds = 0;
     }
     const countDownTime = minutes + seconds;
@@ -25,7 +25,7 @@ export const useTimer = (time?: string | number, onTimerFinish?: () => void) => 
         clearInterval(interval);
         setCountDown("00:00");
         setCountDownInSeconds(0);
-        onTimerFinish();
+        onTimerFinish?.();
       } else {
         setCountDownInSeconds(remainingTime);
         const formattedTime = `${String(Math.floor(remainingTime / 60)).padStart(2, "0")}:${String(

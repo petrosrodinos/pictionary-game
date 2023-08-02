@@ -121,6 +121,10 @@ const Room: FC = () => {
     return player === username ? "choosing-word" : "waiting-word";
   }
 
+  const takeTime = () => {
+    return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
+  };
+
   return (
     <>
       {roomInfo && (
@@ -129,7 +133,7 @@ const Room: FC = () => {
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal>
           <Container className="room-page-container">
-            <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
+            <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas
                 socket={socket}
