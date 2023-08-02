@@ -5,6 +5,10 @@
   align-items: center;
   gap: 20px;
 }
+.category-label {
+  align-self: flex-start;
+  color: var(--text-secondary);
+}
 .settings-label {
   color: var(--secondary-background-color-dark);
 }

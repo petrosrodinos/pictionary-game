@@ -41,9 +41,6 @@ socket.on("connection", (socket: any) => {
       drawings: [],
       status: "created",
       round: 1,
-      word: "",
-      roundTime: ROUND_TIME,
-      choosingWordTime: CHOOSING_WORD_TIME,
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {

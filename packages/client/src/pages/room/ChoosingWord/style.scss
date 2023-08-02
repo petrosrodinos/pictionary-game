@@ -14,28 +14,3 @@
 .choosing-word-label {
   color: var(--text-secondary-light);
 }
-
-.words-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.word-item {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--secondary-background-color-medium);
-  border-radius: var(--border-radius);
-  padding: 10px;
-  height: 30px;
-  max-width: 70px;
-  width: 100%;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--secondary-background-color-dark);
-  }
-}

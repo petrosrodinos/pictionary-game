@@ -3,15 +3,17 @@ import Typography from "../../../components/ui/Typography";
 import Loader from "../../../components/ui/Loader";
 import Players from "../WaitingWord/Players";
 import { WORDS } from "../../../constants/game";
+import ChipSelector from "../../../components/ui/ChipSelector";
 import "./style.scss";
 
 interface ChoosingWordProps {
   time: number;
   players: UserType[];
+  category: keyof typeof WORDS;
   onWordSelected: (word: string) => void;
 }
 
-const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, onWordSelected }) => {
+const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSelected }) => {
   return (
     <div className="choosing-word-container">
       <Typography variant="sub-header-main" className="choosing-word-label">
@@ -21,13 +23,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, onWordSelected }) 
       <Typography variant="text-accent" className="words-label">
         WORDS
       </Typography>
-      <div className="words-container">
-        {WORDS["animals"].map((word, index) => (
-          <div key={index} className="word-item" onClick={() => onWordSelected(word)}>
-            <Typography>{word}</Typography>
-          </div>
-        ))}
-      </div>
+      <ChipSelector chips={WORDS[category]} onChange={onWordSelected} />
       <Players players={players} />
     </div>
   );

@@ -2,7 +2,7 @@ import { FC } from "react";
 import Typography from "../Typography";
 import "./style.scss";
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string | number;
   placeholder?: string;
   name?: string;
@@ -13,6 +13,8 @@ interface InputProps {
   style?: React.CSSProperties;
   className?: string;
   register?: any;
+  label?: string;
+  props?: any;
 }
 
 const Input: FC<InputProps> = ({
@@ -26,9 +28,16 @@ const Input: FC<InputProps> = ({
   style,
   className = "",
   register,
+  label,
+  ...props
 }) => {
   return (
     <div className={`input-container ${className}`} style={style}>
+      {label && (
+        <Typography variant="text-main" className="input-label">
+          {label}
+        </Typography>
+      )}
       <input
         value={value}
         disabled={disabled}
@@ -36,6 +45,7 @@ const Input: FC<InputProps> = ({
         name={name}
         placeholder={placeholder}
         type={type}
+        {...props}
         {...register?.(name)}
       ></input>
       {error && <Typography className="input-error">{error}</Typography>}

@@ -15,20 +15,36 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
       <div className="settings-content">
         <Typography>
           <Typography variant="text-accent" className="waiting-room-label">
-            PLAYERS:
+            CATEGORY:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {roomInfo.players}
+            {roomInfo.category}
           </Typography>
         </Typography>
-        {/* <Typography>
+        <Typography>
           <Typography variant="text-accent" className="waiting-room-label">
-            ROUNDS:
+            MAX PLAYERS:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {roomInfo.rounds}
+            {roomInfo.maxPlayers}
           </Typography>
-        </Typography> */}
+        </Typography>
+        <Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            ROUND TIME:
+          </Typography>
+          <Typography variant="text-main" className="room-stat">
+            {roomInfo.round}
+          </Typography>
+        </Typography>
+        <Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            CHOOSING WORD TIME:
+          </Typography>
+          <Typography variant="text-main" className="room-stat">
+            {roomInfo.choosingWordTime}
+          </Typography>
+        </Typography>
       </div>
     </div>
   );

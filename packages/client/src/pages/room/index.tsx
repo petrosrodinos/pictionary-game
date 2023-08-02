@@ -11,8 +11,9 @@ import { useSocket } from "../../hooks/socket";
 import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
-import "./style.scss";
 import NoRoom from "./NoRoom";
+import "./style.scss";
+import { WORDS } from "../../constants/game";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
@@ -102,6 +103,7 @@ const Room: FC = () => {
         time={roomInfo.choosingWordTime}
         onWordSelected={handleWordSelected}
         players={roomInfo.players}
+        category={roomInfo.category as keyof typeof WORDS}
       />
     ),
     "waiting-word": (
@@ -136,7 +138,6 @@ const Room: FC = () => {
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal>
           <Container className="room-page-container">
-            {JSON.stringify(roomInfo)}
             <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas

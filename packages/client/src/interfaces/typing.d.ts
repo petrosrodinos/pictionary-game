@@ -45,6 +45,5 @@ interface RoomInfo extends GameSettings {
   word: string;
   round: number;
   currentArtist: UserType;
-
   status: string;
 }

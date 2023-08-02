@@ -72,7 +72,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
       {roomInfo ? (
         <>
           <RoomInfo roomInfo={roomInfo} />
-          <UsersGrid users={roomInfo.users} />
+          <UsersGrid users={roomInfo.players} />
           <RoomSettings roomInfo={roomInfo} />
         </>
       ) : (
