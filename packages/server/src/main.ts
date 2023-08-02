@@ -37,7 +37,7 @@ socket.on("connection", (socket: any) => {
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
       ...settings,
-      users: [],
+      players: [],
       drawings: [],
       status: "created",
       round: 1,
@@ -49,16 +49,16 @@ socket.on("connection", (socket: any) => {
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
     if (rooms[code]) {
       const room = rooms[code];
-      if (!room.users.find((u) => u.userId === user.userId)) {
+      if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
-        room.users.push({
+        room.players.push({
           ...user,
           points: 0,
         });
         room.status = "waiting-room";
-        if (room.users.length === room.players) {
+        if (room.players.length === room.maxPlayers) {
           room.status = "selecting-word";
-          room.currentArtist = room.users[0];
+          room.currentArtist = room.players[0];
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
         }
@@ -83,13 +83,13 @@ socket.on("connection", (socket: any) => {
       setTimeout(() => {
         rooms[code].round++;
         rooms[code].word = "";
-        if (rooms[code].round > rooms[code].users.length) {
+        if (rooms[code].round > rooms[code].players.length) {
           rooms[code].status = "finished";
           socket.emit("game-finished", rooms[code]);
           socket.in(code).emit("game-finished", rooms[code]);
         } else {
           rooms[code].status = "selecting-word";
-          rooms[code].currentArtist = rooms[code].users[rooms[code].round - 1];
+          rooms[code].currentArtist = rooms[code].players[rooms[code].round - 1];
           socket.emit("time-finished", rooms[code]);
           socket.in(code).emit("time-finished", rooms[code]);
         }

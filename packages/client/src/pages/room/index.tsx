@@ -9,9 +9,10 @@ import GameFinished from "./GameFinished";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../hooks/socket";
 import { useParams } from "react-router-dom";
-import "./style.scss";
 import Chat from "./Chat";
 import Container from "../../components/Container";
+import "./style.scss";
+import NoRoom from "./NoRoom";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
@@ -27,6 +28,7 @@ const Room: FC = () => {
     socket.emit("join-room", roomId);
 
     socket.on("send-info", (roomInfo: RoomInfo) => {
+      if (!roomInfo) return;
       console.log("get-info", roomInfo);
       setRoomData(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
@@ -80,6 +82,7 @@ const Room: FC = () => {
   }, [socket, roomId]);
 
   const setRoomData = (roomInfo: RoomInfo) => {
+    if (!roomInfo) return;
     setRoomInfo(roomInfo);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
   };
@@ -98,23 +101,23 @@ const Room: FC = () => {
       <ChoosingWord
         time={roomInfo.choosingWordTime}
         onWordSelected={handleWordSelected}
-        players={roomInfo.users}
+        players={roomInfo.players}
       />
     ),
     "waiting-word": (
       <WaitingWord
         time={roomInfo.choosingWordTime}
         artist={roomInfo.currentArtist}
-        players={roomInfo?.users}
+        players={roomInfo?.players}
       />
     ),
-    "game-finished": <GameFinished onExit={handleExit} players={roomInfo?.users} />,
+    "game-finished": <GameFinished onExit={handleExit} players={roomInfo?.players} />,
   };
 
   function chooseTitle(): string {
-    if (roomInfo.round >= roomInfo?.users?.length && activeModal === "game-finished")
+    if (roomInfo.round >= roomInfo?.players?.length && activeModal === "game-finished")
       return "GAME FINISHED";
-    return `ROUND ${roomInfo?.round}/${roomInfo?.users?.length} IS STARTING`;
+    return `ROUND ${roomInfo?.round}/${roomInfo?.players?.length} IS STARTING`;
   }
 
   function chooseOption(player: string): keyof typeof ModalComponents {
@@ -127,12 +130,13 @@ const Room: FC = () => {
 
   return (
     <>
-      {roomInfo && (
+      {Object.keys(roomInfo).length != 0 ? (
         <>
           <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal>
           <Container className="room-page-container">
+            {JSON.stringify(roomInfo)}
             <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas
@@ -144,6 +148,10 @@ const Room: FC = () => {
             </div>
           </Container>
         </>
+      ) : (
+        <Modal title={"NO ROOM FOUND"} isOpen={true}>
+          <NoRoom />
+        </Modal>
       )}
     </>
   );

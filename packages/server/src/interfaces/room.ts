@@ -1,9 +1,8 @@
 export interface Room {
   code: string;
   creator: string;
-  players: number;
-  rounds: number;
-  users: ConnectedUser[];
+  maxPlayers: number;
+  players: ConnectedUser[];
   drawings: any[];
   status: Status;
   word: string;
@@ -11,6 +10,7 @@ export interface Room {
   currentArtist: ConnectedUser;
   roundTime: number;
   choosingWordTime: number;
+  category: string;
 }
 
 export type Status = "created" | "waiting-room" | "selecting-word" | "playing" | "finished";

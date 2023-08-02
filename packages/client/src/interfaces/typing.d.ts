@@ -30,27 +30,21 @@ interface UserType {
   points: number;
 }
 
-// interface InGameUser {
-//   userId: number;
-//   username: string;
-//   avatar: string;
-//   points: number;
-//   level?: number;
-// }
-
 interface GameSettings {
-  players: number;
+  maxPlayers: number;
+  roundTime: number;
+  choosingWordTime: number;
+  category: string;
   code: string;
 }
 
 interface RoomInfo extends GameSettings {
   creator: string;
-  users: UserType[];
+  players: UserType[];
   drawings?: any[];
   word: string;
   round: number;
   currentArtist: UserType;
-  roundTime: number;
-  choosingWordTime: number;
+
   status: string;
 }
