@@ -24,7 +24,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
       if (canvasElement) {
         const { width, height } = canvasElement.getBoundingClientRect();
         setCanvasWidth(width);
-        setCanvasHeight(height * 0.96);
+        setCanvasHeight(height);
       }
     };
 
@@ -57,18 +57,21 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
   return (
     <div className="canvas-panel-container">
       {currentUserIsPlaying && (
-        <div className="word-container">
-          <Typography variant="text-accent" className="word-label">
-            WORD:
-          </Typography>
-          <Typography variant="small-text-main" className="word-text">
-            {word}
-          </Typography>
-        </div>
+        <>
+          <div className="word-container">
+            <Typography variant="text-accent" className="word-label">
+              WORD:
+            </Typography>
+            <Typography variant="small-text-main" className="word-text">
+              {word}
+            </Typography>
+          </div>
+          <div className="canvas-tools">
+            <div className="canvas-tools-content"></div>
+          </div>
+        </>
       )}
-      <div className="canvas-tools">
-        <div className="canvas-tools-content"></div>
-      </div>
+
       <canvas
         width={canvasWidth}
         height={canvasHeight}
