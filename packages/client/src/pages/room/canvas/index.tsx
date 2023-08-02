@@ -8,15 +8,16 @@ import "./style.scss";
 interface CanvasProps {
   word: string;
   currentUserIsPlaying: boolean;
+  socket: any;
 }
 
-const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying }) => {
+const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, socket }) => {
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
   const { id: roomId } = useParams();
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
-  const { socket } = useSocket();
+  // const { socket } = useSocket();
 
   useEffect(() => {
     const updateCanvasSize = () => {

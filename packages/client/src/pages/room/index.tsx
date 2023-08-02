@@ -132,6 +132,7 @@ const Room: FC = () => {
             <Info timer={roomInfo?.roundTime} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas
+                socket={socket}
                 word={roomInfo?.word}
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
               />
