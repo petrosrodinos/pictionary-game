@@ -24,11 +24,9 @@ const Room: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!socket) return;
+    socket?.emit("join-room", roomId, userId);
 
-    socket.emit("join-room", roomId, userId);
-
-    socket.on("send-info", (roomInfo: RoomInfo) => {
+    socket?.on("send-info", (roomInfo: RoomInfo) => {
       if (!roomInfo) return;
       console.log("get-info", roomInfo);
       setRoomData(roomInfo);
@@ -36,49 +34,43 @@ const Room: FC = () => {
     });
 
     return () => {
-      socket.off("send-info");
+      socket?.off("send-info");
     };
   }, [socket, roomId]);
 
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on("word-changed", (roomInfo: RoomInfo) => {
+    socket?.on("word-changed", (roomInfo: RoomInfo) => {
       console.log("word-changed", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal("");
     });
 
     return () => {
-      socket.off("word-changed");
+      socket?.off("word-changed");
     };
   }, [socket, roomId]);
 
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on("time-finished", (roomInfo: RoomInfo) => {
+    socket?.on("time-finished", (roomInfo: RoomInfo) => {
       console.log("time-finished", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
     });
 
     return () => {
-      socket.off("time-finished");
+      socket?.off("time-finished");
     };
   }, [socket, roomId]);
 
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on("game-finished", (roomInfo: RoomInfo) => {
+    socket?.on("game-finished", (roomInfo: RoomInfo) => {
       console.log("game-finished", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal("game-finished");
     });
 
     return () => {
-      socket.off("game-finished");
+      socket?.off("game-finished");
     };
   }, [socket, roomId]);
 
@@ -89,8 +81,7 @@ const Room: FC = () => {
   };
 
   const handleWordSelected = (word: string) => {
-    if (!socket) return;
-    socket.emit("word-selected", roomId, word);
+    socket?.emit("word-selected", roomId, word);
   };
 
   const handleExit = () => {
@@ -141,6 +132,7 @@ const Room: FC = () => {
             <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas
+                canvasData={roomInfo?.drawings}
                 socket={socket}
                 word={roomInfo?.word}
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}

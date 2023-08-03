@@ -1,23 +1,20 @@
 import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
-import { useParams } from "react-router-dom";
 import Typography from "../../../components/ui/Typography";
-import { useSocket } from "../../../hooks/socket";
 import "./style.scss";
 
 interface CanvasProps {
   word: string;
   currentUserIsPlaying: boolean;
   socket: any;
+  canvasData?: any[];
 }
 
-const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, socket }) => {
+const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
-  const { id: roomId } = useParams();
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
-  // const { socket } = useSocket();
 
   useEffect(() => {
     const updateCanvasSize = () => {
@@ -38,21 +35,26 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, socket }) => {
   }, []);
 
   useEffect(() => {
-    if (socket == null) return;
+    if (canvasData && canvasData.length > 0) {
+      canvasData.forEach((data) => {
+        drawPixel(data);
+      });
+    }
+  }, [canvasData]);
 
+  useEffect(() => {
     const handler = (delta: any) => {
       drawPixel(delta);
     };
-    socket.on("receive-changes", handler);
+    socket?.on("receive-changes", handler);
 
     return () => {
-      socket.off("receive-changes", handler);
+      socket?.off("receive-changes", handler);
     };
   }, [socket]);
 
   function emitEvent(data: any) {
-    if (!socket) return;
-    socket.emit("send-changes", data);
+    socket?.emit("send-changes", data);
   }
 
   return (

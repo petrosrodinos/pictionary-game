@@ -70,22 +70,24 @@ socket.on("connection", (socket: any) => {
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
       });
-      socket.on("disconnect", () => {
-        room.players = room.players.filter((u) => u.userId !== user.userId);
-        socket.in(code).emit("user-left", room);
-        socket.emit("user-left", room);
-      });
+      // socket.on("disconnect", () => {
+      //   room.players = room.players.filter((u) => u.userId !== user.userId);
+      //   socket.in(code).emit("user-left", room);
+      //   socket.emit("user-left", room);
+      // });
     }
   });
   socket.on("join-room", async (code: string, userId: string) => {
-    if (!rooms[code] || !rooms[code].players.find((u) => u.userId === userId)) {
+    if (!rooms[code]) {
+      //|| !rooms[code].players.find((u) => u.userId === userId)
       return;
     }
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", rooms[code]);
-    socket.on("send-changes", (delta: any) => {
-      socket.broadcast.to(code).emit("receive-changes", delta);
+    socket.on("send-changes", (data: any) => {
+      socket.broadcast.to(code).emit("receive-changes", data);
+      rooms[code].drawings.push(data);
     });
     socket.on("word-selected", (code: string, word: string) => {
       rooms[code].word = word;
