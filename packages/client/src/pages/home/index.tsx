@@ -65,6 +65,11 @@ const Home: FC = () => {
     });
   };
 
+  const handleLeaveWaitingRoom = () => {
+    setSearchParams({});
+    socket?.emit("leave-waiting-room", searchParams.get("waitingRoom"));
+  };
+
   const ModalComponents: any = {
     ["join-room"]: {
       title: "JOIN A ROOM",
@@ -76,8 +81,8 @@ const Home: FC = () => {
     },
     ["waiting-room"]: {
       title: "WAITING ROOM",
-      component: <WaitingRoom onLeave={handleLeave} />,
-      onClose: () => setSearchParams({}),
+      component: <WaitingRoom />,
+      onClose: handleLeaveWaitingRoom,
     },
   };
 

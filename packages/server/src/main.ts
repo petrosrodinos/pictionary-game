@@ -44,7 +44,8 @@ socket.on("connection", (socket: any) => {
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
-    if (rooms[code] && rooms[code].players.length !== rooms[code].maxPlayers) {
+    if (rooms[code]) {
+      //&& rooms[code].players.length !== rooms[code].maxPlayers
       const room = rooms[code];
       if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
@@ -63,6 +64,11 @@ socket.on("connection", (socket: any) => {
       socket.join(code);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
+      socket.on("disconnect", () => {
+        room.players = room.players.filter((u) => u.userId !== user.userId);
+        socket.in(code).emit("user-left", room);
+        socket.emit("user-left", room);
+      });
     }
   });
   socket.on("join-room", async (code: string, userId: string) => {

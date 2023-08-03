@@ -12,12 +12,9 @@ import { useTimer } from "../../../hooks/timer";
 import { STARTING_TIME } from "../../../constants/game";
 import "./style.scss";
 
-interface WaitingRoomProps {
-  onLeave: () => void;
-  // roomInfo: RoomInfo | undefined;
-}
+interface WaitingRoomProps {}
 
-const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
+const WaitingRoom: FC<WaitingRoomProps> = () => {
   const { countDownInSeconds, startCountDown } = useTimer("", startGame);
   const navigate = useNavigate();
   const { userId, username, avatar, level } = authStore((state) => state);
@@ -63,6 +60,16 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    socket?.on("user-left", (room: any) => {
+      setRoomInfo(room);
+    });
+
+    return () => {
+      socket?.off("user-left");
+    };
+  }, [socket]);
+
   function startGame() {
     navigate(`/room/${searchParams.get("waitingRoom")}`);
   }
@@ -79,11 +86,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
         <Typography>Room does not exist or it is full :(</Typography>
       )}
       {countDownInSeconds > 0 && (
-        <Button
-          disabled={true}
-          title={`GAME STARTING IN ${countDownInSeconds.toString()}`}
-          onClick={onLeave}
-        />
+        <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
       )}
     </div>
   );
