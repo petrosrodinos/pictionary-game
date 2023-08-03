@@ -4,23 +4,21 @@ import Typography from "../Typography";
 import Avatar from "../Avatar";
 
 interface ImageUploaderProps {
-  value: string;
   style?: React.CSSProperties;
   className?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error: string;
+  error?: string;
   name?: string;
 }
 
 const ImageUploader: FC<ImageUploaderProps> = ({
-  value,
   style,
   className = "",
   onChange,
   error,
   name,
 }) => {
-  const [avatarImage, setAvatarImage] = useState<any>(value || ""); // Δινω στο label την εικονα που εχει το Avatar
+  const [avatarImage, setAvatarImage] = useState<any>(""); // Δινω στο label την εικονα που εχει το Avatar
   const [isInputHidden, setIsInputHidden] = useState(false); // Τσεκαρω input και το κανω disable
 
   const handleAvatarChange = async (e: any) => {
@@ -36,12 +34,11 @@ const ImageUploader: FC<ImageUploaderProps> = ({
       setIsInputHidden(true);
     }
 
-    const valueBase64 = base64.split(",")[1]; // Extract only the base64 part after the comma
     onChange({
       ...e,
       target: {
         ...e.target,
-        value: valueBase64,
+        value: base64,
       },
     });
   };
@@ -59,25 +56,29 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     });
   };
 
+  const handleAvatarClick = () => {
+    console.log("clicked");
+  };
+
   return (
     <div className={`imageUploader ${className}`} style={style}>
       <label
         htmlFor="file"
-        className={`avatar-label ${isInputHidden ? "" : "hidden"}`} //δινω αναλογο className αν εχω input η οχι για το css
+        className={`avatar-label ${avatarImage ? "" : "hidden"}`}
+        onClick={handleAvatarClick}
       >
         <Avatar image={avatarImage} />
       </label>
-      {!isInputHidden && (
-        <input
-          type="file"
-          name={name}
-          className={`inputFile `}
-          value={value}
-          onChange={handleAvatarChange}
-          id="file"
-          title=""
-        />
-      )}
+      {/* {!isInputHidden && ( */}
+      <input
+        type="file"
+        name={name}
+        className={`inputFile ${avatarImage ? "hidden" : ""}`}
+        onChange={handleAvatarChange}
+        id="file"
+        title=""
+      />
+      {/* )} */}
       {error && <Typography className="avatar-error">{error}</Typography>}
     </div>
   );

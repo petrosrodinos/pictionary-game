@@ -10,8 +10,8 @@
 .inputFile {
   padding: 10px;
   @include mixins.small-text-accent;
-   //color: transparent; //an thelo na bgazo to title douleuei
-    //display: none;
+  //color: transparent; //an thelo na bgazo to title douleuei
+  //display: none;
 }
 
 .avatar-error {
@@ -20,16 +20,21 @@
   margin-top: 5px;
 }
 
-.avatar-label{
+.avatar-label {
   border: none;
   cursor: pointer;
   appearance: none;
   background-color: inherit;
 }
 
-
-
-.avatar-label.hidden,
+.hidden,
 button.avatar-label {
   display: none;
+}
+
+.avatar-button {
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  background-color: inherit;
 }
