@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Room } from "./interfaces/room";
 import cors from "cors";
-import { CHOOSING_WORD_TIME, ROUND_TIME } from "./constants/game";
+import { ROUND_TIME } from "./constants/game";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
@@ -44,7 +44,7 @@ socket.on("connection", (socket: any) => {
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
-    if (rooms[code]) {
+    if (rooms[code] && rooms[code].players.length !== rooms[code].maxPlayers) {
       const room = rooms[code];
       if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
@@ -66,6 +66,9 @@ socket.on("connection", (socket: any) => {
     }
   });
   socket.on("join-room", async (code: string) => {
+    if (rooms[code].players.length === rooms[code].maxPlayers) {
+      socket.emit("room-full", rooms[code]);
+    }
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", rooms[code]);

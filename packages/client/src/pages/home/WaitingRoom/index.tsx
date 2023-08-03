@@ -76,7 +76,7 @@ const WaitingRoom: FC<WaitingRoomProps> = ({ onLeave }) => {
           <RoomSettings roomInfo={roomInfo} />
         </>
       ) : (
-        <Typography>Room does not exist :(</Typography>
+        <Typography>Room does not exist or it is full :(</Typography>
       )}
       {countDownInSeconds > 0 && (
         <Button
