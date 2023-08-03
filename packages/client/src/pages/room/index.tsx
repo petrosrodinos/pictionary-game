@@ -12,12 +12,12 @@ import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
 import NoRoom from "./NoRoom";
-import "./style.scss";
 import { WORDS } from "../../constants/game";
+import "./style.scss";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
-  const { username } = authStore((state) => state);
+  const { username, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const { socket } = useSocket();
@@ -26,7 +26,7 @@ const Room: FC = () => {
   useEffect(() => {
     if (!socket) return;
 
-    socket.emit("join-room", roomId);
+    socket.emit("join-room", roomId, userId);
 
     socket.on("send-info", (roomInfo: RoomInfo) => {
       if (!roomInfo) return;
@@ -150,7 +150,7 @@ const Room: FC = () => {
           </Container>
         </>
       ) : (
-        <Modal title={"NO ROOM FOUND"} isOpen={true}>
+        <Modal title={"NO ROOM FOUND OR IT IS FULL"} isOpen={true}>
           <NoRoom />
         </Modal>
       )}

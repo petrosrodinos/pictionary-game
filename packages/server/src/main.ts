@@ -65,9 +65,9 @@ socket.on("connection", (socket: any) => {
       socket.emit("user-joined", room);
     }
   });
-  socket.on("join-room", async (code: string) => {
-    if (rooms[code].players.length === rooms[code].maxPlayers) {
-      socket.emit("room-full", rooms[code]);
+  socket.on("join-room", async (code: string, userId: string) => {
+    if (!rooms[code] || !rooms[code].players.find((u) => u.userId === userId)) {
+      return;
     }
     console.log("join-room", code);
     socket.join(code);
