@@ -14,6 +14,16 @@ interface ChoosingWordProps {
 }
 
 const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSelected }) => {
+  const getRandom5Words = () => {
+    const words = WORDS[category];
+    const randomWords = [];
+    for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * words.length);
+      randomWords.push(words[randomIndex]);
+    }
+    return randomWords;
+  };
+
   return (
     <div className="choosing-word-container">
       <Typography variant="sub-header-main" className="choosing-word-label">
@@ -23,7 +33,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSe
       <Typography variant="text-accent" className="words-label">
         WORDS
       </Typography>
-      <ChipSelector chips={WORDS[category]} onChange={onWordSelected} />
+      <ChipSelector chips={getRandom5Words()} onChange={onWordSelected} />
       <Players players={players} />
     </div>
   );
