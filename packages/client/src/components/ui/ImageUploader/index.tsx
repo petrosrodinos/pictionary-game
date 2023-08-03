@@ -20,8 +20,8 @@ const ImageUploader: FC<ImageUploaderProps> = ({
   error,
   name,
 }) => {
-  const [avatarImage, setAvatarImage] = useState<any>(value || ""); // Set the initial value of avatarImage to the provided value prop
-  const [isInputHidden, setIsInputHidden] = useState(false);
+  const [avatarImage, setAvatarImage] = useState<any>(value || ""); // Δινω στο label την εικονα που εχει το Avatar
+  const [isInputHidden, setIsInputHidden] = useState(false); // Τσεκαρω input και το κανω disable
 
   const handleAvatarChange = async (e: any) => {
     const file: File = e.target?.files?.[0];
@@ -29,8 +29,9 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     const base64: any = await convertBase64(file);
 
     setAvatarImage(base64);
+    console.log(base64);
 
-    // Check if the input should be hidden, and set the state accordingly
+    // Τσεκαρω αν εχω input το κανω disable
     if (!isInputHidden) {
       setIsInputHidden(true);
     }
@@ -62,22 +63,21 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     <div className={`imageUploader ${className}`} style={style}>
       <label
         htmlFor="file"
-        className={`avatar-label ${isInputHidden ? "" : "hidden"}`}
+        className={`avatar-label ${isInputHidden ? "" : "hidden"}`} //δινω αναλογο className αν εχω input η οχι για το css
       >
         <Avatar image={avatarImage} />
       </label>
-      <button className={`avatar-label `} onClick={handleAvatarChange}>
-        <Avatar image={avatarImage} />
-      </button>
-      <input
-        type="file"
-        name={name}
-        className={`inputFile `}
-        value={value}
-        onChange={handleAvatarChange}
-        id="file"
-        title=""
-      />
+      {!isInputHidden && (
+        <input
+          type="file"
+          name={name}
+          className={`inputFile `}
+          value={value}
+          onChange={handleAvatarChange}
+          id="file"
+          title=""
+        />
+      )}
       {error && <Typography className="avatar-error">{error}</Typography>}
     </div>
   );
