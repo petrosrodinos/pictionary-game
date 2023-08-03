@@ -25,7 +25,7 @@ const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
           Link:
         </Typography>{" "}
         <Typography className="room-stat waiting-room-link">
-          {CLIENT_URL}room/
+          {CLIENT_URL}home?waitingRoom=
           {roomInfo.code}
         </Typography>
       </Typography>
