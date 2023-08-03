@@ -49,16 +49,18 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
 
   //listening for when game starts and starts the timer
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on("game-started", () => {
+    socket?.on("game-started", () => {
       startCountDown(STARTING_TIME);
     });
 
     return () => {
-      socket.off("game-started");
+      socket?.off("game-started");
     };
   }, [socket]);
+
+  const startGameByCreator = () => {
+    socket?.emit("start-game", searchParams.get("waitingRoom"));
+  };
 
   useEffect(() => {
     socket?.on("user-left", (room: any) => {
@@ -81,12 +83,15 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           <RoomInfo roomInfo={roomInfo} />
           <UsersGrid users={roomInfo.players} />
           <RoomSettings roomInfo={roomInfo} />
+          {countDownInSeconds > 0 && (
+            <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
+          )}
+          {!countDownInSeconds && roomInfo.players.length > 1 && roomInfo.creator === userId && (
+            <Button onClick={startGameByCreator} title="START GAME" />
+          )}
         </>
       ) : (
         <Typography>Room does not exist or it is full :(</Typography>
-      )}
-      {countDownInSeconds > 0 && (
-        <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
       )}
     </div>
   );

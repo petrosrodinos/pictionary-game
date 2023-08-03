@@ -64,6 +64,12 @@ socket.on("connection", (socket: any) => {
       socket.join(code);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
+      socket.on("start-game", (code: string) => {
+        room.status = "selecting-word";
+        room.currentArtist = room.players[0];
+        socket.in(code).emit("game-started", room);
+        socket.emit("game-started", room);
+      });
       socket.on("disconnect", () => {
         room.players = room.players.filter((u) => u.userId !== user.userId);
         socket.in(code).emit("user-left", room);
