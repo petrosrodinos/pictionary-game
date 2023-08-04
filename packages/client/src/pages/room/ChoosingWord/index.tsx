@@ -16,11 +16,13 @@ interface ChoosingWordProps {
 const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSelected }) => {
   const getRandom5Words = () => {
     const words = WORDS[category];
-    const randomWords = [];
-    for (let i = 0; i < 5; i++) {
+    const randomWords: string[] = [];
+    while (randomWords.length < 5) {
       const randomIndex = Math.floor(Math.random() * words.length);
+      if (randomWords.includes(words[randomIndex])) continue;
       randomWords.push(words[randomIndex]);
     }
+
     return randomWords;
   };
 
