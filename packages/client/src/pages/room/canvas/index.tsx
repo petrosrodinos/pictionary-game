@@ -14,7 +14,11 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const [color, setColor] = useState<string>("#000");
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
-  const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({ color, emitEvent });
+  const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({
+    color,
+    emitEvent,
+    currentUserIsPlaying,
+  });
 
   useEffect(() => {
     const updateCanvasSize = () => {
@@ -41,7 +45,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       });
     }
   }, [canvasData]);
- 
+
   useEffect(() => {
     const handler = (delta: any) => {
       drawPixel(delta);

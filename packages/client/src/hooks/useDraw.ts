@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useDraw = ({ color, emitEvent }: any) => {
+export const useDraw = ({ color, emitEvent, currentUserIsPlaying }: any) => {
   const [mouseDown, setMouseDown] = useState(false);
 
   const canvasRef = useRef<any>(null);
@@ -98,11 +98,10 @@ export const useDraw = ({ color, emitEvent }: any) => {
       prevPoint.current = null;
     };
 
-    // Add event listeners
+    if (!currentUserIsPlaying) return;
     canvasRef.current?.addEventListener("mousemove", handler);
     window.addEventListener("mouseup", mouseUpHandler);
 
-    // Remove event listeners
     return () => {
       canvasRef.current?.removeEventListener("mousemove", handler);
       window.removeEventListener("mouseup", mouseUpHandler);
