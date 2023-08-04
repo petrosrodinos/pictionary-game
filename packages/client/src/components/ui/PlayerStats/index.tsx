@@ -7,7 +7,7 @@ import Typography from "../Typography";
 import Avatar from "../Avatar";
 import StarLevelImage from "../../../assets/player-level-star.png";
 //import initialStateValues from "../../../home/store";
-import { authStore, getAuthState } from "../../../store/authStore";
+import { authStore } from "../../../store/authStore";
 interface PlayerStatsProps {
   style?: React.CSSProperties;
   className?: string;
@@ -18,6 +18,7 @@ const PlayerStats: FC<PlayerStatsProps> = ({
   style,
   className = "",
 }) => {
+  const { username, level, avatar, points } = authStore((state) => state);
   return (
     <div className={`player-stats ${className}`} style={style}>
       <div className="user-stats-column">
@@ -29,24 +30,22 @@ const PlayerStats: FC<PlayerStatsProps> = ({
 
             <div className="level-number">
               <Typography variant="text-accent" className="level-text">
-                {/* {getAuthState.level} */}3
+                {level}
               </Typography>
             </div>
           </div>
           <div className="user-image">
-            <Avatar
-              image={`https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80`}
-            />
+            <Avatar image={avatar} />
           </div>
           <div className="user-xp">
             <Typography variant="small-text-accent" className="user-xp-text">
-              xp:200
+              xp:{points}
             </Typography>
           </div>
         </div>
         <div className="user-name">
           <Typography variant="small-text-main" className="user-name-text">
-            Όνομα Χρήστη
+            {username}
           </Typography>
         </div>
       </div>
