@@ -34,7 +34,11 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
             ROUND TIME:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {roomInfo.round}
+            {roomInfo.roundTime / 1000}
+          </Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            {" "}
+            (s)
           </Typography>
         </Typography>
         <Typography>
@@ -42,7 +46,11 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
             CHOOSING WORD TIME:
           </Typography>
           <Typography variant="text-main" className="room-stat">
-            {roomInfo.choosingWordTime}
+            {roomInfo.choosingWordTime / 1000}
+          </Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            {" "}
+            (s)
           </Typography>
         </Typography>
       </div>

@@ -51,8 +51,8 @@ const Room: FC = () => {
   }, [socket, roomId]);
 
   useEffect(() => {
-    socket?.on("time-finished", (roomInfo: RoomInfo) => {
-      console.log("time-finished", roomInfo);
+    socket?.on("round-finished", (roomInfo: RoomInfo) => {
+      console.log("round-finished", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
     });
@@ -60,7 +60,19 @@ const Room: FC = () => {
     return () => {
       socket?.off("time-finished");
     };
-  }, [socket, roomId]);
+  }, [socket]);
+
+  useEffect(() => {
+    socket?.on("choosing-word-time-finished", (roomInfo: RoomInfo) => {
+      console.log("choosing-word-time-finished", roomInfo);
+      setRoomInfo(roomInfo);
+      setActiveModal("");
+    });
+
+    return () => {
+      socket?.off("choosing-word-time-finished");
+    };
+  }, [socket]);
 
   useEffect(() => {
     socket?.on("game-finished", (roomInfo: RoomInfo) => {

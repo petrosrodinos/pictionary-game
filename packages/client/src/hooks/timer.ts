@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useTimer = (time?: number, onTimerFinish?: () => void) => {
+export const useTimer = (time?: number | null, onTimerFinish?: () => void) => {
   const [countDown, setCountDown] = useState<string>("00:00");
   const [countDownInSeconds, setCountDownInSeconds] = useState<number>(0);
 

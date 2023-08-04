@@ -58,6 +58,11 @@ socket.on("connection", (socket: any) => {
           room.currentArtist = room.players[0];
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
+          setTimeout(() => {
+            room.status = "playing";
+            socket.emit("choosing-word-time-finished", room);
+            socket.in(code).emit("choosing-word-time-finished", room);
+          }, room.choosingWordTime);
         }
       }
       socket.join(code);
@@ -68,6 +73,11 @@ socket.on("connection", (socket: any) => {
         room.currentArtist = room.players[0];
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
+        setTimeout(() => {
+          room.status = "playing";
+          socket.emit("choosing-word-time-finished", room);
+          socket.in(code).emit("choosing-word-time-finished", room);
+        }, room.choosingWordTime);
       });
       // socket.on("disconnect", () => {
       //   room.players = room.players.filter((u) => u.userId !== user.userId);
@@ -104,8 +114,13 @@ socket.on("connection", (socket: any) => {
         } else {
           room.status = "selecting-word";
           room.currentArtist = room.players[room.round - 1];
-          socket.emit("time-finished", room);
-          socket.in(code).emit("time-finished", room);
+          socket.emit("round-finished", room);
+          socket.in(code).emit("round-finished", room);
+          setTimeout(() => {
+            room.status = "playing";
+            socket.emit("choosing-word-time-finished", room);
+            socket.in(code).emit("choosing-word-time-finished", room);
+          }, room.choosingWordTime);
         }
       }, room.roundTime);
     });

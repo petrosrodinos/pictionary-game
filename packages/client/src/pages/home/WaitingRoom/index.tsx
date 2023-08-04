@@ -15,7 +15,7 @@ import "./style.scss";
 interface WaitingRoomProps {}
 
 const WaitingRoom: FC<WaitingRoomProps> = () => {
-  const { countDownInSeconds, startCountDown } = useTimer("", startGame);
+  const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const navigate = useNavigate();
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
