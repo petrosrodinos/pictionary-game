@@ -41,7 +41,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       });
     }
   }, [canvasData]);
-
+ 
   useEffect(() => {
     const handler = (delta: any) => {
       drawPixel(delta);

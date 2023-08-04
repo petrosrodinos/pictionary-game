@@ -9,7 +9,7 @@ import { useSocket } from "../../../hooks/socket";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "../../../hooks/timer";
-import { STARTING_TIME } from "../../../constants/game";
+import { STARTING_TIME_IN_SECONDS } from "../../../constants/game";
 import "./style.scss";
 
 interface WaitingRoomProps {}
@@ -50,7 +50,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   //listening for when game starts and starts the timer
   useEffect(() => {
     socket?.on("game-started", () => {
-      startCountDown(STARTING_TIME);
+      startCountDown(STARTING_TIME_IN_SECONDS);
     });
 
     return () => {

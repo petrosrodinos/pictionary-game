@@ -4,6 +4,7 @@ import Typography from "../../../../components/ui/Typography";
 import { MAX_PLAYERS_IN_ROOM, MIN_PLAYERS_IN_ROOM, WORDS } from "../../../../constants/game";
 import ChipSelector from "../../../../components/ui/ChipSelector";
 import "./style.scss";
+import { transformToMilliseconds } from "../../../../utils/time";
 
 interface GameSettingsProps {
   settings: any;
@@ -12,7 +13,7 @@ interface GameSettingsProps {
 
 const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
   const handleChange = (e: any) => {
-    onChange({ name: e.target.name, value: parseInt(e.target.value) });
+    onChange({ name: e.target.name, value: e.target.value });
   };
 
   const handleCategorySelected = (category: string) => {
@@ -42,24 +43,24 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         max={MAX_PLAYERS_IN_ROOM}
       />
       <Input
-        label="Round Time (m)"
+        label="Round Time (s)"
         type="number"
         name="roundTime"
-        placeholder="Round Time (m)"
+        placeholder="Round Time (s)"
         onChange={handleChange}
         value={settings.roundTime}
-        max={5}
-        min={1}
+        max={300}
+        min={30}
       />
       <Input
-        label="Choosing Word Time (m)"
+        label="Choosing Word Time (s)"
         type="number"
         name="choosingWordTime"
-        placeholder="Choosing Word Time (m)"
+        placeholder="Choosing Word Time (s)"
         onChange={handleChange}
         value={settings.choosingWordTime}
-        max={5}
-        min={1}
+        max={120}
+        min={20}
       />
     </div>
   );

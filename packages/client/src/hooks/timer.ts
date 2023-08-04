@@ -1,21 +1,12 @@
 import { useEffect, useState } from "react";
 
-export const useTimer = (time?: string | number, onTimerFinish?: () => void) => {
+export const useTimer = (time?: number, onTimerFinish?: () => void) => {
   const [countDown, setCountDown] = useState<string>("00:00");
   const [countDownInSeconds, setCountDownInSeconds] = useState<number>(0);
 
   useEffect(() => {
     if (!time) return;
-    let minutes, seconds;
-    if (typeof time === "string") {
-      const splitted = time.split(":").map(Number);
-      minutes = splitted[0];
-      seconds = splitted[1];
-    } else {
-      minutes = time * 60;
-      seconds = 0;
-    }
-    const countDownTime = minutes + seconds;
+    const countDownTime = time / 1000;
 
     let remainingTime = countDownTime;
     const interval = setInterval(() => {

@@ -3,9 +3,14 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { CLIENT_URL } from "../../../constants";
 import GameSettings from "./GameSettings";
-import { CHOOSING_WORD_TIME, MAX_PLAYERS, ROUND_TIME } from "../../../constants/game";
+import {
+  CHOOSING_WORD_TIME_IN_SECONDS,
+  MAX_PLAYERS,
+  ROUND_TIME_IN_SECONDS,
+} from "../../../constants/game";
 import { createRoomCode } from "../../../utils/code";
 import "./style.scss";
+import { transformToMilliseconds } from "../../../utils/time";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -16,8 +21,8 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
   const [settings, setSettings] = useState<GameSettings>({
     maxPlayers: MAX_PLAYERS,
     category: "",
-    roundTime: ROUND_TIME,
-    choosingWordTime: CHOOSING_WORD_TIME,
+    roundTime: ROUND_TIME_IN_SECONDS,
+    choosingWordTime: CHOOSING_WORD_TIME_IN_SECONDS,
     code: createRoomCode(),
   });
 
@@ -36,7 +41,12 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       !settings.maxPlayers
     )
       return alert("Please fill out all the fields");
-    onCreate(settings);
+
+    onCreate({
+      ...settings,
+      choosingWordTime: transformToMilliseconds(settings.choosingWordTime),
+      roundTime: transformToMilliseconds(settings.roundTime),
+    });
   };
 
   return (

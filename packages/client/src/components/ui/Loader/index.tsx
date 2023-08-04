@@ -13,10 +13,11 @@ const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
 
   useEffect(() => {
     let timeToTimer = 0;
+    const targetTime = time / 1000;
     const x = setInterval(() => {
       timeToTimer = timeToTimer + 1;
       setTimeLeft(timeToTimer);
-      if (timeToTimer === time * 60) {
+      if (timeToTimer === targetTime) {
         onFinish?.();
         clearInterval(x);
       }
@@ -30,7 +31,7 @@ const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
         bgColor={TEXT_SECONDARY}
         height="30px"
         completed={timeLeft}
-        maxCompleted={time * 60}
+        maxCompleted={time / 1000}
         transitionTimingFunction="linear"
       />
     </div>
