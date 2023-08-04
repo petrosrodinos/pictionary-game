@@ -33,7 +33,11 @@ const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSe
       <Typography variant="text-accent" className="words-label">
         WORDS
       </Typography>
-      <ChipSelector chips={getRandom5Words()} onChange={onWordSelected} />
+      <ChipSelector
+        style={{ alignSelf: "center" }}
+        chips={getRandom5Words()}
+        onChange={onWordSelected}
+      />
       <Players players={players} />
     </div>
   );

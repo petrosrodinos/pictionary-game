@@ -5,9 +5,10 @@ import "./style.scss";
 interface ChipSelectorProps {
   chips: string[];
   onChange: (value: string) => void;
+  style?: React.CSSProperties;
 }
 
-const ChipSelector: FC<ChipSelectorProps> = ({ chips, onChange }) => {
+const ChipSelector: FC<ChipSelectorProps> = ({ chips, onChange, style }) => {
   const [selectedChip, setSelectedChip] = useState<string>("");
 
   const handleChange = (value: string) => {
@@ -15,7 +16,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({ chips, onChange }) => {
     onChange(value);
   };
   return (
-    <div className="chip-selector-container">
+    <div style={style} className="chip-selector-container">
       {chips.map((chip, index) => (
         <div
           key={index}
