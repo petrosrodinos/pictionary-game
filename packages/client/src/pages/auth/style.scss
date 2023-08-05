@@ -1,7 +1,12 @@
 .auth-page-container {
   max-width: 450px;
   width: 100%;
-  padding: 20px;
+}
+
+.auth-content-container {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
 }
 
 .auth-page-content {
@@ -9,6 +14,7 @@
   height: 50px;
   background-color: var(--secondary-background-color-dark);
   border-radius: var(--border-radius);
+  margin: 30px;
 }
 
 .auth-option {

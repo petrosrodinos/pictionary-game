@@ -39,7 +39,7 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
           <Typography>REGISTER</Typography>
         </Link>
       </div>
-      {children}
+      <div className="auth-content-container">{children}</div>
     </Container>
   );
 };
