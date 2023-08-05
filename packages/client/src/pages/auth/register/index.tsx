@@ -14,6 +14,7 @@ import { registerUser } from "../../../services/auth";
 import ImageUploader from "../../../components/ui/ImageUploader";
 import { BsPerson } from "react-icons/bs";
 import "./style.scss";
+import { getRandomAvatar } from "../../../utils/avatar";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -31,7 +32,7 @@ const Register: FC = () => {
       password: "",
       role: "",
       age: "",
-      avatar: "",
+      avatar: getRandomAvatar(),
     },
   });
 

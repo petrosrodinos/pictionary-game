@@ -1,9 +1,9 @@
 import { FC } from "react";
-import "./style.scss";
 import Typography from "../Typography";
+import "./style.scss";
 
 //types
-interface DropdownProps { //props gia to button
+interface DropdownProps {
   value?: string;
   style?: React.CSSProperties;
   className?: string;
@@ -12,20 +12,12 @@ interface DropdownProps { //props gia to button
   error?: string;
 }
 
-
-
-const Dropdown: FC<DropdownProps> = ({
-  style,
-  className = '',
-  onChange,
-    error,
-  options,
-}) => {
+const Dropdown: FC<DropdownProps> = ({ style, className = "", onChange, error, options }) => {
   return (
     <div className={`dropdown ${className}`} style={style}>
-      <select onChange={onChange} className='dropdownSelect'>
+      <select onChange={onChange} className="dropdownSelect">
         {options.map((option) => (
-          <option key={option.value} value={option.value} className='dropdownOption'>
+          <option key={option.value} value={option.value} className="dropdownOption">
             {option.label}
           </option>
         ))}
@@ -34,6 +26,5 @@ const Dropdown: FC<DropdownProps> = ({
     </div>
   );
 };
-
 
 export default Dropdown;
