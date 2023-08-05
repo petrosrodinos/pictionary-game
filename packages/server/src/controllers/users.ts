@@ -33,7 +33,6 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       ...userWithoutPassword,
     });
   } catch (err) {
-    console.log("er", err);
     res.status(409).json({
       message: "Could not create user",
     });
