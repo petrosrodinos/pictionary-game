@@ -44,6 +44,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
 
     onCreate({
       ...settings,
+      maxPlayers: Number(settings.maxPlayers),
       choosingWordTime: transformToMilliseconds(settings.choosingWordTime),
       roundTime: transformToMilliseconds(settings.roundTime),
     });

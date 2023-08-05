@@ -9,7 +9,7 @@ interface WaitingWordsProps {
   artist: UserType | undefined;
   players: UserType[];
   time: number;
-  message?: { message: string; data: any };
+  message?: { usersMessage: string; artistMessage: string; data: any } | null;
 }
 
 const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, message }) => {
@@ -24,7 +24,7 @@ const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, message }) 
           {!message && <Typography>IS CHOOSING WORD</Typography>}
           {message && (
             <>
-              <Typography variant="text-accent">{message.message}</Typography>
+              <Typography variant="text-accent">{message.usersMessage}</Typography>
               <Typography className="artist-label" variant="text-accent">
                 {message?.data}
               </Typography>

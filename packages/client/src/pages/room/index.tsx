@@ -20,7 +20,11 @@ const Room: FC = () => {
   const { username, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
-  const [message, setMessage] = useState<{ message: string; data: any }>();
+  const [message, setMessage] = useState<{
+    usersMessage: string;
+    artistMessage: string;
+    data: any;
+  } | null>();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
@@ -43,6 +47,7 @@ const Room: FC = () => {
     socket?.on("word-changed", (roomInfo: RoomInfo) => {
       console.log("word-changed", roomInfo);
       setRoomInfo(roomInfo);
+      setMessage(null);
       setActiveModal("");
     });
 
@@ -69,13 +74,31 @@ const Room: FC = () => {
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
       setMessage({
-        message: "didn't choose a word,the artist is",
+        usersMessage: "didn't choose a word,the new artist is",
+        artistMessage: "lost his turn",
         data: roomInfo.currentArtist.username,
       });
     });
 
     return () => {
       socket?.off("choosing-word-time-finished");
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    socket?.on("artist-left", (roomInfo: RoomInfo) => {
+      console.log("artist-left", roomInfo);
+      setRoomInfo(roomInfo);
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      setMessage({
+        usersMessage: "left the room,the new artist is",
+        artistMessage: "left the room",
+        data: roomInfo.currentArtist.username,
+      });
+    });
+
+    return () => {
+      socket?.off("artist-left");
     };
   }, [socket]);
 
@@ -112,6 +135,7 @@ const Room: FC = () => {
         onWordSelected={handleWordSelected}
         players={roomInfo.players}
         category={roomInfo.category as keyof typeof WORDS}
+        message={message}
       />
     ),
     "waiting-word": (
@@ -137,6 +161,12 @@ const Room: FC = () => {
 
   const takeTime = () => {
     return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
+  };
+
+  window.onbeforeunload = function () {
+    if (activeModal === "choosing-word") {
+      socket?.emit("leave-choosing-word", roomId, userId);
+    }
   };
 
   return (

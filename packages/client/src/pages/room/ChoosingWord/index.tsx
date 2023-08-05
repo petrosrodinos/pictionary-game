@@ -11,9 +11,16 @@ interface ChoosingWordProps {
   players: UserType[];
   category: keyof typeof WORDS;
   onWordSelected: (word: string) => void;
+  message?: { usersMessage: string; artistMessage: string; data: any } | null;
 }
 
-const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSelected }) => {
+const ChoosingWord: FC<ChoosingWordProps> = ({
+  time,
+  players,
+  category,
+  message,
+  onWordSelected,
+}) => {
   const getRandom5Words = () => {
     const words = WORDS[category];
     const randomWords: string[] = [];
@@ -28,6 +35,13 @@ const ChoosingWord: FC<ChoosingWordProps> = ({ time, players, category, onWordSe
 
   return (
     <div className="choosing-word-container">
+      {message && (
+        <>
+          <Typography className="artist-label" variant="text-accent">
+            {message?.data} {message.artistMessage}
+          </Typography>
+        </>
+      )}
       <Typography variant="sub-header-main" className="choosing-word-label">
         You are choosing a word!
       </Typography>

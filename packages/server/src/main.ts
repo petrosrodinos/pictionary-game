@@ -127,5 +127,12 @@ socket.on("connection", (socket: any) => {
         }
       }, room.roundTime);
     });
+    socket.on("leave-choosing-word", (code: string) => {
+      // room.players = room.players.filter((u) => u.userId !== userId);
+      room.status = "selecting-word";
+      room.currentArtist = room.players[room.round];
+      socket.in(code).emit("artist-left", room);
+      socket.emit("artist-left", room);
+    });
   });
 });
