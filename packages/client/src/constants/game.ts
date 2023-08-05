@@ -1,7 +1,7 @@
 export const MAX_PLAYERS = 2;
 export const STARTING_TIME_IN_SECONDS = 2;
 export const ROUND_TIME_IN_SECONDS = 60;
-export const CHOOSING_WORD_TIME_IN_SECONDS = 30;
+export const CHOOSING_WORD_TIME_IN_SECONDS = 5;
 export const MAX_PLAYERS_IN_ROOM = 10;
 export const MIN_PLAYERS_IN_ROOM = 2;
 export const WORDS = {

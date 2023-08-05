@@ -9,16 +9,27 @@ interface WaitingWordsProps {
   artist: UserType | undefined;
   players: UserType[];
   time: number;
+  message?: { message: string; data: any };
 }
 
-const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time }) => {
+const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, message }) => {
   return (
     <div className="waiting-word-container">
       <div className="artist-container">
         <Avatar image={artist?.avatar || ""} />
         <div className="column-2">
-          <Typography variant="text-accent">@{artist?.username || ""}</Typography>
-          <Typography>IS CHOOSING WORD</Typography>
+          <Typography className="artist-label" variant="text-accent">
+            @{artist?.username || ""}
+          </Typography>
+          {!message && <Typography>IS CHOOSING WORD</Typography>}
+          {message && (
+            <>
+              <Typography variant="text-accent">{message.message}</Typography>
+              <Typography className="artist-label" variant="text-accent">
+                {message?.data}
+              </Typography>
+            </>
+          )}
         </div>
       </div>
       <Typography variant="text-main" className="waiting-label">

@@ -59,7 +59,8 @@ socket.on("connection", (socket: any) => {
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
           setTimeout(() => {
-            room.status = "playing";
+            room.currentArtist = room.players[1];
+            room.status = "selecting-word";
             socket.emit("choosing-word-time-finished", room);
             socket.in(code).emit("choosing-word-time-finished", room);
           }, room.choosingWordTime);
@@ -74,7 +75,8 @@ socket.on("connection", (socket: any) => {
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
         setTimeout(() => {
-          room.status = "playing";
+          room.currentArtist = room.players[1];
+          room.status = "selecting-word";
           socket.emit("choosing-word-time-finished", room);
           socket.in(code).emit("choosing-word-time-finished", room);
         }, room.choosingWordTime);
@@ -117,7 +119,8 @@ socket.on("connection", (socket: any) => {
           socket.emit("round-finished", room);
           socket.in(code).emit("round-finished", room);
           setTimeout(() => {
-            room.status = "playing";
+            room.currentArtist = room.players[room.round];
+            room.status = "selecting-word";
             socket.emit("choosing-word-time-finished", room);
             socket.in(code).emit("choosing-word-time-finished", room);
           }, room.choosingWordTime);

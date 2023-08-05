@@ -18,12 +18,12 @@
   justify-content: center;
   align-items: center;
 
-  span:nth-child(1) {
-    color: var(--text-secondary);
-  }
-
   span:nth-child(2) {
     color: var(--text-primary);
+  }
+
+  .artist-label {
+    color: var(--text-secondary);
   }
 }
 

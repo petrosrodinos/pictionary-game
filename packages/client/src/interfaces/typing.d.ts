@@ -41,7 +41,7 @@ interface GameSettings {
 interface RoomInfo extends GameSettings {
   creator: string;
   players: UserType[];
-  drawings?: any[];
+  drawings: any[];
   word: string;
   round: number;
   currentArtist: UserType;

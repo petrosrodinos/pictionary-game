@@ -20,6 +20,7 @@ const Room: FC = () => {
   const { username, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
+  const [message, setMessage] = useState<{ message: string; data: any }>();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
@@ -66,7 +67,11 @@ const Room: FC = () => {
     socket?.on("choosing-word-time-finished", (roomInfo: RoomInfo) => {
       console.log("choosing-word-time-finished", roomInfo);
       setRoomInfo(roomInfo);
-      setActiveModal("");
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      setMessage({
+        message: "didn't choose a word,the artist is",
+        data: roomInfo.currentArtist.username,
+      });
     });
 
     return () => {
@@ -111,6 +116,7 @@ const Room: FC = () => {
     ),
     "waiting-word": (
       <WaitingWord
+        message={message}
         time={roomInfo.choosingWordTime}
         artist={roomInfo.currentArtist}
         players={roomInfo?.players}

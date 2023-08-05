@@ -7,7 +7,7 @@ interface CanvasProps {
   word: string;
   currentUserIsPlaying: boolean;
   socket: any;
-  canvasData?: any[];
+  canvasData: any[];
 }
 
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
@@ -39,11 +39,9 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   }, []);
 
   useEffect(() => {
-    if (canvasData && canvasData.length > 0) {
-      canvasData.forEach((data) => {
-        drawPixel(data);
-      });
-    }
+    canvasData?.forEach((data) => {
+      drawPixel(data);
+    });
   }, [canvasData]);
 
   useEffect(() => {
