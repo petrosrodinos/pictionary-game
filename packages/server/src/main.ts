@@ -32,6 +32,7 @@ const socket = io(http, {
 });
 
 let rooms: { [code: string]: Room } = {};
+let choosingWordTimer: any;
 socket.on("connection", (socket: any) => {
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
@@ -58,7 +59,7 @@ socket.on("connection", (socket: any) => {
           room.currentArtist = room.players[0];
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
-          setTimeout(() => {
+          choosingWordTimer = setTimeout(() => {
             room.currentArtist = room.players[1];
             room.status = "selecting-word";
             socket.emit("choosing-word-time-finished", room);
@@ -74,7 +75,7 @@ socket.on("connection", (socket: any) => {
         room.currentArtist = room.players[0];
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
-        setTimeout(() => {
+        choosingWordTimer = setTimeout(() => {
           room.currentArtist = room.players[1];
           room.status = "selecting-word";
           socket.emit("choosing-word-time-finished", room);
@@ -102,6 +103,7 @@ socket.on("connection", (socket: any) => {
       room.drawings.push(data);
     });
     socket.on("word-selected", (code: string, word: string) => {
+      clearTimeout(choosingWordTimer);
       room.word = word;
       room.status = "playing";
       socket.emit("word-changed", room);
@@ -118,7 +120,7 @@ socket.on("connection", (socket: any) => {
           room.currentArtist = room.players[room.round - 1];
           socket.emit("round-finished", room);
           socket.in(code).emit("round-finished", room);
-          setTimeout(() => {
+          choosingWordTimer = setTimeout(() => {
             room.currentArtist = room.players[room.round];
             room.status = "selecting-word";
             socket.emit("choosing-word-time-finished", room);
