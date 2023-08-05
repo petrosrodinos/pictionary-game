@@ -5,26 +5,19 @@ import { cloudinary } from "../utils/cloudinary";
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 
-// GIA TO REGISTER
-
-export const register = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { username, password, email, role, age, avatar } = req.body;
+export const register = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, password, role, age, avatar } = req.body;
 
   const hasedPassword = bcrypt.hashSync(password, 8);
 
   try {
     const result = await cloudinary.uploader.upload(avatar, {
-      folder: "avatars", // να βαλω result.url στο avatar
+      folder: "avatars",
     });
     const user = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
-        email: email,
         role: role,
         age: age,
         avatar: result.url,
@@ -40,20 +33,14 @@ export const register = async (
       ...userWithoutPassword,
     });
   } catch (err) {
-    console.log("ma nigga we got error");
+    console.log("er", err);
     res.status(409).json({
       message: "Could not create user",
     });
   }
 };
 
-//GIA TO LOGIN
-
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password: userPassword } = req.body;
 
   const user = await prisma.user.findUnique({

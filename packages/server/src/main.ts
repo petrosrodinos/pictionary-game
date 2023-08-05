@@ -65,7 +65,6 @@ socket.on("connection", (socket: any) => {
         }
       }
       socket.join(code);
-      // socket.broadcast.to(code).emit("user-joined", room);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
     }

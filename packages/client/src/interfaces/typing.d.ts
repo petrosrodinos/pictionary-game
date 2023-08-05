@@ -14,8 +14,6 @@ interface UserLogin {
 interface UserRegister {
   username: string;
   password: string;
-  passwordConfirmation: string;
-  email: string;
   role: string;
   age: string;
   avatar: string;

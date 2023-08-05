@@ -1,46 +1,32 @@
-import { FC, useState } from "react";
-import "./style.scss";
-import Typography from "../Typography";
+import { FC, useState, useRef } from "react";
 import Avatar from "../Avatar";
+import Typography from "../Typography";
+import { BsPersonAdd } from "react-icons/bs";
+import "./style.scss";
 
 interface ImageUploaderProps {
   style?: React.CSSProperties;
   className?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
+  onChange: (image: string) => void;
   name?: string;
+  label?: string;
 }
 
 const ImageUploader: FC<ImageUploaderProps> = ({
   style,
   className = "",
   onChange,
-  error,
   name,
+  label,
 }) => {
-  const [avatarImage, setAvatarImage] = useState<any>(""); // Δινω στο label την εικονα που εχει το Avatar
-  const [isInputHidden, setIsInputHidden] = useState(false); // Τσεκαρω input και το κανω disable
+  const [avatarImage, setAvatarImage] = useState<any>("");
+  const inputFile = useRef<any>();
 
   const handleAvatarChange = async (e: any) => {
     const file: File = e.target?.files?.[0];
-    console.log(file);
     const base64: any = await convertBase64(file);
-
     setAvatarImage(base64);
-    console.log(base64);
-
-    // Τσεκαρω αν εχω input το κανω disable
-    if (!isInputHidden) {
-      setIsInputHidden(true);
-    }
-
-    onChange({
-      ...e,
-      target: {
-        ...e.target,
-        value: base64,
-      },
-    });
+    onChange(base64);
   };
 
   const convertBase64 = (file: File): Promise<any> => {
@@ -56,30 +42,28 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     });
   };
 
-  const handleAvatarClick = () => {
-    console.log("clicked");
+  const handleImageClick = () => {
+    inputFile?.current?.click();
   };
 
   return (
-    <div className={`imageUploader ${className}`} style={style}>
-      <label
-        htmlFor="file"
-        className={`avatar-label ${avatarImage ? "" : "hidden"}`}
-        onClick={handleAvatarClick}
-      >
-        <Avatar image={avatarImage} />
-      </label>
-      {/* {!isInputHidden && ( */}
+    <div className={`image-upload-container ${className}`} style={style}>
+      <Typography className="avatar-label">{label}</Typography>
+      {!avatarImage && (
+        <div onClick={handleImageClick} className="image-picker">
+          <BsPersonAdd />
+        </div>
+      )}
+      {avatarImage && (
+        <Avatar onClick={handleImageClick} className="image-preview" image={avatarImage} />
+      )}
       <input
+        ref={inputFile}
         type="file"
         name={name}
-        className={`inputFile ${avatarImage ? "hidden" : ""}`}
+        className="inputFile"
         onChange={handleAvatarChange}
-        id="file"
-        title=""
       />
-      {/* )} */}
-      {error && <Typography className="avatar-error">{error}</Typography>}
     </div>
   );
 };

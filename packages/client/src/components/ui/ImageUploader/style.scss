@@ -1,40 +1,41 @@
 @use "../../../styles/mixins";
 
-.imageUploader {
-  padding-top: 10px;
+.image-upload-container {
   display: flex;
-  //flex-direction: row;
-  padding-right: 80px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.image-picker {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 50px;
+    height: 50px;
+    fill: var(--text-secondary);
+  }
 }
 
 .inputFile {
-  padding: 10px;
-  @include mixins.small-text-accent;
-  //color: transparent; //an thelo na bgazo to title douleuei
-  //display: none;
-}
-
-.avatar-error {
-  color: red;
-  font-size: 15px;
-  margin-top: 5px;
+  visibility: hidden;
 }
 
 .avatar-label {
-  border: none;
-  cursor: pointer;
-  appearance: none;
-  background-color: inherit;
+  margin-bottom: 5px;
 }
 
-.hidden,
-button.avatar-label {
-  display: none;
-}
-
-.avatar-button {
-  border: none;
+.image-preview {
+  align-self: center;
+  width: 100px !important;
+  height: 100px !important;
   cursor: pointer;
-  appearance: none;
-  background-color: inherit;
 }
