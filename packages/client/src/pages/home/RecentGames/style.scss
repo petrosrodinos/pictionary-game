@@ -1,0 +1,31 @@
+
+
+.recent-leader-board-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  align-items: center;
+  //background-color: black;
+  
+  
+}
+
+//container  διαχειρησης των κουτιων
+.recent-games-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Adjusted grid columns to take up equal space */
+  max-height: 250px;
+  overflow: auto;
+  gap: 10px 0px;
+  background-color: var(--secondary-background-color-medium);
+  padding: 10px ;
+  width: 800px;
+  border-radius: var(--border-radius);
+}
+
+.recent-games-label{
+  margin-right: 60%;
+  margin-bottom: 2%;
+}

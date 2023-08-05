@@ -1,0 +1,41 @@
+@use "../../../styles/mixins";
+
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.image-picker {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 50px;
+    height: 50px;
+    fill: var(--text-secondary);
+  }
+}
+
+.inputFile {
+  visibility: hidden;
+}
+
+.avatar-label {
+  margin-bottom: 5px;
+}
+
+.image-preview {
+  align-self: center;
+  width: 100px !important;
+  height: 100px !important;
+  cursor: pointer;
+}

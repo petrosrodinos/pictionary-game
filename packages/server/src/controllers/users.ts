@@ -1,25 +1,26 @@
 import { prisma } from "../lib/prismaClient";
 import { NextFunction, Request, Response } from "express";
+import { cloudinary } from "../utils/cloudinary";
 
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password, email, role, age } = req.body;
-
-  //checks if user exists here
-  //you can use the findUnique method on login function
+  const { username, password, role, age, avatar } = req.body;
 
   const hasedPassword = bcrypt.hashSync(password, 8);
 
   try {
+    const result = await cloudinary.uploader.upload(avatar, {
+      folder: "avatars",
+    });
     const user = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
-        email: email,
         role: role,
         age: age,
+        avatar: result.url,
       },
     });
 
@@ -29,9 +30,10 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
     res.status(201).json({
       token: accessToken,
-      user: userWithoutPassword,
+      ...userWithoutPassword,
     });
   } catch (err) {
+    console.log("er", err);
     res.status(409).json({
       message: "Could not create user",
     });
