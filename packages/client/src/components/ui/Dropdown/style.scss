@@ -10,12 +10,12 @@
   width: 100%;
   height: 40px;
   border-radius: 5px;
-  border: 2px solid #323232;
+  border: 2px solid var(--input-color);
+  box-shadow: 4px 4px var(--input-color);
+  color: var(--input-color);
   background-color: #fff;
-  box-shadow: 4px 4px #323232;
   font-size: 15px;
   font-weight: 600;
-  color: #323232;
   padding: 5px 10px;
   outline: none;
 }

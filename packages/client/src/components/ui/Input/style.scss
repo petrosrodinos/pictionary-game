@@ -2,16 +2,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  // position: relative;
 
   input {
     height: 30px;
     border-radius: 5px;
-    border: 2px solid #323232;
-    background-color: #fff;
-    box-shadow: 4px 4px #323232;
+    border: 2px solid var(--input-color);
+    box-shadow: 4px 4px var(--input-color);
+    color: var(--input-color);
     font-size: 15px;
     font-weight: 600;
-    color: #323232;
     padding: 5px 10px;
     outline: none;
   }
@@ -36,6 +36,8 @@
 }
 
 .input-error {
+  // position: absolute;
+  // top: 45px;
   color: red;
   font-size: 15px;
   margin-top: 5px;
