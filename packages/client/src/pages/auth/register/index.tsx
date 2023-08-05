@@ -1,7 +1,6 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
-import { BiRegistered } from "react-icons/bi";
 import Input from "../../../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -13,6 +12,7 @@ import DatePicker from "../../../components/ui/DatePicker";
 import { useMutation } from "react-query";
 import { registerUser } from "../../../services/auth";
 import ImageUploader from "../../../components/ui/ImageUploader";
+import { BsPerson } from "react-icons/bs";
 import "./style.scss";
 
 const Register: FC = () => {
@@ -111,7 +111,7 @@ const Register: FC = () => {
       <Button
         type="submit"
         loading={isLoading}
-        icon={BiRegistered}
+        icon={BsPerson}
         title="Register"
         variant="primary"
       />

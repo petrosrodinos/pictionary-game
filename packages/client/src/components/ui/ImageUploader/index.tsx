@@ -1,7 +1,7 @@
 import { FC, useState, useRef } from "react";
 import Avatar from "../Avatar";
 import Typography from "../Typography";
-import { BsPersonAdd } from "react-icons/bs";
+import { CiCamera } from "react-icons/ci";
 import "./style.scss";
 
 interface ImageUploaderProps {
@@ -48,10 +48,12 @@ const ImageUploader: FC<ImageUploaderProps> = ({
 
   return (
     <div className={`image-upload-container ${className}`} style={style}>
-      <Typography className="avatar-label">{label}</Typography>
+      <Typography variant="text-main" className="input-label avatar-label">
+        {label}
+      </Typography>
       {!avatarImage && (
         <div onClick={handleImageClick} className="image-picker">
-          <BsPersonAdd />
+          <CiCamera />
         </div>
       )}
       {avatarImage && (
