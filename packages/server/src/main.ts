@@ -112,7 +112,12 @@ socket.on("connection", (socket: any) => {
       //starts timer for round and emit event when time is up
       setTimeout(() => {
         room.word = "";
-        startChoosingWord(room, socket, code);
+        room.status = "selecting-word";
+        room.round++;
+        room.currentArtist = room.players[room.round - 1];
+        socket.emit("round-finished", room);
+        socket.in(code).emit("round-finished", room);
+        startChoosingWordOnGame(room, socket, code);
       }, room.roundTime);
     });
     //when artist leaves choosing word screen
@@ -125,6 +130,24 @@ socket.on("connection", (socket: any) => {
     });
   });
 });
+
+function startChoosingWordOnGame(room: Room, socket: any, code: string) {
+  //starts timer for choosing word and emit event when time is up
+  choosingWordTimer = setTimeout(() => {
+    room.round++;
+    if (room.round > room.players.length) {
+      room.status = "finished";
+      socket.emit("game-finished", room);
+      socket.in(code).emit("game-finished", room);
+    } else {
+      // if the player didn't choose a word, pass the turn to the next player
+      room.currentArtist = room.players[room.round - 1];
+      socket.emit("choosing-word-time-finished", room);
+      socket.in(code).emit("choosing-word-time-finished", room);
+      startChoosingWord(room, socket, code);
+    }
+  }, room.choosingWordTime);
+}
 
 function startChoosingWord(room: Room, socket: any, code: string) {
   room.status = "selecting-word";

@@ -81,7 +81,7 @@ const Room: FC = () => {
       console.log("artist-left", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
+      setMessage(`${roomInfo.players[roomInfo.round - 2].username} left the room`);
     });
 
     return () => {
