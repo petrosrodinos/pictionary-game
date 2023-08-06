@@ -34,6 +34,7 @@ const socket = io(http, {
 let rooms: { [code: string]: Room } = {};
 let choosingWordTimer: any;
 socket.on("connection", (socket: any) => {
+  //creating room
   socket.on("create-room", async (settings: Room) => {
     rooms[settings.code] = {
       ...settings,
@@ -44,9 +45,11 @@ socket.on("connection", (socket: any) => {
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
+    //join waiting room
     if (rooms[code]) {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       const room = rooms[code];
+      //checks if user is already in room
       if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
         room.players.push({
@@ -54,33 +57,27 @@ socket.on("connection", (socket: any) => {
           points: 0,
         });
         room.status = "waiting-room";
+        //checks if all players are in room and starts game
         if (room.players.length === room.maxPlayers) {
-          room.status = "selecting-word";
           room.currentArtist = room.players[0];
+          room.status = "selecting-word";
           socket.in(code).emit("game-started", room);
           socket.emit("game-started", room);
-          choosingWordTimer = setTimeout(() => {
-            room.currentArtist = room.players[1];
-            room.status = "selecting-word";
-            socket.emit("choosing-word-time-finished", room);
-            socket.in(code).emit("choosing-word-time-finished", room);
-          }, room.choosingWordTime);
+          //starts timer for choosing word and emit event when time is up
+          startChoosingWord(room, socket, code);
         }
       }
       socket.join(code);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
+      //when creator presses start game
       socket.on("start-game", (code: string) => {
-        room.status = "selecting-word";
         room.currentArtist = room.players[0];
+        room.status = "selecting-word";
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
-        choosingWordTimer = setTimeout(() => {
-          room.currentArtist = room.players[1];
-          room.status = "selecting-word";
-          socket.emit("choosing-word-time-finished", room);
-          socket.in(code).emit("choosing-word-time-finished", room);
-        }, room.choosingWordTime);
+        //starts timer for choosing word and emit event when time is up
+        startChoosingWord(room, socket, code);
       });
       // socket.on("disconnect", () => {
       //   room.players = room.players.filter((u) => u.userId !== user.userId);
@@ -89,6 +86,7 @@ socket.on("connection", (socket: any) => {
       // });
     }
   });
+  //join playing room
   socket.on("join-room", async (code: string, userId: string) => {
     let room = rooms[code];
     if (!room) {
@@ -98,37 +96,26 @@ socket.on("connection", (socket: any) => {
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", room);
+    //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       socket.broadcast.to(code).emit("receive-changes", data);
       room.drawings.push(data);
     });
+    //when artist selects word
     socket.on("word-selected", (code: string, word: string) => {
       clearTimeout(choosingWordTimer);
+      const room = rooms[code];
       room.word = word;
       room.status = "playing";
       socket.emit("word-changed", room);
       socket.in(code).emit("word-changed", room);
+      //starts timer for round and emit event when time is up
       setTimeout(() => {
-        room.round++;
         room.word = "";
-        if (room.round > room.players.length) {
-          room.status = "finished";
-          socket.emit("game-finished", room);
-          socket.in(code).emit("game-finished", room);
-        } else {
-          room.status = "selecting-word";
-          room.currentArtist = room.players[room.round - 1];
-          socket.emit("round-finished", room);
-          socket.in(code).emit("round-finished", room);
-          choosingWordTimer = setTimeout(() => {
-            room.currentArtist = room.players[room.round];
-            room.status = "selecting-word";
-            socket.emit("choosing-word-time-finished", room);
-            socket.in(code).emit("choosing-word-time-finished", room);
-          }, room.choosingWordTime);
-        }
+        startChoosingWord(room, socket, code);
       }, room.roundTime);
     });
+    //when artist leaves choosing word screen
     socket.on("leave-choosing-word", (code: string) => {
       // room.players = room.players.filter((u) => u.userId !== userId);
       room.status = "selecting-word";
@@ -138,3 +125,28 @@ socket.on("connection", (socket: any) => {
     });
   });
 });
+
+function startChoosingWord(room: Room, socket: any, code: string) {
+  room.status = "selecting-word";
+  if (room.round > 1) {
+    // room.round++;
+    // room.currentArtist = room.players[room.round - 1];
+    socket.emit("round-finished", room);
+    socket.in(code).emit("round-finished", room);
+  }
+  //starts timer for choosing word and emit event when time is up
+  choosingWordTimer = setTimeout(() => {
+    room.round++;
+    if (room.round > room.players.length) {
+      room.status = "finished";
+      socket.emit("game-finished", room);
+      socket.in(code).emit("game-finished", room);
+    } else {
+      // if the player didn't choose a word, pass the turn to the next player
+      room.currentArtist = room.players[room.round - 1];
+      socket.emit("choosing-word-time-finished", room);
+      socket.in(code).emit("choosing-word-time-finished", room);
+      startChoosingWord(room, socket, code);
+    }
+  }, room.choosingWordTime);
+}

@@ -20,11 +20,7 @@ const Room: FC = () => {
   const { username, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
-  const [message, setMessage] = useState<{
-    usersMessage: string;
-    artistMessage: string;
-    data: any;
-  } | null>();
+  const [message, setMessage] = useState<string | null>();
   const { socket } = useSocket();
   const navigate = useNavigate();
 
@@ -47,7 +43,7 @@ const Room: FC = () => {
     socket?.on("word-changed", (roomInfo: RoomInfo) => {
       console.log("word-changed", roomInfo);
       setRoomInfo(roomInfo);
-      setMessage(null);
+      setMessage("");
       setActiveModal("");
     });
 
@@ -62,7 +58,6 @@ const Room: FC = () => {
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
     });
-
     return () => {
       socket?.off("time-finished");
     };
@@ -73,11 +68,7 @@ const Room: FC = () => {
       console.log("choosing-word-time-finished", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage({
-        usersMessage: "didn't choose a word,the new artist is",
-        artistMessage: "lost his turn",
-        data: roomInfo.currentArtist.username,
-      });
+      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
     });
 
     return () => {
@@ -90,11 +81,7 @@ const Room: FC = () => {
       console.log("artist-left", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage({
-        usersMessage: "left the room,the new artist is",
-        artistMessage: "left the room",
-        data: roomInfo.currentArtist.username,
-      });
+      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
     });
 
     return () => {
