@@ -11,7 +11,7 @@ interface ChoosingWordProps {
   players: UserType[];
   category: keyof typeof WORDS;
   onWordSelected: (word: string) => void;
-  message?: { usersMessage: string; artistMessage: string; data: any } | null;
+  message?: string | null;
 }
 
 const ChoosingWord: FC<ChoosingWordProps> = ({
@@ -38,7 +38,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
       {message && (
         <>
           <Typography className="artist-label" variant="text-accent">
-            {message?.data} {message.artistMessage}
+            {message}
           </Typography>
         </>
       )}

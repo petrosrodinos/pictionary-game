@@ -1,10 +1,17 @@
 import { FC } from "react";
 import Input from "../../../../components/ui/Input";
 import Typography from "../../../../components/ui/Typography";
-import { MAX_PLAYERS_IN_ROOM, MIN_PLAYERS_IN_ROOM, WORDS } from "../../../../constants/game";
+import {
+  MAX_CHOOSING_WORD_TIME_IN_SECONDS,
+  MAX_PLAYERS_IN_ROOM,
+  MAX_ROUND_TIME_IN_SECONDS,
+  MIN_CHOOSING_WORD_TIME_IN_SECONDS,
+  MIN_PLAYERS_IN_ROOM,
+  MIN_ROUND_TIME_IN_SECONDS,
+  WORDS,
+} from "../../../../constants/game";
 import ChipSelector from "../../../../components/ui/ChipSelector";
 import "./style.scss";
-import { transformToMilliseconds } from "../../../../utils/time";
 
 interface GameSettingsProps {
   settings: any;
@@ -49,8 +56,8 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         placeholder="Round Time (s)"
         onChange={handleChange}
         value={settings.roundTime}
-        max={300}
-        min={30}
+        max={MAX_ROUND_TIME_IN_SECONDS}
+        min={MIN_ROUND_TIME_IN_SECONDS}
       />
       <Input
         label="Choosing Word Time (s)"
@@ -59,8 +66,8 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         placeholder="Choosing Word Time (s)"
         onChange={handleChange}
         value={settings.choosingWordTime}
-        max={120}
-        min={20}
+        max={MAX_CHOOSING_WORD_TIME_IN_SECONDS}
+        min={MIN_CHOOSING_WORD_TIME_IN_SECONDS}
       />
     </div>
   );

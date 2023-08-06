@@ -5,12 +5,12 @@ import { CLIENT_URL } from "../../../constants";
 import GameSettings from "./GameSettings";
 import {
   CHOOSING_WORD_TIME_IN_SECONDS,
-  MAX_PLAYERS,
+  PLAYERS_IN_ROOM,
   ROUND_TIME_IN_SECONDS,
 } from "../../../constants/game";
 import { createRoomCode } from "../../../utils/code";
-import "./style.scss";
 import { transformToMilliseconds } from "../../../utils/time";
+import "./style.scss";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -19,7 +19,7 @@ interface CreateRoomProps {
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
   const [settings, setSettings] = useState<GameSettings>({
-    maxPlayers: MAX_PLAYERS,
+    maxPlayers: PLAYERS_IN_ROOM,
     category: "",
     roundTime: ROUND_TIME_IN_SECONDS,
     choosingWordTime: CHOOSING_WORD_TIME_IN_SECONDS,
