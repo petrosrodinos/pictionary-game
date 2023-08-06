@@ -19,7 +19,9 @@ const Room: FC = () => {
   const { id: roomId } = useParams();
   const { username, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
-  const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
+  const [activeModal, setActiveModal] = useState<
+    keyof typeof ModalComponents | ""
+  >();
   const [message, setMessage] = useState<string | null>();
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -68,7 +70,9 @@ const Room: FC = () => {
       console.log("choosing-word-time-finished", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
+      setMessage(
+        `${roomInfo.players[roomInfo.round - 2].username} lost his turn`
+      );
     });
 
     return () => {
@@ -81,7 +85,9 @@ const Room: FC = () => {
       console.log("artist-left", roomInfo);
       setRoomInfo(roomInfo);
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
+      setMessage(
+        `${roomInfo.players[roomInfo.round - 2].username} lost his turn`
+      );
     });
 
     return () => {
@@ -133,11 +139,16 @@ const Room: FC = () => {
         players={roomInfo?.players}
       />
     ),
-    "game-finished": <GameFinished onExit={handleExit} players={roomInfo?.players} />,
+    "game-finished": (
+      <GameFinished onExit={handleExit} players={roomInfo?.players} />
+    ),
   };
 
   function chooseTitle(): string {
-    if (roomInfo.round >= roomInfo?.players?.length && activeModal === "game-finished")
+    if (
+      roomInfo.round >= roomInfo?.players?.length &&
+      activeModal === "game-finished"
+    )
       return "GAME FINISHED";
     return `ROUND ${roomInfo?.round}/${roomInfo?.players?.length} IS STARTING`;
   }
@@ -164,13 +175,18 @@ const Room: FC = () => {
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal>
           <Container className="room-page-container">
-            <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
+            <Info
+              timer={takeTime()}
+              artist={roomInfo?.currentArtist?.username || ""}
+            />
             <div className="canvas-chat-container">
               <Canvas
                 canvasData={roomInfo?.drawings}
                 socket={socket}
                 word={roomInfo?.word}
-                currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
+                currentUserIsPlaying={
+                  username === roomInfo?.currentArtist?.username
+                }
               />
               <Chat />
             </div>
