@@ -13,7 +13,13 @@ export interface Room {
   category: string;
 }
 
-export type Status = "created" | "waiting-room" | "selecting-word" | "playing" | "finished";
+export type Status =
+  | "created"
+  | "waiting-room"
+  | "selecting-word"
+  | "playing"
+  | "finished"
+  | "starting";
 
 export interface ConnectedUser {
   userId: string;

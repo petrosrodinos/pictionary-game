@@ -37,9 +37,6 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
       setRoomInfo(roomInfo);
-      if (roomInfo.status !== "waiting-room") {
-        // startGame();
-      }
     });
 
     return () => {
@@ -49,7 +46,9 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
 
   //listening for when game starts and starts the timer
   useEffect(() => {
-    socket?.on("game-started", () => {
+    socket?.on("game-started", (roomInfo: RoomInfo) => {
+      console.log("game-started", roomInfo);
+      setRoomInfo(roomInfo);
       startCountDown(STARTING_TIME_IN_SECONDS);
     });
 
@@ -86,8 +85,14 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           {countDownInSeconds > 0 && (
             <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
           )}
-          {!countDownInSeconds && roomInfo.players.length > 1 && roomInfo.creator === userId && (
-            <Button onClick={startGameByCreator} title="START GAME" />
+          {!countDownInSeconds &&
+            roomInfo.players.length > 1 &&
+            roomInfo.creator === userId &&
+            roomInfo.status == "waiting-room" && (
+              <Button onClick={startGameByCreator} title="START GAME" />
+            )}
+          {!countDownInSeconds && roomInfo.status != "waiting-room" && (
+            <Button onClick={startGame} title="GAME IS ON, GO BACK" />
           )}
         </>
       ) : (

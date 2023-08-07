@@ -36,6 +36,9 @@ const Room: FC = () => {
 
     return () => {
       socket?.off("send-info");
+      () => {
+        "Are you sure you want to leave?";
+      };
     };
   }, [socket, roomId]);
 
@@ -150,11 +153,11 @@ const Room: FC = () => {
     return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
   };
 
-  window.onbeforeunload = function () {
-    if (activeModal === "choosing-word") {
-      socket?.emit("leave-choosing-word", roomId, userId);
-    }
-  };
+  // window.onbeforeunload = function () {
+  //   if (activeModal === "choosing-word") {
+  //     socket?.emit("leave-choosing-word", roomId, userId);
+  //   }
+  // };
 
   return (
     <>

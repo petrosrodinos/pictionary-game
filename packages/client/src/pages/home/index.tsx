@@ -10,8 +10,8 @@ import Container from "../../components/Container";
 import CreateRoom from "./CreateRoom";
 import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
-import "./style.scss";
 import PlayerStats from "../../components/ui/PlayerStats";
+import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
@@ -21,13 +21,13 @@ const Home: FC = () => {
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
 
-  const navigate = useNavigate();
-
   //useEffect detects for searchParams change and opens the waiting room modal
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
     if (waitingRoom) {
       setActiveModal("waiting-room");
+    } else {
+      setActiveModal("");
     }
   }, [searchParams]);
 
@@ -43,13 +43,6 @@ const Home: FC = () => {
     setSearchParams({
       waitingRoom: code,
     });
-  };
-
-  //when user leaves the waiting room
-  //for now i am using it as a way to start a game to navigate to room page
-  const handleLeave = () => {
-    navigate(`/room/${searchParams.get("waitingRoom")}`);
-    // setActiveModal("");
   };
 
   const handleCancelRoomCreation = () => {
@@ -79,12 +72,7 @@ const Home: FC = () => {
     },
     ["create-room"]: {
       title: "CREATE A ROOM",
-      component: (
-        <CreateRoom
-          onCancel={handleCancelRoomCreation}
-          onCreate={handleCreateRoom}
-        />
-      ),
+      component: <CreateRoom onCancel={handleCancelRoomCreation} onCreate={handleCreateRoom} />,
     },
     ["waiting-room"]: {
       title: "WAITING ROOM",
