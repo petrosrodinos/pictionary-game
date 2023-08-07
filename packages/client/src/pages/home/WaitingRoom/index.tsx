@@ -19,7 +19,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   const navigate = useNavigate();
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
-  const [searchParams, _] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { socket } = useSocket();
 
   //emits event when user joins waiting room and listens for when new user joins
@@ -37,6 +37,9 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
       setRoomInfo(roomInfo);
+      if (roomInfo.status == "finished") {
+        setSearchParams({});
+      }
     });
 
     return () => {
@@ -48,7 +51,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   useEffect(() => {
     socket?.on("game-started", (roomInfo: RoomInfo) => {
       console.log("game-started", roomInfo);
-      setRoomInfo(roomInfo);
+      // setRoomInfo(roomInfo);
       startCountDown(STARTING_TIME_IN_SECONDS);
     });
 
@@ -85,13 +88,13 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           {countDownInSeconds > 0 && (
             <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
           )}
-          {!countDownInSeconds &&
+          {countDownInSeconds <= 0 &&
             roomInfo.players.length > 1 &&
             roomInfo.creator === userId &&
             roomInfo.status == "waiting-room" && (
-              <Button onClick={startGameByCreator} title="START GAME" />
+              <Button onClick={startGameByCreator} title={`START GAME`} />
             )}
-          {!countDownInSeconds && roomInfo.status != "waiting-room" && (
+          {countDownInSeconds <= 0 && roomInfo.status != "waiting-room" && (
             <Button onClick={startGame} title="GAME IS ON, GO BACK" />
           )}
         </>

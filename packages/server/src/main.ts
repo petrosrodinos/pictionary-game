@@ -44,11 +44,11 @@ socket.on("connection", (socket: any) => {
       round: 1,
     };
   });
+  //join waiting room
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
-    //join waiting room
-    if (rooms[code]) {
+    let room = rooms[code];
+    if (room) {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
-      const room = rooms[code];
       //checks if user is already in room
       if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
@@ -56,20 +56,23 @@ socket.on("connection", (socket: any) => {
           ...user,
           points: 0,
         });
+      }
+      if (room.status == "waiting-room" || room.status == "created") {
         room.status = "waiting-room";
-        //checks if all players are in room and starts game
-        if (room.players.length === room.maxPlayers) {
-          room.currentArtist = room.players[0];
-          room.status = "selecting-word";
-          socket.in(code).emit("game-started", room);
-          socket.emit("game-started", room);
-          //starts timer for choosing word and emit event when time is up
-          startChoosingWord(room, socket, code);
-        }
       }
       socket.join(code);
       socket.in(code).emit("user-joined", room);
       socket.emit("user-joined", room);
+      //checks if all players are in room and starts game
+      if (room.status == "waiting-room" && room.players.length === room.maxPlayers) {
+        room.currentArtist = room.players[0];
+        socket.in(code).emit("game-started", room);
+        socket.emit("game-started", room);
+        room.status = "starting";
+        //starts timer for choosing word and emit event when time is up
+        startChoosingWord(room, socket, code);
+      }
+
       //when creator presses start game
       socket.on("start-game", (code: string) => {
         room.currentArtist = room.players[0];

@@ -10,7 +10,7 @@ interface RoomInfoProps {
 const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
   const creatorUsername = useMemo(() => {
     return roomInfo.players.find((user: any) => user.userId === roomInfo.creator)?.username;
-  }, [roomInfo.creator]);
+  }, [roomInfo]);
 
   return (
     <div className="room-info-container">
