@@ -8,6 +8,7 @@ import Avatar from "../Avatar";
 import StarLevelImage from "../../../assets/player-level-star.png";
 //import initialStateValues from "../../../home/store";
 import { authStore } from "../../../store/authStore";
+
 interface PlayerStatsProps {
   style?: React.CSSProperties;
   className?: string;

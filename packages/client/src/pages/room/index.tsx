@@ -188,7 +188,7 @@ const Room: FC = () => {
                   username === roomInfo?.currentArtist?.username
                 }
               />
-              <Chat />
+              <Chat></Chat>
             </div>
           </Container>
         </>
