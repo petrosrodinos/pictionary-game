@@ -1,13 +1,37 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import "./style.scss";
 import MessageBox from "./MessageBox";
+import Input from "../../../components/ui/Input";
+import Button from "../../../components/ui/Button";
+import { BiSend } from "react-icons/bi";
 
-interface ChatProps {}
+interface ChatProps {
+  socket: any;
+}
 
-const Chat: FC<ChatProps> = () => {
+const Chat: FC<ChatProps> = ({ socket }) => {
+  const message = "kano diaroia ";
+  function send_data() {
+    console.log("Chat");
+    socket?.emit("game-input-message", message);
+    socket?.emit("game-input-message", "hello world");
+  }
+
   return (
     <div className="chat-container">
-      <MessageBox></MessageBox>
+      <MessageBox />
+      <div className="chat-input">
+        <Input name="Answer" placeholder="Answer" />
+        <div className="chat-input-gap"></div>
+        <Button
+          type="submit"
+          title="Send"
+          variant="primary"
+          icon={BiSend}
+          className="answer-button"
+          onClick={send_data}
+        />
+      </div>
     </div>
   );
 };

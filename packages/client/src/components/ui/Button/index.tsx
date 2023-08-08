@@ -4,7 +4,7 @@ import { ImSpinner6 } from "react-icons/im";
 import "./style.scss";
 
 interface ButtonProps {
-  title: string;
+  title?: string;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
   style?: any;

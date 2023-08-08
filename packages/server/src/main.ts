@@ -123,6 +123,10 @@ socket.on("connection", (socket: any) => {
       socket.in(code).emit("artist-left", room);
       socket.emit("artist-left", room);
     });
+    // για το Input game chat
+    socket.on("game-input-message", (message: string) => {
+      console.log("game-input-message", message);
+    });
   });
 });
 
