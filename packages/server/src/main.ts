@@ -50,25 +50,25 @@ socket.on("connection", (socket: any) => {
     if (room) {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       //checks if user is already in room
+      socket.join(code);
+      if (room.status == "waiting-room" || room.status == "created") {
+        room.status = "waiting-room";
+      }
       if (!room.players.find((u) => u.userId === user.userId)) {
         console.log("join-waiting-room", code);
         room.players.push({
           ...user,
           points: 0,
         });
+        socket.in(code).emit("user-joined", room);
       }
-      if (room.status == "waiting-room" || room.status == "created") {
-        room.status = "waiting-room";
-      }
-      socket.join(code);
-      socket.in(code).emit("user-joined", room);
+
       socket.emit("user-joined", room);
       //checks if all players are in room and starts game
       if (room.status == "waiting-room" && room.players.length === room.maxPlayers) {
         room.currentArtist = room.players[0];
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
-        room.status = "starting";
         //starts timer for choosing word and emit event when time is up
         startChoosingWord(room, socket, code);
       }
@@ -130,6 +130,11 @@ socket.on("connection", (socket: any) => {
       room.currentArtist = room.players[room.round];
       socket.in(code).emit("artist-left", room);
       socket.emit("artist-left", room);
+    });
+
+    // για το Input game chat
+    socket.on("game-input-message", (message: string) => {
+      console.log("game-input-message", message);
     });
   });
 });
