@@ -8,7 +8,7 @@ export const CHOOSING_WORD_TIME_IN_SECONDS = 10;
 export const MAX_CHOOSING_WORD_TIME_IN_SECONDS = 30;
 export const MIN_CHOOSING_WORD_TIME_IN_SECONDS = 5;
 
-export const STARTING_TIME_IN_SECONDS = 2;
+export const STARTING_TIME_IN_SECONDS = 20;
 export const WORDS = {
   space: [
     "astronaut",

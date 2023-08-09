@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
 import Typography from "../Typography";
@@ -7,10 +7,31 @@ interface IProps {
   children: any;
   isOpen: boolean;
   title?: string;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose && onClose();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (

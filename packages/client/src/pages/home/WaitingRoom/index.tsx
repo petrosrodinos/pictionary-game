@@ -15,11 +15,12 @@ import "./style.scss";
 interface WaitingRoomProps {}
 
 const WaitingRoom: FC<WaitingRoomProps> = () => {
-  const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const navigate = useNavigate();
+  const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _] = useSearchParams();
+  const [message, setMessage] = useState<string>("");
   const { socket } = useSocket();
 
   //emits event when user joins waiting room and listens for when new user joins
@@ -37,9 +38,6 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
     socket.on("user-joined", (roomInfo: RoomInfo) => {
       console.log("user-joined", roomInfo);
       setRoomInfo(roomInfo);
-      if (roomInfo.status == "finished") {
-        setSearchParams({});
-      }
     });
 
     return () => {
