@@ -1,6 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Room } from "./interfaces/room";
 import cors from "cors";
+import { log } from "console";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
@@ -98,15 +99,19 @@ socket.on("connection", (socket: any) => {
     }
   });
   //join playing room
-  socket.on("join-room", async (code: string, userId: string) => {
+  socket.on("join-room", async (code: string, user: ConnectedUser) => {
     let room = rooms[code];
-    if (!room) {
-      //|| !rooms[code].players.find((u) => u.userId === userId)
-      return;
+    if (!room || room.players.length > room.maxPlayers) return;
+    if (!room.players.find((u) => u.userId === user.userId)) {
+      room.players.push({
+        ...user,
+        points: 0,
+      });
     }
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", room);
+    socket.in(code).emit("send-info", room);
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       socket.broadcast.to(code).emit("receive-changes", data);

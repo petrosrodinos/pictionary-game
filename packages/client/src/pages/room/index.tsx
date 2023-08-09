@@ -17,7 +17,8 @@ import "./style.scss";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
-  const { username, userId } = authStore((state) => state);
+  const { userId, username, avatar, level } = authStore((state) => state);
+
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
@@ -25,7 +26,13 @@ const Room: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket?.emit("join-room", roomId, userId);
+    const joinedUser = {
+      userId,
+      username,
+      avatar,
+      level,
+    };
+    socket?.emit("join-room", roomId, joinedUser);
 
     socket?.on("send-info", (roomInfo: RoomInfo) => {
       if (!roomInfo) return;

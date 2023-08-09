@@ -7,14 +7,14 @@ interface IProps {
   children: any;
   isOpen: boolean;
   title?: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose && onClose();
+        onClose?.();
       }
     };
     window.addEventListener("keydown", handleEsc);
