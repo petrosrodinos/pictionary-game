@@ -3,13 +3,17 @@ import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
-const NoRoom: FC = () => {
+interface MessageProps {
+  message?: string;
+}
+
+const Message: FC<MessageProps> = () => {
   const navigate = useNavigate();
   return (
-    <div className="no-room-container">
+    <div className="message-container">
       <Button title="GO BACK TO HOME PAGE" onClick={() => navigate("/home")} />
     </div>
   );
 };
 
-export default NoRoom;
+export default Message;

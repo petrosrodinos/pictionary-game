@@ -11,6 +11,7 @@ export interface Room {
   roundTime: number;
   choosingWordTime: number;
   category: string;
+  message: string;
 }
 
 export type Status =

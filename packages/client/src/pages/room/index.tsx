@@ -11,7 +11,7 @@ import { useSocket } from "../../hooks/socket";
 import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
-import NoRoom from "./NoRoom";
+import NoRoom from "./Message";
 import { WORDS } from "../../constants/game";
 import "./style.scss";
 
@@ -66,10 +66,15 @@ const Room: FC = () => {
     socket?.on("round-finished", (roomInfo: RoomInfo) => {
       console.log("round-finished", roomInfo);
       setRoomInfo(roomInfo);
+      if (roomInfo.message) {
+        setMessage(roomInfo.message);
+      } else {
+        setMessage("");
+      }
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
     });
     return () => {
-      socket?.off("time-finished");
+      socket?.off("round-finished");
     };
   }, [socket]);
 
@@ -90,7 +95,9 @@ const Room: FC = () => {
     socket?.on("artist-left", (roomInfo: RoomInfo) => {
       console.log("artist-left", roomInfo);
       setRoomInfo(roomInfo);
-      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      if (roomInfo.currentArtist) {
+        setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      }
       setMessage(`${roomInfo.players[roomInfo.round - 2].username} left the room`);
     });
 
@@ -100,9 +107,22 @@ const Room: FC = () => {
   }, [socket]);
 
   useEffect(() => {
+    socket?.on("all-users-left", (roomInfo: RoomInfo) => {
+      console.log("all-users-left", roomInfo);
+      setRoomInfo({} as RoomInfo);
+      setMessage(roomInfo.message);
+      setActiveModal("");
+    });
+
+    return () => {
+      socket?.off("all-users-left");
+    };
+  }, [socket, roomId]);
+
+  useEffect(() => {
     socket?.on("game-finished", (roomInfo: RoomInfo) => {
       console.log("game-finished", roomInfo);
-      setRoomInfo(roomInfo);
+      // setRoomInfo(roomInfo);
       setActiveModal("game-finished");
     });
 
@@ -187,7 +207,7 @@ const Room: FC = () => {
           </Container>
         </>
       ) : (
-        <Modal title={"NO ROOM FOUND OR IT IS FULL"} isOpen={true}>
+        <Modal title={message ? message : "NO ROOM FOUND OR IT IS FULL"} isOpen={true}>
           <NoRoom />
         </Modal>
       )}
