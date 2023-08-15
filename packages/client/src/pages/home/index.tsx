@@ -62,7 +62,6 @@ const Home: FC = () => {
 
   const handleLeaveWaitingRoom = () => {
     setSearchParams({});
-    socket?.emit("leave-waiting-room", searchParams.get("waitingRoom"));
   };
 
   const ModalComponents: any = {

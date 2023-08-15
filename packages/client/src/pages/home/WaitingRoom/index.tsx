@@ -23,10 +23,22 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   const [message, setMessage] = useState<string>("");
   const { socket } = useSocket();
 
+  useEffect(() => {
+    socket?.on("user-joined", handleUserJoined);
+    socket?.on("game-started", handleGameStarted);
+    socket?.on("user-left", handleUserLeft);
+
+    return () => {
+      socket?.off("user-joined");
+      socket?.off("game-started");
+      socket?.off("user-left");
+    };
+  }, [socket]);
+
   //emits event when user joins waiting room and listens for when new user joins
   useEffect(() => {
     const waitingRoom = searchParams.get("waitingRoom");
-    if (!waitingRoom || !socket) return;
+    if (!waitingRoom) return;
 
     const joinedUser = {
       userId,
@@ -34,43 +46,27 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
       avatar,
       level,
     };
-    socket.emit("join-waiting-room", waitingRoom, joinedUser);
-    socket.on("user-joined", (roomInfo: RoomInfo) => {
-      console.log("user-joined", roomInfo);
-      setRoomInfo(roomInfo);
-    });
-
-    return () => {
-      socket.off("user-joined");
-    };
+    socket?.emit("join-waiting-room", waitingRoom, joinedUser);
   }, [socket, searchParams]);
 
-  //listening for when game starts and starts the timer
-  useEffect(() => {
-    socket?.on("game-started", (roomInfo: RoomInfo) => {
-      console.log("game-started", roomInfo);
-      // setRoomInfo(roomInfo);
-      startCountDown(STARTING_TIME_IN_SECONDS);
-    });
+  const handleUserJoined = (roomInfo: RoomInfo) => {
+    console.log("user-joined", roomInfo);
+    setRoomInfo(roomInfo);
+  };
 
-    return () => {
-      socket?.off("game-started");
-    };
-  }, [socket]);
+  const handleGameStarted = (roomInfo: RoomInfo) => {
+    console.log("game-started", roomInfo);
+    // setRoomInfo(roomInfo);
+    startCountDown(STARTING_TIME_IN_SECONDS);
+  };
+
+  const handleUserLeft = (room: RoomInfo) => {
+    setRoomInfo(room);
+  };
 
   const startGameByCreator = () => {
     socket?.emit("start-game", searchParams.get("waitingRoom"));
   };
-
-  useEffect(() => {
-    socket?.on("user-left", (room: any) => {
-      setRoomInfo(room);
-    });
-
-    return () => {
-      socket?.off("user-left");
-    };
-  }, [socket]);
 
   function startGame() {
     navigate(`/room/${searchParams.get("waitingRoom")}`);
