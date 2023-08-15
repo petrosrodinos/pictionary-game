@@ -14,10 +14,9 @@
   align-items: center;
   background-color: var(--secondary-background-color-medium);
   border-radius: var(--border-radius);
+  min-width: 70px;
   padding: 10px;
   height: 30px;
-  max-width: 65px;
-  width: 100%;
   cursor: pointer;
 
   &:hover {

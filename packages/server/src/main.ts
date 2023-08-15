@@ -131,6 +131,13 @@ socket.on("connection", (socket: any) => {
       roundTimer = setTimeout(() => {
         room.word = "";
         room.status = "selecting-word";
+        if (++room.round > room.players.length) {
+          room.status = "finished";
+          socket.emit("game-finished", room);
+          socket.in(code).emit("game-finished", room);
+          delete rooms[code];
+          return;
+        }
         room.round++;
         room.currentArtist = room.players[room.round - 1];
         socket.emit("round-finished", room);
@@ -152,7 +159,7 @@ socket.on("connection", (socket: any) => {
       if (room.players.length === 1) {
         clearTimeout(roundTimer);
         clearTimeout(choosingWordTimer);
-        room.message = "All other players left the game";
+        room.message = "Looks like game is finished";
         room.status = "finished";
         socket.in(code).emit("all-users-left", room);
         delete rooms[code];

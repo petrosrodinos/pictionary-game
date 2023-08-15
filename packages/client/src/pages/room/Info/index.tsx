@@ -18,7 +18,7 @@ const Info: FC<InfoProps> = ({ artist, timer }) => {
           ARTIST:
         </Typography>
         <Typography variant="small-text-main" className="artist-text">
-          @{artist}
+          {artist && <>@{artist}</>}
         </Typography>
       </div>
       <div className="time-container">

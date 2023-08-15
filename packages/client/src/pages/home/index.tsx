@@ -4,7 +4,7 @@ import LeaderBoard from "./LeaderBoard";
 import RecentGames from "./RecentGames";
 import Modal from "../../components/ui/Modal";
 import JoinRoom from "./JoinRoom";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import WaitingRoom from "./WaitingRoom";
 import Container from "../../components/Container";
 import CreateRoom from "./CreateRoom";

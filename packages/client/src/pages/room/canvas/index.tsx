@@ -39,6 +39,9 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   }, []);
 
   useEffect(() => {
+    if (!canvasData || canvasData.length == 0) {
+      clear();
+    }
     canvasData?.forEach((data) => {
       drawPixel(data);
     });

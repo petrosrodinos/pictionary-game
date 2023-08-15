@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useMemo } from "react";
 import Canvas from "./Canvas";
 import { authStore } from "../../store/authStore";
 import Info from "./Info";
@@ -71,7 +71,9 @@ const Room: FC = () => {
       } else {
         setMessage("");
       }
-      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      if (roomInfo.currentArtist) {
+        setActiveModal(chooseOption(roomInfo.currentArtist.username));
+      }
     });
     return () => {
       socket?.off("round-finished");
@@ -176,9 +178,9 @@ const Room: FC = () => {
     return player === username ? "choosing-word" : "waiting-word";
   }
 
-  const takeTime = () => {
+  const takeTime = useMemo(() => {
     return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
-  };
+  }, [roomInfo?.status]);
 
   // window.onbeforeunload = function () {
   //   if (activeModal === "choosing-word") {
@@ -194,7 +196,7 @@ const Room: FC = () => {
             {ModalComponents[activeModal || "choosing-word"]}
           </Modal>
           <Container className="room-page-container">
-            <Info timer={takeTime()} artist={roomInfo?.currentArtist?.username || ""} />
+            <Info timer={takeTime} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
               <Canvas
                 canvasData={roomInfo?.drawings}
