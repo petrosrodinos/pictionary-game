@@ -18,7 +18,6 @@ import "./style.scss";
 const Room: FC = () => {
   const { id: roomId } = useParams();
   const { userId, username, avatar, level } = authStore((state) => state);
-
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
@@ -33,110 +32,86 @@ const Room: FC = () => {
       level,
     };
     socket?.emit("join-room", roomId, joinedUser);
+  }, [socket, roomId]);
 
-    socket?.on("send-info", (roomInfo: RoomInfo) => {
-      if (!roomInfo) return;
-      console.log("get-info", roomInfo);
-      setRoomData(roomInfo);
-      setActiveModal(chooseOption(roomInfo.currentArtist.username));
-    });
+  useEffect(() => {
+    socket?.on("send-info", handleInfoSended);
+    socket?.on("word-changed", handleWordChanged);
+    socket?.on("round-finished", handleRoundFinished);
+    socket?.on("choosing-word-time-finished", handleChoosingWordTimeFinished);
+    socket?.on("artist-left", handleArtistLeft);
+    socket?.on("all-users-left", handleAllUsersLeft);
+    socket?.on("game-finished", handleGameFinished);
 
     return () => {
       socket?.off("send-info");
+      socket?.off("word-changed");
+      socket?.off("round-finished");
+      socket?.off("choosing-word-time-finished");
+      socket?.off("artist-left");
+      socket?.off("all-users-left");
+      socket?.off("game-finished");
+
       () => {
         "Are you sure you want to leave?";
       };
     };
-  }, [socket, roomId]);
-
-  useEffect(() => {
-    socket?.on("word-changed", (roomInfo: RoomInfo) => {
-      console.log("word-changed", roomInfo);
-      setRoomInfo(roomInfo);
-      setMessage("");
-      setActiveModal("");
-    });
-
-    return () => {
-      socket?.off("word-changed");
-    };
-  }, [socket, roomId]);
-
-  useEffect(() => {
-    socket?.on("round-finished", (roomInfo: RoomInfo) => {
-      console.log("round-finished", roomInfo);
-      setRoomInfo(roomInfo);
-      if (roomInfo.message) {
-        setMessage(roomInfo.message);
-      } else {
-        setMessage("");
-      }
-      if (roomInfo.currentArtist) {
-        setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      }
-    });
-    return () => {
-      socket?.off("round-finished");
-    };
   }, [socket]);
 
-  useEffect(() => {
-    socket?.on("choosing-word-time-finished", (roomInfo: RoomInfo) => {
-      console.log("choosing-word-time-finished", roomInfo);
-      setRoomInfo(roomInfo);
-      setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
-    });
-
-    return () => {
-      socket?.off("choosing-word-time-finished");
-    };
-  }, [socket]);
-
-  useEffect(() => {
-    socket?.on("artist-left", (roomInfo: RoomInfo) => {
-      console.log("artist-left", roomInfo);
-      setRoomInfo(roomInfo);
-      if (roomInfo.currentArtist) {
-        setActiveModal(chooseOption(roomInfo.currentArtist.username));
-      }
-      setMessage(`${roomInfo.players[roomInfo.round - 2].username} left the room`);
-    });
-
-    return () => {
-      socket?.off("artist-left");
-    };
-  }, [socket]);
-
-  useEffect(() => {
-    socket?.on("all-users-left", (roomInfo: RoomInfo) => {
-      console.log("all-users-left", roomInfo);
-      setRoomInfo({} as RoomInfo);
-      setMessage(roomInfo.message);
-      setActiveModal("");
-    });
-
-    return () => {
-      socket?.off("all-users-left");
-    };
-  }, [socket, roomId]);
-
-  useEffect(() => {
-    socket?.on("game-finished", (roomInfo: RoomInfo) => {
-      console.log("game-finished", roomInfo);
-      // setRoomInfo(roomInfo);
-      setActiveModal("game-finished");
-    });
-
-    return () => {
-      socket?.off("game-finished");
-    };
-  }, [socket, roomId]);
-
-  const setRoomData = (roomInfo: RoomInfo) => {
+  const handleInfoSended = (roomInfo: RoomInfo) => {
     if (!roomInfo) return;
+    console.log("get-info", roomInfo);
     setRoomInfo(roomInfo);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
+  };
+
+  const handleWordChanged = (roomInfo: RoomInfo) => {
+    console.log("word-changed", roomInfo);
+    setRoomInfo(roomInfo);
+    setMessage("");
+    setActiveModal("");
+  };
+
+  const handleRoundFinished = (roomInfo: RoomInfo) => {
+    console.log("round-finished", roomInfo);
+    setRoomInfo(roomInfo);
+    if (roomInfo.message) {
+      setMessage(roomInfo.message);
+    } else {
+      setMessage("");
+    }
+    if (roomInfo.currentArtist) {
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    }
+  };
+
+  const handleChoosingWordTimeFinished = (roomInfo: RoomInfo) => {
+    console.log("choosing-word-time-finished", roomInfo);
+    setRoomInfo(roomInfo);
+    setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
+  };
+
+  const handleArtistLeft = (roomInfo: RoomInfo) => {
+    console.log("artist-left", roomInfo);
+    setRoomInfo(roomInfo);
+    if (roomInfo.currentArtist) {
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    }
+    setMessage(`${roomInfo.players[roomInfo.round - 2].username} left the room`);
+  };
+
+  const handleAllUsersLeft = (roomInfo: RoomInfo) => {
+    console.log("all-users-left", roomInfo);
+    setRoomInfo({} as RoomInfo);
+    setMessage(roomInfo.message);
+    setActiveModal("");
+  };
+
+  const handleGameFinished = (roomInfo: RoomInfo) => {
+    console.log("game-finished", roomInfo);
+    // setRoomInfo(roomInfo);
+    setActiveModal("game-finished");
   };
 
   const handleWordSelected = (word: string) => {

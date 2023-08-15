@@ -112,7 +112,7 @@ socket.on("connection", (socket: any) => {
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", room);
-    socket.in(code).emit("send-info", room);
+    // socket.in(code).emit("send-info", room);
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       socket.broadcast.to(code).emit("receive-changes", data);
