@@ -1,10 +1,20 @@
+export const Statuses = {
+  CREATED: "created",
+  WAITING_ROOM: "waiting-room",
+  SELECTING_WORD: "selecting-word",
+  PLAYING: "playing",
+  FINISHED: "finished",
+} as const;
+
+export type Statuses = (typeof Statuses)[keyof typeof Statuses];
+
 export interface Room {
   code: string;
   creator: string;
   maxPlayers: number;
   players: ConnectedUser[];
   drawings: any[];
-  status: Status;
+  status: Statuses;
   word: string;
   round: number;
   currentArtist: ConnectedUser;

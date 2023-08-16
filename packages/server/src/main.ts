@@ -1,5 +1,5 @@
 import express, { Application, NextFunction, Request, Response } from "express";
-import { ConnectedUser, Room } from "./interfaces/room";
+import { ConnectedUser, Room, Statuses } from "./interfaces/room";
 import cors from "cors";
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
@@ -41,7 +41,7 @@ socket.on("connection", (socket: any) => {
       ...settings,
       players: [],
       drawings: [],
-      status: "created",
+      status: Statuses.CREATED,
       round: 1,
       message: "",
     };
@@ -53,8 +53,8 @@ socket.on("connection", (socket: any) => {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       //checks if user is already in room
       socket.join(code);
-      if (room.status == "waiting-room" || room.status == "created") {
-        room.status = "waiting-room";
+      if (room.status == Statuses.WAITING_ROOM || room.status == Statuses.CREATED) {
+        room.status = Statuses.WAITING_ROOM;
       }
       if (
         !room.players.find((u) => u.userId === user.userId) &&
@@ -71,7 +71,7 @@ socket.on("connection", (socket: any) => {
         socket.emit("user-joined", room);
       }
       //checks if all players are in room and starts game
-      if (room.status == "waiting-room" && room.players.length === room.maxPlayers) {
+      if (room.status == Statuses.WAITING_ROOM && room.players.length === room.maxPlayers) {
         room.currentArtist = room.players[0];
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
@@ -88,9 +88,9 @@ socket.on("connection", (socket: any) => {
         startChoosingWord(room, socket, code);
       });
       socket.on("disconnect", () => {
-        if (room.status == "waiting-room" && room.players.length === 1) {
+        if (room.status == Statuses.WAITING_ROOM && room.players.length === 1) {
           delete rooms[code];
-        } else if (room.status == "waiting-room") {
+        } else if (room.status == Statuses.WAITING_ROOM) {
           console.log("disconnect", code);
           room.players = room.players.filter((u) => u.userId !== user.userId);
           socket.in(code).emit("user-left", room);
@@ -124,15 +124,15 @@ socket.on("connection", (socket: any) => {
       const room = rooms[code];
       room.word = word;
       room.drawings = [];
-      room.status = "playing";
+      room.status = Statuses.PLAYING;
       socket.emit("word-changed", room);
       socket.in(code).emit("word-changed", room);
       //starts timer for round and emit event when time is up
       roundTimer = setTimeout(() => {
         room.word = "";
-        room.status = "selecting-word";
+        room.status = Statuses.SELECTING_WORD;
         if (++room.round > room.players.length) {
-          room.status = "finished";
+          room.status = Statuses.FINISHED;
           socket.emit("game-finished", room);
           socket.in(code).emit("game-finished", room);
           delete rooms[code];
@@ -148,7 +148,7 @@ socket.on("connection", (socket: any) => {
     //when artist leaves choosing word screen
     socket.on("leave-choosing-word", (code: string) => {
       // room.players = room.players.filter((u) => u.userId !== userId);
-      room.status = "selecting-word";
+      room.status = Statuses.SELECTING_WORD;
       room.currentArtist = room.players[room.round];
       socket.in(code).emit("artist-left", room);
       socket.emit("artist-left", room);
@@ -160,14 +160,14 @@ socket.on("connection", (socket: any) => {
         clearTimeout(roundTimer);
         clearTimeout(choosingWordTimer);
         room.message = "Looks like game is finished";
-        room.status = "finished";
+        room.status = Statuses.FINISHED;
         socket.in(code).emit("all-users-left", room);
         delete rooms[code];
         return;
       }
       if (room.currentArtist && room.currentArtist.userId === user.userId) {
         room.word = "";
-        room.status = "selecting-word";
+        room.status = Statuses.SELECTING_WORD;
         room.round++;
         room.currentArtist = room.players[room.round - 1];
         room.message = "Artist left the game";
@@ -188,7 +188,7 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
   choosingWordTimer = setTimeout(() => {
     room.round++;
     if (room.round > room.players.length) {
-      room.status = "finished";
+      room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
       delete rooms[code];
@@ -203,12 +203,12 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
 }
 
 function startChoosingWord(room: Room, socket: any, code: string) {
-  room.status = "selecting-word";
+  room.status = Statuses.SELECTING_WORD;
   //starts timer for choosing word and emit event when time is up
   choosingWordTimer = setTimeout(() => {
     room.round++;
     if (room.round > room.players.length) {
-      room.status = "finished";
+      room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
     } else {
