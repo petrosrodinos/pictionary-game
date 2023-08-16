@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/ui/Dropdown";
 import DatePicker from "../../../components/ui/DatePicker";
 import { useMutation } from "react-query";
-import { registerUser } from "../../../services/auth";
+import { registerUser } from "../../../services/user";
 import ImageUploader from "../../../components/ui/ImageUploader";
 import { BsPerson } from "react-icons/bs";
 import "./style.scss";

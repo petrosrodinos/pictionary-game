@@ -18,3 +18,12 @@ export const registerUser = async (paylaod: UserRegister): Promise<any> => {
     console.log("err", err);
   }
 };
+
+export const updateUser = async (payload: UserToUpdate): Promise<any> => {
+  try {
+    const result = await axios.put(`${API_URL}auth/user/${payload.userId}`, payload);
+    return result.data;
+  } catch (err) {
+    console.log("err", err);
+  }
+};

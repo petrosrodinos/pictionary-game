@@ -12,17 +12,23 @@ import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
 import NoRoom from "./Message";
-import { WORDS } from "../../constants/game";
+import { POINTS_PER_LEVEL, WORDS } from "../../constants/game";
+import { updateUser } from "../../services/user";
+import { useMutation } from "react-query";
 import "./style.scss";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
-  const { userId, username, avatar, level } = authStore((state) => state);
+  const { userId, username, avatar, level, points, inGamePoints } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
   const { socket } = useSocket();
   const navigate = useNavigate();
+
+  const { mutate: updateUserMutation } = useMutation((user: UserToUpdate) => {
+    return updateUser(user);
+  });
 
   useEffect(() => {
     const joinedUser = {
@@ -112,6 +118,7 @@ const Room: FC = () => {
     console.log("game-finished", roomInfo);
     // setRoomInfo(roomInfo);
     setActiveModal("game-finished");
+    updateUserInfo();
   };
 
   const handleWordSelected = (word: string) => {
@@ -156,6 +163,23 @@ const Room: FC = () => {
   const takeTime = useMemo(() => {
     return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
   }, [roomInfo?.status]);
+
+  const updateUserInfo = () => {
+    let newPoints = points + inGamePoints;
+    if (newPoints >= POINTS_PER_LEVEL) {
+      newPoints = newPoints - POINTS_PER_LEVEL;
+      updateUserMutation({ userId, points: newPoints, level: level + 1 });
+    } else {
+      updateUserMutation(
+        { userId, points: newPoints },
+        {
+          onSuccess: (data) => {
+            console.log("data", data);
+          },
+        }
+      );
+    }
+  };
 
   // window.onbeforeunload = function () {
   //   if (activeModal === "choosing-word") {

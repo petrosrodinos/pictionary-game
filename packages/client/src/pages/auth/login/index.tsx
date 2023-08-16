@@ -9,7 +9,7 @@ import { LoginValidationSchema } from "../../../validation-schemas/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { loginUser } from "../../../services/auth";
+import { loginUser } from "../../../services/user";
 import "./style.scss";
 
 const Login: FC = () => {
