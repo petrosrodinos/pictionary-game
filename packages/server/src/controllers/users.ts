@@ -123,3 +123,35 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
     });
   }
 };
+
+export const getUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  if (req.userId !== id) {
+    return res.status(401).json({
+      message: "You are not authorized",
+    });
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    res.status(201).json(exclude(user, "password"));
+  } catch (err) {
+    res.status(409).json({
+      message: "Could not get user",
+      error: JSON.stringify(err),
+    });
+  }
+};
+
+function exclude(user: any, ...keys: any) {
+  for (let key of keys) {
+    delete user[key];
+  }
+  return user;
+}
