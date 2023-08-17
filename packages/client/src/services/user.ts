@@ -1,5 +1,10 @@
 import axios from "axios";
 import { API_URL } from "../constants";
+import { getAuthState } from "../store/authStore";
+
+const config = {
+  headers: { Authorization: `Bearer ${getAuthState().token}` },
+};
 
 export const loginUser = async (paylaod: UserLogin): Promise<any> => {
   try {
@@ -21,7 +26,7 @@ export const registerUser = async (paylaod: UserRegister): Promise<any> => {
 
 export const updateUser = async (payload: UserToUpdate): Promise<any> => {
   try {
-    const result = await axios.put(`${API_URL}auth/user/${payload.userId}`, payload);
+    const result = await axios.put(`${API_URL}auth/user/${payload.userId}`, payload, config);
     return result.data;
   } catch (err) {
     console.log("err", err);

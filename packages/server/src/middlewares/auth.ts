@@ -21,4 +21,8 @@ export const authMiddleware = async (req: any, res: any, next: any) => {
       return res.status(401).send({ message: "You are not authorized" });
     }
   }
+
+  if (!token) {
+    return res.status(401).send({ message: "You are not authorized" });
+  }
 };
