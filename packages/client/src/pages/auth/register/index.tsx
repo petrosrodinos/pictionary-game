@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
@@ -10,19 +10,35 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/ui/Dropdown";
 import DatePicker from "../../../components/ui/DatePicker";
 import { useMutation } from "react-query";
-import { registerUser } from "../../../services/user";
-import ImageUploader from "../../../components/ui/ImageUploader";
+import { registerUser, updateUser } from "../../../services/user";
+import ImagePicker from "../../../components/ui/ImagePicker";
 import { BsPerson } from "react-icons/bs";
 import "./style.scss";
-import { getRandomAvatar } from "../../../utils/avatar";
 
-const Register: FC = () => {
-  const { logIn } = authStore((state) => state);
+interface RegisterProps {
+  values?: UserRegister;
+  isEditing?: boolean;
+}
+
+const Register: FC<RegisterProps> = ({ isEditing, values }) => {
+  const { logIn, userId } = authStore((state) => state);
   const navigate = useNavigate();
+
+  const { mutate: registerMutation, isLoading } = useMutation((user: UserRegister) => {
+    return registerUser(user);
+  });
+
+  const { mutate: updateUserMutation, isLoading: isUpdating } = useMutation(
+    (user: UserToUpdate) => {
+      return updateUser(user);
+    }
+  );
 
   const {
     register,
     handleSubmit,
+    reset,
+    getValues,
     formState: { errors },
     setValue,
   } = useForm<UserRegister>({
@@ -32,9 +48,22 @@ const Register: FC = () => {
       password: "",
       role: "",
       age: "",
-      avatar: getRandomAvatar(),
+      avatar: "",
     },
   });
+
+  useEffect(() => {
+    if (values) {
+      reset({
+        username: values.username,
+        password: "",
+        role: values.role,
+        age: values.age,
+        avatar: values.avatar,
+      });
+      console.log("values", getValues());
+    }
+  }, [values]);
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("role", e.target.value);
@@ -47,9 +76,6 @@ const Register: FC = () => {
   const handleAvatarChange = (image: string) => {
     setValue("avatar", image);
   };
-  const { mutate: registerMutation, isLoading } = useMutation((user: UserRegister) => {
-    return registerUser(user);
-  });
 
   const handleRegister = async (values: UserRegister) => {
     console.log("values", values);
@@ -81,16 +107,44 @@ const Register: FC = () => {
       }
     );
   };
+
+  const handleSave = async (values: UserRegister) => {
+    console.log("values", values);
+    updateUserMutation(
+      {
+        username: values.username,
+        password: values.password,
+        role: values.role,
+        age: values.age,
+        avatar: values.avatar,
+        userId: userId,
+      },
+      {
+        onSuccess: (data: any) => {
+          if (!data) {
+            return alert("Could not update profile");
+          }
+          alert("Profile updated successfully");
+        },
+        onError: (error: any) => {
+          alert(error.message);
+        },
+      }
+    );
+  };
+
   const options = [
-    { value: "Role", label: "Role" },
-    { value: "Student", label: "Student" },
-    { value: "Teacher", label: "Teacher" },
-    { value: "Parent", label: "Parent" },
+    { value: "student", label: "Student" },
+    { value: "teacher", label: "Teacher" },
+    { value: "parent", label: "Parent" },
   ];
 
   return (
-    <form className="register-page-container" onSubmit={handleSubmit(handleRegister)}>
-      <Typography variant="sub-header-main">Register</Typography>
+    <form
+      className="register-page-container"
+      onSubmit={handleSubmit(isEditing ? handleSave : handleRegister)}
+    >
+      <Typography variant="sub-header-main">{isEditing ? "Edit Profile" : "Register"}</Typography>
       <Input
         error={errors.username?.message}
         name="username"
@@ -106,14 +160,30 @@ const Register: FC = () => {
         type="password"
       />
 
-      <Dropdown options={options} onChange={handleRoleChange} error={errors.role?.message} />
-      <DatePicker onChange={handleAgeChange} error={errors.age?.message} />
-      <ImageUploader onChange={handleAvatarChange} name="avatar" label="Select Avatar" />
+      <Dropdown
+        value={values?.role || ""}
+        options={options}
+        onChange={handleRoleChange}
+        error={errors.role?.message}
+        label="Choose role"
+      />
+      <DatePicker
+        max={new Date().toISOString().slice(0, 10)}
+        value={values?.age}
+        onChange={handleAgeChange}
+        error={errors.age?.message}
+      />
+      <ImagePicker
+        value={values?.avatar}
+        onChange={handleAvatarChange}
+        name="avatar"
+        label="Select Avatar"
+      />
       <Button
         type="submit"
-        loading={isLoading}
+        loading={isLoading || isUpdating}
         icon={BsPerson}
-        title="Register"
+        title={isEditing ? "Save" : "Register"}
         variant="primary"
       />
     </form>
