@@ -11,6 +11,14 @@ interface UserLogin {
   password: string;
 }
 
+interface NewUser {
+  username: string;
+  password: string | undefined;
+  role: string;
+  age: string;
+  avatar: string;
+}
+
 interface UserRegister {
   username: string;
   password: string;

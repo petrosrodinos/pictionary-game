@@ -15,7 +15,7 @@ export const loginUser = async (paylaod: UserLogin): Promise<any> => {
   }
 };
 
-export const registerUser = async (paylaod: UserRegister): Promise<any> => {
+export const registerUser = async (paylaod: NewUser): Promise<any> => {
   try {
     const result = await axios.post(`${API_URL}auth/register`, paylaod);
     return result.data;

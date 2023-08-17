@@ -4,7 +4,10 @@ import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { RegisterValidationSchema } from "../../../validation-schemas/user";
+import {
+  EditProfileValidationSchema,
+  RegisterValidationSchema,
+} from "../../../validation-schemas/user";
 import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/ui/Dropdown";
@@ -16,15 +19,15 @@ import { BsPerson } from "react-icons/bs";
 import "./style.scss";
 
 interface RegisterProps {
-  values?: UserRegister;
+  values?: NewUser;
   isEditing?: boolean;
 }
 
 const Register: FC<RegisterProps> = ({ isEditing, values }) => {
-  const { logIn, userId } = authStore((state) => state);
+  const { logIn, userId, updateProfile } = authStore((state) => state);
   const navigate = useNavigate();
 
-  const { mutate: registerMutation, isLoading } = useMutation((user: UserRegister) => {
+  const { mutate: registerMutation, isLoading } = useMutation((user: NewUser) => {
     return registerUser(user);
   });
 
@@ -38,11 +41,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     register,
     handleSubmit,
     reset,
-    getValues,
     formState: { errors },
     setValue,
-  } = useForm<UserRegister>({
-    resolver: yupResolver(RegisterValidationSchema),
+  } = useForm<NewUser>({
+    resolver: yupResolver(isEditing ? EditProfileValidationSchema : RegisterValidationSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -61,7 +63,6 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         age: values.age,
         avatar: values.avatar,
       });
-      console.log("values", getValues());
     }
   }, [values]);
 
@@ -77,8 +78,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     setValue("avatar", image);
   };
 
-  const handleRegister = async (values: UserRegister) => {
-    console.log("values", values);
+  const handleRegister = async (values: NewUser) => {
     registerMutation(
       {
         username: values.username,
@@ -108,12 +108,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     );
   };
 
-  const handleSave = async (values: UserRegister) => {
-    console.log("values", values);
+  const handleSave = async (values: NewUser) => {
     updateUserMutation(
       {
         username: values.username,
-        password: values.password,
         role: values.role,
         age: values.age,
         avatar: values.avatar,
@@ -124,6 +122,12 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           if (!data) {
             return alert("Could not update profile");
           }
+          updateProfile({
+            username: data.username,
+            role: data.role,
+            age: data.age,
+            avatar: data.avatar,
+          });
           alert("Profile updated successfully");
         },
         onError: (error: any) => {
