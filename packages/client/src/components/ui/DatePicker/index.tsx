@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Typography from "../Typography";
 import "./style.scss";
 
@@ -8,24 +8,49 @@ interface DatePickerProps {
   style?: React.CSSProperties;
   onChange?: (e: React.ChangeEvent<HTMLDataElement>) => void;
   error?: string;
+  min?: string;
+  max?: string;
 }
 
-const DatePicker: FC<DatePickerProps> = ({ className = "", style, error, onChange, value }) => {
-  const getDate = (date?: string): string => {
-    try {
-      if (date) {
-        const [day, month, year] = date.split("/");
-        const formattedDate = `${year}-${month}-${day}`;
-        return new Date(formattedDate).toISOString().slice(0, 10);
-      }
-      return new Date().toISOString().slice(0, 10);
-    } catch (e) {
-      return new Date().toISOString().slice(0, 10);
+const getDate = (date?: string): string => {
+  try {
+    if (date) {
+      const [day, month, year] = date.split("/");
+      const formattedDate = `${year}-${month}-${day}`;
+      return new Date(formattedDate).toISOString().slice(0, 10);
     }
+    return new Date().toISOString().slice(0, 10);
+  } catch (e) {
+    return new Date().toISOString().slice(0, 10);
+  }
+};
+
+const DatePicker: FC<DatePickerProps> = ({
+  className = "",
+  style,
+  error,
+  onChange,
+  value,
+  min,
+  max,
+}) => {
+  const [dateValue, setDateValue] = useState(getDate(value));
+
+  const handleDateChange = (event: any) => {
+    setDateValue(event.target.value);
+    onChange && onChange(event);
   };
+
   return (
     <div className={`datepicker ${className}`} style={style}>
-      <input value={getDate(value)} className="dateInput" type="date" onChange={onChange}></input>
+      <input
+        min={min}
+        max={max}
+        value={dateValue}
+        className="dateInput"
+        type="date"
+        onChange={handleDateChange}
+      ></input>
       {error && <Typography className="input-error">{error}</Typography>}
     </div>
   );
