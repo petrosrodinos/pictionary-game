@@ -10,7 +10,7 @@ import Container from "../../components/Container";
 import CreateRoom from "./CreateRoom";
 import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
-import PlayerStats from "../../components/ui/PlayerStats";
+import PlayerStats from "../../components/PlayerStats";
 import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
@@ -87,7 +87,7 @@ const Home: FC = () => {
 
   return (
     <Container className="home-page-container">
-      <PlayerStats></PlayerStats>
+      <PlayerStats />
       <Modal
         title={ModalComponents?.[activeModal]?.title}
         isOpen={!!activeModal}

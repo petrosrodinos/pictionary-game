@@ -1,0 +1,49 @@
+@use "../../styles/mixins";
+
+.player-stats {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-stats-row {
+  position: relative;
+  display: flex;
+  margin-left: 20px;
+}
+
+.player-level {
+  position: absolute;
+
+  .star-level {
+    margin-top: -14px;
+    margin-left: -18px;
+  }
+
+  .level-text {
+    position: absolute;
+    left: -7px;
+    top: -10px;
+    color: var(--text-secondary-light);
+  }
+}
+
+.user-xp {
+  margin-top: 9px;
+  margin-left: 5px;
+
+  span {
+    color: var(--text-secondary);
+  }
+}
+
+.user-name {
+  text-align: center;
+  margin-left: -10px;
+}
+
+.user-name-text {
+  color: var(--text-secondary);
+}
