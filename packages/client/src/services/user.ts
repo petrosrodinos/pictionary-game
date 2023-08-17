@@ -32,3 +32,12 @@ export const updateUser = async (payload: UserToUpdate): Promise<any> => {
     console.log("err", err);
   }
 };
+
+export const getUser = async (userId: string): Promise<any> => {
+  try {
+    const result = await axios.get(`${API_URL}auth/user/${userId}`, config);
+    return result.data;
+  } catch (err) {
+    console.log("err", err);
+  }
+};
