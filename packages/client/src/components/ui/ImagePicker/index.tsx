@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import Avatar from "../Avatar";
 import Typography from "../Typography";
 import { CiCamera } from "react-icons/ci";
@@ -10,17 +10,25 @@ interface ImageUploaderProps {
   onChange: (image: string) => void;
   name?: string;
   label?: string;
+  value?: string;
 }
 
-const ImageUploader: FC<ImageUploaderProps> = ({
+const ImagePicker: FC<ImageUploaderProps> = ({
   style,
   className = "",
   onChange,
   name,
   label,
+  value = "",
 }) => {
-  const [avatarImage, setAvatarImage] = useState<any>("");
+  const [avatarImage, setAvatarImage] = useState<any>(value);
   const inputFile = useRef<any>();
+
+  useEffect(() => {
+    if (value) {
+      setAvatarImage(value);
+    }
+  }, [value]);
 
   const handleAvatarChange = async (e: any) => {
     const file: File = e.target?.files?.[0];
@@ -70,4 +78,4 @@ const ImageUploader: FC<ImageUploaderProps> = ({
   );
 };
 
-export default ImageUploader;
+export default ImagePicker;
