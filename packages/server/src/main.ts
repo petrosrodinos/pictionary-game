@@ -131,7 +131,8 @@ socket.on("connection", (socket: any) => {
       roundTimer = setTimeout(() => {
         room.word = "";
         room.status = Statuses.SELECTING_WORD;
-        if (++room.round > room.players.length) {
+        let nextRound = room.round + 1;
+        if (nextRound > room.players.length) {
           room.status = Statuses.FINISHED;
           socket.emit("game-finished", room);
           socket.in(code).emit("game-finished", room);
