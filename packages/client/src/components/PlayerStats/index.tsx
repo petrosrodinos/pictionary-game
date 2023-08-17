@@ -3,14 +3,16 @@ import Typography from "../ui/Typography";
 import Avatar from "../ui/Avatar";
 import StarLevelImage from "../../assets/player-level-star.png";
 import { authStore } from "../../store/authStore";
+import { FiSettings } from "react-icons/fi";
 import "./style.scss";
 
 interface PlayerStatsProps {
   style?: React.CSSProperties;
   className?: string;
+  onSettingsClick?: () => void;
 }
 
-const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
+const PlayerStats: FC<PlayerStatsProps> = ({ onSettingsClick, style, className = "" }) => {
   const { username, level, avatar, points } = authStore((state) => state);
   return (
     <div className={`player-stats ${className}`} style={style}>
@@ -24,6 +26,9 @@ const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
             {level}
           </Typography>
         </div>
+        <span onClick={onSettingsClick} className="settings-icon">
+          <FiSettings />
+        </span>
         <Avatar image={avatar} />
         <div className="user-xp">
           <Typography variant="text-main" className="user-xp-text">
