@@ -9,26 +9,8 @@
   padding-bottom: 20px;
 }
 
-.auth-page-content {
-  display: flex;
-  height: 50px;
-  background-color: var(--secondary-background-color-dark);
-  border-radius: var(--border-radius);
-  margin: 30px;
-}
-
-.auth-option {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-}
-
-.selected {
-  background-color: var(--secondary-background-color-medium);
+.auth-tab-menu {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }

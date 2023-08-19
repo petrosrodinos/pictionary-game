@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
@@ -17,7 +17,9 @@ import { registerUser, updateUser } from "../../../services/user";
 import ImagePicker from "../../../components/ui/ImagePicker";
 import { BsPerson } from "react-icons/bs";
 import { NewUser, UserToUpdate } from "../../../interfaces/typing";
+import TabMenu from "../../../components/ui/TabMenu";
 import "./style.scss";
+import SelectAvatar from "../../../components/SelectAvatar";
 
 interface RegisterProps {
   values?: NewUser;
@@ -26,6 +28,7 @@ interface RegisterProps {
 
 const Register: FC<RegisterProps> = ({ isEditing, values }) => {
   const { logIn, userId, updateProfile } = authStore((state) => state);
+  const [selectedOption, setSelectedOption] = useState<string>("upload");
   const navigate = useNavigate();
 
   const { mutate: registerMutation, isLoading } = useMutation((user: NewUser) => {
@@ -77,6 +80,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
 
   const handleAvatarChange = (image: string) => {
     setValue("avatar", image);
+  };
+
+  const avatarOptionChange = (data: { name: string; value: string }) => {
+    setSelectedOption(data.value);
   };
 
   const handleRegister = async (values: NewUser) => {
@@ -144,6 +151,17 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     { value: "parent", label: "Parent" },
   ];
 
+  const avatarOptions = [
+    {
+      label: "Upload Avatar",
+      value: "upload",
+    },
+    {
+      label: "Select Avatar",
+      value: "select",
+    },
+  ];
+
   return (
     <form
       className="register-page-container"
@@ -178,12 +196,23 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         onChange={handleAgeChange}
         error={errors.age?.message}
       />
-      <ImagePicker
-        value={values?.avatar}
-        onChange={handleAvatarChange}
+      <TabMenu
+        selected={selectedOption}
+        onChange={avatarOptionChange}
         name="avatar"
-        label="Select Avatar"
+        className="avatar-tab-menu"
+        items={avatarOptions}
       />
+      {selectedOption == "upload" ? (
+        <ImagePicker
+          value={values?.avatar}
+          onChange={handleAvatarChange}
+          name="avatar"
+          label="Select Avatar"
+        />
+      ) : (
+        <SelectAvatar onChange={handleAvatarChange} />
+      )}
       <Button
         type="submit"
         loading={isLoading || isUpdating}

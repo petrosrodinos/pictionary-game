@@ -27,12 +27,24 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
     navigate(`/user/${data.value}`);
   };
 
+  const authOptions = [
+    {
+      label: "login",
+      value: "login",
+    },
+    {
+      label: "register",
+      value: "register",
+    },
+  ];
+
   return (
     <Container className="auth-page-container">
       <TabMenu
+        className="auth-tab-menu"
         selected={selectedOption}
         onChange={handleMenuChange}
-        items={["login", "register"]}
+        items={authOptions}
         name="auth"
       />
       <div className="auth-content-container">{children}</div>

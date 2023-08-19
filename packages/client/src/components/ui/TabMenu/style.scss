@@ -7,8 +7,8 @@
   display: flex;
   flex-direction: row;
   box-shadow: 4px 4px var(--input-color);
-  margin-left: 10px;
-  margin-right: 10px;
+  // margin-left: 10px;
+  // margin-right: 10px;
   margin-top: 5px;
 }
 
@@ -19,9 +19,7 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  // background-color: var(--secondary-background-color-dark);
   border-radius: var(--border-radius);
-  // margin: 30px;
 }
 
 .tab-menu-option {
@@ -36,6 +34,6 @@
   color: white;
 }
 
-.selected {
+.selected-tab {
   background-color: var(--secondary-background-color-medium);
 }

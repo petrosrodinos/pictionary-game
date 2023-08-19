@@ -1,0 +1,22 @@
+.select-avatar-container {
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  padding: 10px;
+  max-height: 200px;
+  overflow: auto;
+  height: 100%;
+}
+
+.select-avatar-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.avatar-container {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eee;
+  }
+}

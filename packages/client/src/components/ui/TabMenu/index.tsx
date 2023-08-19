@@ -3,26 +3,27 @@ import Typography from "../Typography";
 import "./style.scss";
 
 interface TabMenuProps {
-  items: string[];
+  items: { label: string; value: string }[];
   name: string;
   selected: string;
   style?: CSSProperties;
+  className?: string;
   onChange: (data: { name: string; value: string }) => void;
 }
 
-const TabMenu: FC<TabMenuProps> = ({ items, name, selected, onChange, style }) => {
+const TabMenu: FC<TabMenuProps> = ({ items, name, selected, onChange, style, className = "" }) => {
   return (
-    <div style={style} className="wrapper">
-      {items.map((item: string, index: number) => (
+    <div className={`wrapper ${className}`} style={style}>
+      {items.map((item, index: number) => (
         <div
           onClick={() => {
-            onChange({ name, value: item });
+            onChange({ name, value: item.value });
           }}
           key={index}
-          className={`tab-menu-option-container ${selected == item ? "selected" : ""}`}
+          className={`tab-menu-option-container ${selected == item.value ? "selected-tab" : ""}`}
         >
           <div className="tab-menu-option">
-            <Typography className="span">{item}</Typography>
+            <Typography className="span">{item.label}</Typography>
           </div>
         </div>
       ))}
