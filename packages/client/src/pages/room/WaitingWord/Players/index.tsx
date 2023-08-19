@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
+import { UserType } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface PlayersProps {

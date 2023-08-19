@@ -2,7 +2,7 @@ import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import Loader from "../../../components/ui/Loader";
 import Players from "../WaitingWord/Players";
-import { WORDS, SELECTABLE_WORDS_LIST_LENGTH } from "../../../constants/game";
+import { WORD_LIST, SELECTABLE_WORDS_LIST_LENGTH } from "../../../constants/game";
 import ChipSelector from "../../../components/ui/ChipSelector";
 import { UserType } from "../../../interfaces/typing";
 import "./style.scss";
@@ -25,7 +25,7 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
   onWordSelected,
 }) => {
   const getRandomWords = (length: number = SELECTABLE_WORDS_LIST_LENGTH) => {
-    const words = WORDS[category][difficalty];
+    const words = WORD_LIST[category][difficalty];
     const randomWords: string[] = [];
     while (randomWords.length < length) {
       const randomIndex = Math.floor(Math.random() * words.length);

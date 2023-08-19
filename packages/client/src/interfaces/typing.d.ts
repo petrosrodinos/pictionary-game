@@ -70,4 +70,5 @@ interface RoomInfo extends GameSettings {
   currentArtist: UserType;
   status: string;
   message: string;
+  lastWord: string;
 }

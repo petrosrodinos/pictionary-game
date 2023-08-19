@@ -3,6 +3,7 @@ import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { CLIENT_URL } from "../../../constants";
 import {
+  CATEGORIES,
   CHOOSING_WORD_TIME_IN_SECONDS,
   Difficalty,
   PLAYERS_IN_ROOM,
@@ -24,7 +25,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
     maxPlayers: PLAYERS_IN_ROOM,
     roundTime: ROUND_TIME_IN_SECONDS,
     choosingWordTime: CHOOSING_WORD_TIME_IN_SECONDS,
-    category: "",
+    category: CATEGORIES[0],
     difficalty: Difficalty.EASY,
     code: createRoomCode(),
   });

@@ -5,13 +5,15 @@ import { authStore } from "../../../store/authStore";
 import PointsEarned from "./PointsEarned";
 import Players from "../WaitingWord/Players";
 import "./style.scss";
+import { UserType } from "../../../interfaces/typing";
 
 interface GameFinishedProps {
   players: UserType[];
+  message?: string | null;
   onExit: () => void;
 }
 
-const GameFinished: FC<GameFinishedProps> = ({ players, onExit }) => {
+const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
   const [pointsEarned, setPointsEarned] = useState<number>(0);
   const [rank, setRank] = useState<number>(0);
   const { username } = authStore((state) => state);
@@ -39,6 +41,8 @@ const GameFinished: FC<GameFinishedProps> = ({ players, onExit }) => {
 
   return (
     <div className="game-finished-container">
+      {message && <Typography variant="text-accent">{message}</Typography>}
+
       <Typography className="finish-message">
         <Typography className="msg-primary" variant="text-accent">
           CONGRATULATIONS -

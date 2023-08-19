@@ -9,7 +9,7 @@ import {
   MIN_CHOOSING_WORD_TIME_IN_SECONDS,
   MIN_PLAYERS_IN_ROOM,
   MIN_ROUND_TIME_IN_SECONDS,
-  WORDS,
+  WORD_LIST,
 } from "../../../../constants/game";
 import ChipSelector from "../../../../components/ui/ChipSelector";
 import { GameSettings as GameSettingsInt } from "../../../../interfaces/typing";
@@ -40,11 +40,17 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
       <Typography variant="text-main" className="category-label">
         Word Category
       </Typography>
-      <ChipSelector name="category" chips={Object.keys(WORDS)} onChange={handleChipChanged} />
+      <ChipSelector
+        defaultValue
+        name="category"
+        chips={Object.keys(WORD_LIST)}
+        onChange={handleChipChanged}
+      />
       <Typography variant="text-main" className="category-label">
         Difficalty
       </Typography>
       <ChipSelector
+        defaultValue
         name="difficalty"
         chips={Object.values(Difficalty)}
         onChange={handleChipChanged}

@@ -85,7 +85,7 @@ const Room: FC = () => {
     if (roomInfo.message) {
       setMessage(roomInfo.message);
     } else {
-      setMessage("");
+      setMessage("The word was " + roomInfo.lastWord);
     }
     if (roomInfo.currentArtist) {
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
@@ -111,13 +111,12 @@ const Room: FC = () => {
   const handleAllUsersLeft = (roomInfo: RoomInfo) => {
     console.log("all-users-left", roomInfo);
     setRoomInfo({} as RoomInfo);
-    setMessage(roomInfo.message);
     setActiveModal("");
   };
 
   const handleGameFinished = (roomInfo: RoomInfo) => {
     console.log("game-finished", roomInfo);
-    // setRoomInfo(roomInfo);
+    setMessage("The word was " + roomInfo.lastWord);
     setActiveModal("game-finished");
     updateUserInfo();
   };
@@ -149,7 +148,9 @@ const Room: FC = () => {
         players={roomInfo?.players}
       />
     ),
-    "game-finished": <GameFinished onExit={handleExit} players={roomInfo?.players} />,
+    "game-finished": (
+      <GameFinished message={message} onExit={handleExit} players={roomInfo?.players} />
+    ),
   };
 
   function chooseTitle(): string {

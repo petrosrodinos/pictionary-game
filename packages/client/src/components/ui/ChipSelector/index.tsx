@@ -6,15 +6,28 @@ interface ChipSelectorProps {
   chips: string[];
   name: string;
   value?: string;
+  defaultValue?: boolean;
   onChange: (data: { name: string; value: string }) => void;
   style?: React.CSSProperties;
 }
 
-const ChipSelector: FC<ChipSelectorProps> = ({ chips, value, name, onChange, style }) => {
-  const [selectedChip, setSelectedChip] = useState<string>(chips[0]);
+const ChipSelector: FC<ChipSelectorProps> = ({
+  chips,
+  value,
+  defaultValue,
+  name,
+  onChange,
+  style,
+}) => {
+  const [selectedChip, setSelectedChip] = useState<string>("");
 
   useEffect(() => {
-    setSelectedChip(chips[0]);
+    if (value) {
+      setSelectedChip(value);
+    }
+    if (defaultValue) {
+      setSelectedChip(chips[0]);
+    }
   }, [value]);
 
   const handleChange = (value: string) => {

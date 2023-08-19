@@ -20,7 +20,7 @@ export const Difficalty = {
   HARD: "hard",
 } as const;
 
-export const WORDS: any = {
+export const WORD_LIST: any = {
   space: {
     easy: ["astronaut", "alien", "spaceship", "planet", "stars", "moon", "comet", "galaxy"],
     medium: ["satellite", "telescope", "meteor", "black hole", "solar system", "nebula"],
@@ -104,3 +104,5 @@ export const WORDS: any = {
     hard: ["skirt", "belt", "jeans", "t-shirt", "swimsuit", "nightgown"],
   },
 };
+
+export const CATEGORIES = Object.keys(WORD_LIST);

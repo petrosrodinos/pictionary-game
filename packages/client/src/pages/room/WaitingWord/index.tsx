@@ -3,6 +3,7 @@ import Typography from "../../../components/ui/Typography";
 import Avatar from "../../../components/ui/Avatar";
 import Loader from "../../../components/ui/Loader";
 import Players from "./Players";
+import { UserType } from "../../../interfaces/typing";
 import "./style.scss";
 
 interface WaitingWordsProps {

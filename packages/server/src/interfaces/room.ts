@@ -16,6 +16,7 @@ export interface Room {
   drawings: any[];
   status: Statuses;
   word: string;
+  lastWord: string;
   round: number;
   currentArtist: ConnectedUser;
   roundTime: number;
