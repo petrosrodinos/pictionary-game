@@ -45,8 +45,6 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
     )
       return alert("Please fill out all the fields");
 
-    console.log(settings);
-
     onCreate({
       ...settings,
       maxPlayers: Number(settings.maxPlayers),
@@ -65,7 +63,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
         Or the link
       </Typography>
       <Typography className="text-secondary-label game-link">
-        {CLIENT_URL}home?waitingRoom={settings.code}
+        {CLIENT_URL}home?room={settings.code}
       </Typography>
       <GameSettings settings={settings} onChange={handleSettingsChanged} />
       <div className="buttons-container">

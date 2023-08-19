@@ -22,6 +22,7 @@ export interface Room {
   choosingWordTime: number;
   category: string;
   message: string;
+  difficalty: string;
 }
 
 export type Status =

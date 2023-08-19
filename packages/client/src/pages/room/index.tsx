@@ -12,9 +12,10 @@ import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
 import NoRoom from "./Message";
-import { POINTS_PER_LEVEL, WORDS } from "../../constants/game";
+import { POINTS_PER_LEVEL } from "../../constants/game";
 import { updateUser } from "../../services/user";
 import { useMutation } from "react-query";
+import { RoomInfo, UserToUpdate } from "../../interfaces/typing";
 import "./style.scss";
 
 const Room: FC = () => {
@@ -135,7 +136,8 @@ const Room: FC = () => {
         time={roomInfo.choosingWordTime}
         onWordSelected={handleWordSelected}
         players={roomInfo.players}
-        category={roomInfo.category as keyof typeof WORDS}
+        category={roomInfo.category}
+        difficalty={roomInfo.difficalty}
         message={message}
       />
     ),

@@ -11,6 +11,7 @@ import CreateRoom from "./CreateRoom";
 import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
 import PlayerStats from "../../components/PlayerStats";
+import { GameSettings } from "../../interfaces/typing";
 import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
@@ -23,7 +24,7 @@ const Home: FC = () => {
 
   //useEffect detects for searchParams change and opens the waiting room modal
   useEffect(() => {
-    const waitingRoom = searchParams.get("waitingRoom");
+    const waitingRoom = searchParams.get("room");
     if (waitingRoom) {
       setActiveModal("waiting-room");
     } else {
@@ -56,7 +57,7 @@ const Home: FC = () => {
       creator: userId,
     });
     setSearchParams({
-      waitingRoom: settings.code,
+      room: settings.code,
     });
   };
 

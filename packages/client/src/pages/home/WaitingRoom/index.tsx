@@ -38,7 +38,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
 
   //emits event when user joins waiting room and listens for when new user joins
   useEffect(() => {
-    const waitingRoom = searchParams.get("waitingRoom");
+    const waitingRoom = searchParams.get("room");
     if (!waitingRoom) return;
 
     const joinedUser = {
@@ -66,11 +66,11 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   };
 
   const startGameByCreator = () => {
-    socket?.emit("start-game", searchParams.get("waitingRoom"));
+    socket?.emit("start-game", searchParams.get("room"));
   };
 
   function startGame() {
-    navigate(`/room/${searchParams.get("waitingRoom")}`);
+    navigate(`/room/${searchParams.get("room")}`);
   }
 
   return (

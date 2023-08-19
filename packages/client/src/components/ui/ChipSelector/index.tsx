@@ -11,10 +11,10 @@ interface ChipSelectorProps {
 }
 
 const ChipSelector: FC<ChipSelectorProps> = ({ chips, value, name, onChange, style }) => {
-  const [selectedChip, setSelectedChip] = useState<string>("");
+  const [selectedChip, setSelectedChip] = useState<string>(chips[0]);
 
   useEffect(() => {
-    setSelectedChip(value || "");
+    setSelectedChip(chips[0]);
   }, [value]);
 
   const handleChange = (value: string) => {

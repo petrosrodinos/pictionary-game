@@ -2,14 +2,16 @@ import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import Loader from "../../../components/ui/Loader";
 import Players from "../WaitingWord/Players";
-import { WORDS } from "../../../constants/game";
+import { WORDS, SELECTABLE_WORDS_LIST_LENGTH } from "../../../constants/game";
 import ChipSelector from "../../../components/ui/ChipSelector";
+import { UserType } from "../../../interfaces/typing";
 import "./style.scss";
 
 interface ChoosingWordProps {
   time: number;
   players: UserType[];
-  category: keyof typeof WORDS;
+  category: string;
+  difficalty: string;
   onWordSelected: (word: string) => void;
   message?: string | null;
 }
@@ -18,13 +20,14 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
   time,
   players,
   category,
+  difficalty,
   message,
   onWordSelected,
 }) => {
-  const getRandom5Words = () => {
-    const words = WORDS[category];
+  const getRandomWords = (length: number = SELECTABLE_WORDS_LIST_LENGTH) => {
+    const words = WORDS[category][difficalty];
     const randomWords: string[] = [];
-    while (randomWords.length < 5) {
+    while (randomWords.length < length) {
       const randomIndex = Math.floor(Math.random() * words.length);
       if (randomWords.includes(words[randomIndex])) continue;
       randomWords.push(words[randomIndex]);
@@ -51,8 +54,9 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
       </Typography>
       <ChipSelector
         style={{ alignSelf: "center" }}
-        chips={getRandom5Words()}
-        onChange={onWordSelected}
+        chips={getRandomWords()}
+        name="word"
+        onChange={(e: any) => onWordSelected(e.value)}
       />
       <Players players={players} />
     </div>

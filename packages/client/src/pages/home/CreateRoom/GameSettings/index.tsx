@@ -45,7 +45,6 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         Difficalty
       </Typography>
       <ChipSelector
-        value="easy"
         name="difficalty"
         chips={Object.values(Difficalty)}
         onChange={handleChipChanged}
