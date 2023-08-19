@@ -1,9 +1,12 @@
 import axios from "axios";
 import { API_URL } from "../constants";
 import { getAuthState } from "../store/authStore";
+import { UserLogin, NewUser, UserToUpdate } from "../interfaces/typing";
 
-const config = {
-  headers: { Authorization: `Bearer ${getAuthState().token}` },
+const getConfig = () => {
+  return {
+    headers: { Authorization: `Bearer ${getAuthState().token}` },
+  };
 };
 
 export const loginUser = async (paylaod: UserLogin): Promise<any> => {
@@ -26,7 +29,7 @@ export const registerUser = async (paylaod: NewUser): Promise<any> => {
 
 export const updateUser = async (payload: UserToUpdate): Promise<any> => {
   try {
-    const result = await axios.put(`${API_URL}auth/user/${payload.userId}`, payload, config);
+    const result = await axios.put(`${API_URL}auth/user/${payload.userId}`, payload, getConfig());
     return result.data;
   } catch (err) {
     console.log("err", err);
@@ -35,7 +38,7 @@ export const updateUser = async (payload: UserToUpdate): Promise<any> => {
 
 export const getUser = async (userId: string): Promise<any> => {
   try {
-    const result = await axios.get(`${API_URL}auth/user/${userId}`, config);
+    const result = await axios.get(`${API_URL}auth/user/${userId}`, getConfig());
     return result.data;
   } catch (err) {
     console.log("err", err);
