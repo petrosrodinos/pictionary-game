@@ -23,6 +23,14 @@
     height: 50px;
     fill: var(--text-secondary);
   }
+
+  &:hover {
+    border: 1px solid var(--text-primary);
+
+    svg {
+      fill: var(--text-primary);
+    }
+  }
 }
 
 .inputFile {
