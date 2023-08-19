@@ -1,5 +1,6 @@
 import { FC } from "react";
 import Typography from "../../../../components/ui/Typography";
+import { RoomInfo } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface RoomSettingsProps {
@@ -19,6 +20,14 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
           </Typography>
           <Typography variant="text-main" className="room-stat">
             {roomInfo.category}
+          </Typography>
+        </Typography>
+        <Typography>
+          <Typography variant="text-accent" className="waiting-room-label">
+            DIFFICALTY:
+          </Typography>
+          <Typography variant="text-main" className="room-stat">
+            {roomInfo.difficalty}
           </Typography>
         </Typography>
         <Typography>

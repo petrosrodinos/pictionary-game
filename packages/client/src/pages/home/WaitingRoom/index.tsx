@@ -10,6 +10,7 @@ import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "../../../hooks/timer";
 import { STARTING_TIME_IN_SECONDS } from "../../../constants/game";
+import { RoomInfo as RoomInfoInt } from "../../../interfaces/typing";
 import "./style.scss";
 
 interface WaitingRoomProps {}
@@ -18,7 +19,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   const navigate = useNavigate();
   const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const { userId, username, avatar, level } = authStore((state) => state);
-  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
+  const [roomInfo, setRoomInfo] = useState<RoomInfoInt>();
   const [searchParams, _] = useSearchParams();
   const [message, setMessage] = useState<string>("");
   const { socket } = useSocket();
@@ -49,18 +50,18 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
     socket?.emit("join-waiting-room", waitingRoom, joinedUser);
   }, [socket, searchParams]);
 
-  const handleUserJoined = (roomInfo: RoomInfo) => {
+  const handleUserJoined = (roomInfo: RoomInfoInt) => {
     console.log("user-joined", roomInfo);
     setRoomInfo(roomInfo);
   };
 
-  const handleGameStarted = (roomInfo: RoomInfo) => {
+  const handleGameStarted = (roomInfo: RoomInfoInt) => {
     console.log("game-started", roomInfo);
     // setRoomInfo(roomInfo);
     startCountDown(STARTING_TIME_IN_SECONDS);
   };
 
-  const handleUserLeft = (room: RoomInfo) => {
+  const handleUserLeft = (room: RoomInfoInt) => {
     setRoomInfo(room);
   };
 

@@ -1,10 +1,11 @@
 import { FC, useMemo } from "react";
 import Typography from "../../../../components/ui/Typography";
 import { CLIENT_URL } from "../../../../constants";
+import { RoomInfo as RoomInfoInt } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface RoomInfoProps {
-  roomInfo: RoomInfo;
+  roomInfo: RoomInfoInt;
 }
 
 const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
@@ -25,7 +26,7 @@ const RoomInfo: FC<RoomInfoProps> = ({ roomInfo }) => {
           Link:
         </Typography>{" "}
         <Typography className="room-stat waiting-room-link">
-          {CLIENT_URL}home?waitingRoom=
+          {CLIENT_URL}home?room=
           {roomInfo.code}
         </Typography>
       </Typography>
