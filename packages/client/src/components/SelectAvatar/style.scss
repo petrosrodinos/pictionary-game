@@ -1,5 +1,5 @@
 .select-avatar-container {
-  border: 1px solid #ccc;
+  border: 1px solid var(--secondary-background-color-dark);
   border-radius: var(--border-radius);
   padding: 10px;
   max-height: 200px;
@@ -17,6 +17,10 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #eee;
+    background-color: var(--text-secondary-light);
   }
+}
+
+.selected-avatar {
+  border: 2px solid var(--text-secondary-light);
 }

@@ -211,7 +211,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           label="Select Avatar"
         />
       ) : (
-        <SelectAvatar onChange={handleAvatarChange} />
+        <SelectAvatar value={values?.avatar} onChange={handleAvatarChange} />
       )}
       <Button
         type="submit"

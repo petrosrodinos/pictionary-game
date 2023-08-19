@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Typography from "../Typography";
 import "./style.scss";
 
@@ -21,9 +21,20 @@ const Dropdown: FC<DropdownProps> = ({
   value,
   label,
 }) => {
+  const [option, setOption] = useState<string>("");
+  useEffect(() => {
+    if (value) {
+      setOption(value);
+    }
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOption(e.target.value);
+    onChange && onChange(e);
+  };
   return (
     <div className={`dropdown ${className}`} style={style}>
-      <select value={value} onChange={onChange} className="dropdownSelect">
+      <select value={option} onChange={handleChange} className="dropdownSelect">
         <option value="">{label}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value} className="dropdownOption">
