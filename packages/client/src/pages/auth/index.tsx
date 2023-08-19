@@ -1,8 +1,8 @@
 import { FC, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Typography from "../../components/ui/Typography";
+import { useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import { useLocation } from "react-router-dom";
+import TabMenu from "../../components/ui/TabMenu";
 import "./style.scss";
 
 interface AuthPageProps {
@@ -12,6 +12,7 @@ interface AuthPageProps {
 const AuthPage: FC<AuthPageProps> = ({ children }) => {
   const { pathname } = useLocation();
   const [selectedOption, setSelectedOption] = useState<string>("login");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (pathname.includes("register")) {
@@ -21,24 +22,19 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
     }
   }, []);
 
+  const handleMenuChange = (data: { name: string; value: string }) => {
+    setSelectedOption(data.value);
+    navigate(`/user/${data.value}`);
+  };
+
   return (
     <Container className="auth-page-container">
-      <div className="auth-page-content">
-        <Link
-          className={`auth-option ${selectedOption == "login" ? "selected" : ""}`}
-          onClick={() => setSelectedOption("login")}
-          to="/user/login"
-        >
-          <Typography>LOGIN</Typography>
-        </Link>
-        <Link
-          className={`auth-option ${selectedOption == "register" ? "selected" : ""}`}
-          onClick={() => setSelectedOption("register")}
-          to="/user/register"
-        >
-          <Typography>REGISTER</Typography>
-        </Link>
-      </div>
+      <TabMenu
+        selected={selectedOption}
+        onChange={handleMenuChange}
+        items={["login", "register"]}
+        name="auth"
+      />
       <div className="auth-content-container">{children}</div>
     </Container>
   );

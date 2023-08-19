@@ -1,0 +1,41 @@
+.wrapper {
+  position: relative;
+  height: 46px;
+  background-color: var(--text-secondary-light);
+  border: 2px solid var(--input-color);
+  border-radius: 34px;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 4px 4px var(--input-color);
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.tab-menu-option-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  // background-color: var(--secondary-background-color-dark);
+  border-radius: var(--border-radius);
+  // margin: 30px;
+}
+
+.tab-menu-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+}
+
+.selected {
+  background-color: var(--secondary-background-color-medium);
+}

@@ -16,6 +16,7 @@ import { useMutation } from "react-query";
 import { registerUser, updateUser } from "../../../services/user";
 import ImagePicker from "../../../components/ui/ImagePicker";
 import { BsPerson } from "react-icons/bs";
+import { NewUser, UserToUpdate } from "../../../interfaces/typing";
 import "./style.scss";
 
 interface RegisterProps {
