@@ -1,3 +1,5 @@
+import { DifficaltyType } from "../types";
+
 type Draw = {
   ctx: CanvasRenderingContext2D;
   currentPoint: Point;
@@ -56,6 +58,7 @@ interface GameSettings {
   choosingWordTime: number;
   category: string;
   code: string;
+  difficalty: DifficaltyType;
 }
 
 interface RoomInfo extends GameSettings {

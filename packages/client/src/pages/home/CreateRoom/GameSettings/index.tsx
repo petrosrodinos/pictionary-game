@@ -2,6 +2,7 @@ import { FC } from "react";
 import Input from "../../../../components/ui/Input";
 import Typography from "../../../../components/ui/Typography";
 import {
+  Difficalty,
   MAX_CHOOSING_WORD_TIME_IN_SECONDS,
   MAX_PLAYERS_IN_ROOM,
   MAX_ROUND_TIME_IN_SECONDS,
@@ -11,10 +12,11 @@ import {
   WORDS,
 } from "../../../../constants/game";
 import ChipSelector from "../../../../components/ui/ChipSelector";
+import { GameSettings as GameSettingsInt } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface GameSettingsProps {
-  settings: any;
+  settings: GameSettingsInt;
   onChange: (setting: { name: string; value: string | number }) => void;
 }
 
@@ -23,10 +25,10 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
     onChange({ name: e.target.name, value: e.target.value });
   };
 
-  const handleCategorySelected = (category: string) => {
+  const handleChipChanged = (data: { name: string; value: string }) => {
     onChange({
-      name: "category",
-      value: category,
+      name: data.name,
+      value: data.value,
     });
   };
 
@@ -38,7 +40,17 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
       <Typography variant="text-main" className="category-label">
         Word Category
       </Typography>
-      <ChipSelector chips={Object.keys(WORDS)} onChange={handleCategorySelected} />
+      <ChipSelector name="category" chips={Object.keys(WORDS)} onChange={handleChipChanged} />
+      <Typography variant="text-main" className="category-label">
+        Difficalty
+      </Typography>
+      <ChipSelector
+        value="easy"
+        name="difficalty"
+        chips={Object.values(Difficalty)}
+        onChange={handleChipChanged}
+      />
+
       <Input
         label="Max Players"
         type="number"

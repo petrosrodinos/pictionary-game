@@ -2,27 +2,30 @@ import { FC, useState } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { CLIENT_URL } from "../../../constants";
-import GameSettings from "./GameSettings";
 import {
   CHOOSING_WORD_TIME_IN_SECONDS,
+  Difficalty,
   PLAYERS_IN_ROOM,
   ROUND_TIME_IN_SECONDS,
 } from "../../../constants/game";
 import { createRoomCode } from "../../../utils/code";
 import { transformToMilliseconds } from "../../../utils/time";
+import { GameSettings as GameSettingsInt } from "../../../interfaces/typing";
+import GameSettings from "./GameSettings";
 import "./style.scss";
 
 interface CreateRoomProps {
   onCancel: () => void;
-  onCreate: (name: GameSettings) => void;
+  onCreate: (name: GameSettingsInt) => void;
 }
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
-  const [settings, setSettings] = useState<GameSettings>({
+  const [settings, setSettings] = useState<GameSettingsInt>({
     maxPlayers: PLAYERS_IN_ROOM,
-    category: "",
     roundTime: ROUND_TIME_IN_SECONDS,
     choosingWordTime: CHOOSING_WORD_TIME_IN_SECONDS,
+    category: "",
+    difficalty: Difficalty.EASY,
     code: createRoomCode(),
   });
 
@@ -41,6 +44,8 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       !settings.maxPlayers
     )
       return alert("Please fill out all the fields");
+
+    console.log(settings);
 
     onCreate({
       ...settings,
