@@ -2,6 +2,7 @@ import { prisma } from "../utils/prismaClient";
 import { NextFunction, Request, Response } from "express";
 import { cloudinary } from "../utils/cloudinary";
 import { ExtendedRequest } from "../interfaces";
+import { isValidURL } from "../utils/url";
 
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
@@ -11,17 +12,25 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
   const hasedPassword = bcrypt.hashSync(password, 8);
 
+  let avatarUrl;
+
   try {
-    const result = await cloudinary.uploader.upload(avatar, {
-      folder: "avatars",
-    });
+    if (isValidURL(avatar)) {
+      avatarUrl = avatar;
+    } else {
+      const result = await cloudinary.uploader.upload(avatar, {
+        folder: "avatars",
+      });
+      avatarUrl = result.url;
+    }
+
     const user = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
         role: role,
         age: age,
-        avatar: result.url,
+        avatar: avatarUrl,
       },
     });
 
