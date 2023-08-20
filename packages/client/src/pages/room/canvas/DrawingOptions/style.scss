@@ -27,7 +27,7 @@
   }
 }
 
-.selected-color {
+.selected-item {
   border: 1px solid var(--text-primary);
 }
 
@@ -49,4 +49,14 @@
 .popover {
   position: absolute;
   z-index: 2;
+}
+
+.brush-sizes-container {
+  border-top: 1px solid var(--text-secondary);
+  margin-top: 10px;
+  padding-top: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 }

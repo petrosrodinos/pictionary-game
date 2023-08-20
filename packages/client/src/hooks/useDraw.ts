@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Point, Draw } from "../interfaces/typing";
 
-export const useDraw = ({ color, emitEvent, currentUserIsPlaying }: any) => {
+export const useDraw = ({ color, lineWidth, emitEvent, currentUserIsPlaying }: any) => {
   const [mouseDown, setMouseDown] = useState(false);
 
   const canvasRef = useRef<any>(null);
@@ -11,7 +12,6 @@ export const useDraw = ({ color, emitEvent, currentUserIsPlaying }: any) => {
   function onDraw({ prevPoint, currentPoint, ctx }: Draw) {
     const { x: currX, y: currY } = currentPoint;
     const lineColor = color;
-    const lineWidth = 5;
 
     let startPoint = prevPoint ?? currentPoint;
     ctx.beginPath();

@@ -13,10 +13,12 @@ interface CanvasProps {
 
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
   const [color, setColor] = useState<string>("#000");
+  const [lineWidth, setLineWidth] = useState<number>(5);
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({
     color,
+    lineWidth,
     emitEvent,
     currentUserIsPlaying,
   });
@@ -79,7 +81,9 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           </div>
           <DrawingOptions
             color={color}
+            brushSize={lineWidth}
             onColorChange={setColor}
+            onBrashSizeChange={setLineWidth}
             onClear={clear}
             onFingerDraw={handleFingerDraw}
           />

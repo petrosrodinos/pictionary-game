@@ -28,10 +28,13 @@ export const PalletColors = [
   "#00f",
   "#ff0",
   "#0ff",
-  "#f0f",
   "#c0c0c0",
   "#800000",
+  "#008000",
+  "#800080",
 ];
+
+export const BrushSizes = [5, 7, 9, 11, 13];
 
 export const WORD_LIST: any = {
   space: {
