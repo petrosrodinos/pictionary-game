@@ -116,8 +116,13 @@ socket.on("connection", (socket: any) => {
     // socket.in(code).emit("send-info", room);
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
+      if (data == null) {
+        room.drawings = [];
+      }
       socket.broadcast.to(code).emit("receive-changes", data);
-      room.drawings.push(data);
+      if (data) {
+        room.drawings.push(data);
+      }
     });
     //when artist selects word
     socket.on("word-selected", (code: string, word: string) => {

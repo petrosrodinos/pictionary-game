@@ -51,8 +51,12 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   }, [canvasData]);
 
   useEffect(() => {
-    const handler = (delta: any) => {
-      drawPixel(delta);
+    const handler = (data: any) => {
+      if (data == null) {
+        clear();
+      } else {
+        drawPixel(data);
+      }
     };
     socket?.on("receive-changes", handler);
 
@@ -64,6 +68,11 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   function emitEvent(data: any) {
     socket?.emit("send-changes", data);
   }
+
+  const clearCanvas = () => {
+    socket?.emit("send-changes", null);
+    clear();
+  };
 
   const handleFingerDraw = () => {};
 
@@ -84,7 +93,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
             brushSize={lineWidth}
             onColorChange={setColor}
             onBrashSizeChange={setLineWidth}
-            onClear={clear}
+            onClear={clearCanvas}
             onFingerDraw={handleFingerDraw}
           />
         </>
