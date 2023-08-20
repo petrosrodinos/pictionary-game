@@ -23,6 +23,11 @@
   overflow: auto;
 }
 
-.no-leader-board-games-label {
-  margin: 0 auto;
+.no-games-exist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--secondary-background-color-medium);
+  border-radius: var(--border-radius);
+  height: 100%;
 }

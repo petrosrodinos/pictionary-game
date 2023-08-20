@@ -18,11 +18,12 @@ const LeaderBoard: FC = () => {
       <div className="leader-board-content-container">
         <Spinner loading={isLoading} />
         <div className="leader-board-content">
-          {!data && !isLoading && (
-            <Typography className="no-leader-board-games-label" variant="sub-header-main">
-              No games exist yet
-            </Typography>
-          )}
+          {!data ||
+            (data.length == 0 && !isLoading && (
+              <div className="no-games-exist">
+                <Typography variant="sub-header-main">No games exist yet</Typography>
+              </div>
+            ))}
           {data?.map((item: UserType, index: number) => {
             return <LeaderBoardItem key={index} item={item} />;
           })}

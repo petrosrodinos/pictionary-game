@@ -4,6 +4,7 @@ import RecentGamesItem from "./Item";
 import { useQuery } from "react-query";
 import { getUser } from "../../../services/user";
 import { authStore } from "../../../store/authStore";
+import Spinner from "../../../components/ui/Spinner";
 import "./style.scss";
 
 const RecentGames: FC = () => {
@@ -23,8 +24,14 @@ const RecentGames: FC = () => {
       <Typography variant="header-main" className="recent-games-label">
         My Recent Games
       </Typography>
-      {isLoading && <span>loading</span>}
       <div className="recent-games-content-container">
+        <Spinner loading={isLoading} />
+        {!data ||
+          (data.length == 0 && !isLoading && (
+            <div className="no-games-exist">
+              <Typography variant="sub-header-main">You have not played any games yet</Typography>
+            </div>
+          ))}
         <div className="recent-games-content">
           {data?.games?.map((item: any, index: number) => {
             return <RecentGamesItem key={index} item={item} />;
