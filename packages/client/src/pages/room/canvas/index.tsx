@@ -1,8 +1,8 @@
 import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import Typography from "../../../components/ui/Typography";
-import "./style.scss";
 import DrawingOptions from "./DrawingOptions";
+import "./style.scss";
 
 interface CanvasProps {
   word: string;

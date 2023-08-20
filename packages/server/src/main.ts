@@ -164,7 +164,7 @@ socket.on("connection", (socket: any) => {
     socket.on("disconnect", () => {
       room.players = room.players.filter((u) => u.userId !== user.userId);
       console.log("disconnect", room.players.length);
-      if (room.players.length === 1 && room.status !== Statuses.FINISHED) {
+      if (room.players.length === 1 && room.maxPlayers > 2 && room.status !== Statuses.FINISHED) {
         clearTimeout(roundTimer);
         clearTimeout(choosingWordTimer);
         room.message = "Looks like game is finished";
