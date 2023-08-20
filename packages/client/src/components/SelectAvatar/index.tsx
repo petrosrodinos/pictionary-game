@@ -12,7 +12,7 @@ const SelectAvatar: FC<SelectAvatarProps> = ({ onChange, value }) => {
   const [avatars, setAvatars] = useState<string[]>([]);
 
   useEffect(() => {
-    let avatars = [...Array(30)].map((_) => getRandomAvatar());
+    let avatars = [...Array(35)].map((_) => getRandomAvatar());
     if (value) {
       avatars.splice(0, 1, value);
       setSelectedAvatar(0);
