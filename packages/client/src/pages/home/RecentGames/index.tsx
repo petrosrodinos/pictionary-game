@@ -19,15 +19,17 @@ const RecentGames: FC = () => {
   );
 
   return (
-    <div className="recent-leader-board-container">
-      <div className="recent-games-label">
-        <Typography variant="header-main">My Recent Games</Typography>
-      </div>
+    <div className="recent-games-container">
+      <Typography variant="header-main" className="recent-games-label">
+        My Recent Games
+      </Typography>
       {isLoading && <span>loading</span>}
-      <div className="recent-games-content">
-        {data?.games?.map((item: any, index: number) => {
-          return <RecentGamesItem key={index} item={item} />;
-        })}
+      <div className="recent-games-content-container">
+        <div className="recent-games-content">
+          {data?.games?.map((item: any, index: number) => {
+            return <RecentGamesItem key={index} item={item} />;
+          })}
+        </div>
       </div>
     </div>
   );

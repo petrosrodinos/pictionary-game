@@ -96,14 +96,12 @@ const Home: FC = () => {
       >
         {ModalComponents?.[activeModal]?.component}
       </Modal>
-      <div className="waiting-room-containers">
+      <div className="home-page-content">
         <div className="first-row">
           <RoomActions onActionClick={handleActionClick} />
           <LeaderBoard />
         </div>
-        <div className="second-row">
-          <RecentGames />
-        </div>
+        <RecentGames />
       </div>
     </Container>
   );

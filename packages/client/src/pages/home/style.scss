@@ -7,16 +7,22 @@
   width: 100vw;
 }
 
+.home-page-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .first-row {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  // background-color: black;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 500px) {
   .first-row {
     flex-direction: column;
+    margin-top: 10px;
+    gap: 20px;
   }
 }

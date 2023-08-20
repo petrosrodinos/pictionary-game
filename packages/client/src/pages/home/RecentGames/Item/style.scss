@@ -1,21 +1,15 @@
-//για το πλαισιο που μπαινουν ολα μεσα
-.recent-leader-board-item {
+.recent-games-item {
   display: flex;
   border-radius: var(--border-radius);
-  //background-color: var(--secondary-background-color-medium);
-  background-color: var(--secondary-background-color-dark);
+  background-color: var(--secondary-background-color-medium);
   padding: 5px;
-  width: 220px; 
-  //background-color: blue;
   align-items: center;
   max-height: 60px;
-  margin-left: 18px ;
 }
 
-//για το rank μεσα στο κυκλακι
 .recent-rank-container {
   width: 30px;
-  height: 30px; 
+  height: 30px;
   border-radius: 50%;
   background-color: var(--fill-secondary);
   display: flex;
@@ -25,19 +19,11 @@
   span {
     font-weight: 700;
   }
-  //background-color: orange;
 }
 
-//για τα τι γραφει μεσα στα κουτακια
-.recent-user-info-container {
+.recent-game-info-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   padding: 10px 0px 13px 10px;
-  .recent-info-username-label {
-    color: var(--text-secondary);
-  }
-  //background-color: green;
-  
 }
