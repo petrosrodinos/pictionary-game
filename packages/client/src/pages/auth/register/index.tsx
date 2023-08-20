@@ -98,7 +98,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       {
         onSuccess: (data: any) => {
           if (!data) {
-            return alert("Could not create user");
+            return alert("Username exists");
           }
           logIn({
             userId: data.id,

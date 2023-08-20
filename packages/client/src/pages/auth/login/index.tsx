@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { loginUser } from "../../../services/user";
 import "./style.scss";
+import { UserLogin } from "../../../interfaces/typing";
 
 const Login: FC = () => {
   const { logIn } = authStore((state) => state);

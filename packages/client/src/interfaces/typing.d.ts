@@ -21,23 +21,13 @@ interface NewUser {
   avatar: string;
 }
 
-interface UserRegister {
-  username: string;
-  password: string;
-  role: string;
-  age: string;
-  avatar: string;
-  points?: number;
-  level?: number;
-}
-
 interface UserToUpdate {
   username?: string;
   password?: string;
   role?: string;
   age?: string;
   avatar?: string;
-  points?: number;
+  xp?: number;
   level?: number;
   userId: string;
 }

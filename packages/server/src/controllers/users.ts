@@ -2,7 +2,7 @@ import { prisma } from "../utils/prismaClient";
 import { NextFunction, Request, Response } from "express";
 import { cloudinary } from "../utils/cloudinary";
 import { ExtendedRequest } from "../interfaces";
-import { isValidURL } from "../utils/url";
+import { isBase64 } from "../utils/file";
 
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   let avatarUrl;
 
   try {
-    if (isValidURL(avatar)) {
+    if (avatar.length <= 500) {
       avatarUrl = avatar;
     } else {
       const result = await cloudinary.uploader.upload(avatar, {
@@ -23,6 +23,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       });
       avatarUrl = result.url;
     }
+
+    console.log("avatarUrl", avatarUrl);
 
     const user = await prisma.user.create({
       data: {
@@ -71,20 +73,21 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       });
     }
 
-    const { password, ...userWithoutPassword } = user;
+    let loggedInuser = exclude(user, "password");
 
-    const accessToken = await jwt.signAccessToken(userWithoutPassword);
+    const accessToken = await jwt.signAccessToken(loggedInuser);
 
     return res.status(201).json({
       token: accessToken,
-      ...userWithoutPassword,
+      ...loggedInuser,
     });
   }
 };
 
 export const updateUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { username, password, role, age, avatar, level, points } = req.body;
+  const { username, password, role, age, avatar, level, xp, game } = req.body;
+
   let hasedPassword;
 
   if (req.userId !== id) {
@@ -98,33 +101,83 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
   }
 
   try {
-    let result;
+    let avatarUrl;
+
     if (avatar) {
-      result = await cloudinary.uploader.upload(avatar, {
-        folder: "avatars",
-      });
+      if (avatar.length <= 500) {
+        avatarUrl = avatar;
+      } else {
+        const result = await cloudinary.uploader.upload(avatar, {
+          folder: "avatars",
+        });
+        avatarUrl = result.url;
+      }
+    }
+
+    let dataToUpdate: any = {
+      username: username,
+      password: hasedPassword,
+      role: role,
+      age: age,
+      avatar: avatarUrl,
+      level: level,
+      xp: xp,
+    };
+
+    if (game) {
+      dataToUpdate = {
+        ...dataToUpdate,
+        games: {
+          push: {
+            points: game.points,
+            rank: game.rank,
+            date: new Date(),
+          },
+        },
+      };
     }
 
     const user = await prisma.user.update({
       where: {
         id,
       },
+      data: dataToUpdate,
+    });
+
+    res.status(201).json(exclude(user, "password"));
+  } catch (err) {
+    res.status(409).json({
+      message: "Could not update user",
+      error: JSON.stringify(err),
+    });
+  }
+};
+
+export const addGameToUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const { points, rank } = req.body;
+
+  if (req.userId !== id) {
+    return res.status(401).json({
+      message: "You are not authorized",
+    });
+  }
+
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
       data: {
-        username: username,
-        password: hasedPassword,
-        role: role,
-        age: age,
-        avatar: result && result.url,
-        level: level,
-        points: points,
+        games: {
+          points: points,
+          rank: rank,
+          date: new Date(),
+        },
       },
     });
 
-    const { password, ...userWithoutPassword } = user;
-
-    res.status(201).json({
-      ...userWithoutPassword,
-    });
+    res.status(201).json(exclude(user, "password"));
   } catch (err) {
     res.status(409).json({
       message: "Could not update user",

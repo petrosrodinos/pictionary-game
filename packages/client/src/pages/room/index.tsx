@@ -171,10 +171,10 @@ const Room: FC = () => {
     let newPoints = points + inGamePoints;
     if (newPoints >= POINTS_PER_LEVEL) {
       newPoints = newPoints - POINTS_PER_LEVEL;
-      updateUserMutation({ userId, points: newPoints, level: level + 1 });
+      updateUserMutation({ userId, xp: newPoints, level: level + 1 });
     } else {
       updateUserMutation(
-        { userId, points: newPoints },
+        { userId, xp: newPoints },
         {
           onSuccess: (data) => {
             console.log("updated", data);

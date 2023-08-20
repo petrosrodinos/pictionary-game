@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors());
 
-app.use("/api/auth", usersRoutes);
+app.use("/api", usersRoutes);
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.json({ message: "Hello world!" });
