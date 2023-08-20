@@ -3,12 +3,14 @@ import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
 import { UserType } from "../../../../interfaces/typing";
 import "./style.scss";
+import { POINTS_PER_LEVEL } from "../../../../constants/game";
 
 interface LeaderBoardItemProps {
   item: UserType;
 }
 
 const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
+  const totalPoints = item.level * POINTS_PER_LEVEL;
   return (
     <div className="leader-board-item">
       <span className="rank-container">
@@ -21,7 +23,7 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
         </Typography>
         <span>
           <Typography>xp:</Typography>
-          <Typography>{item.xp}</Typography>
+          <Typography>{totalPoints == POINTS_PER_LEVEL ? 0 : totalPoints}</Typography>
         </span>
         <span>
           <Typography>games: </Typography>
