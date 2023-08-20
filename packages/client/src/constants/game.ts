@@ -20,6 +20,19 @@ export const Difficalty = {
   HARD: "hard",
 } as const;
 
+export const PalletColors = [
+  "#000",
+  "#fff",
+  "#f00",
+  "#0f0",
+  "#00f",
+  "#ff0",
+  "#0ff",
+  "#f0f",
+  "#c0c0c0",
+  "#800000",
+];
+
 export const WORD_LIST: any = {
   space: {
     easy: ["astronaut", "alien", "spaceship", "planet", "stars", "moon", "comet", "galaxy"],

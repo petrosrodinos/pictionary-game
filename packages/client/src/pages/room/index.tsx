@@ -177,7 +177,7 @@ const Room: FC = () => {
         { userId, points: newPoints },
         {
           onSuccess: (data) => {
-            console.log("data", data);
+            console.log("updated", data);
           },
         }
       );
@@ -194,9 +194,9 @@ const Room: FC = () => {
     <>
       {Object.keys(roomInfo).length != 0 ? (
         <>
-          <Modal title={chooseTitle()} isOpen={!!activeModal}>
+          {/* <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
-          </Modal>
+          </Modal> */}
           <Container className="room-page-container">
             <Info timer={takeTime} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">

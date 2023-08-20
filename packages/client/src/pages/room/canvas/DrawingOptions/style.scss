@@ -1,0 +1,52 @@
+.canvas-options-container {
+  position: absolute;
+  left: 10px;
+  top: 10%;
+  width: 100px;
+  height: 70%;
+  border-radius: 50px;
+  background-color: var(--primary-background-color-rgba);
+}
+
+.colors-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 10px;
+}
+
+.pallet-item {
+  width: 29px;
+  height: 29px;
+  margin: 5px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.selected-color {
+  border: 1px solid var(--text-primary);
+}
+
+.pallet-icon {
+  fill: var(--text-secondary);
+  border: 1px solid var(--text-secondary);
+  margin: 3px;
+  padding: 1px;
+}
+
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.popover {
+  position: absolute;
+  z-index: 2;
+}

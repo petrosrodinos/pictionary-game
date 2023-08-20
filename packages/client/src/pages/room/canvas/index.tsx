@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import Typography from "../../../components/ui/Typography";
 import "./style.scss";
+import DrawingOptions from "./DrawingOptions";
 
 interface CanvasProps {
   word: string;
@@ -62,6 +63,8 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
     socket?.emit("send-changes", data);
   }
 
+  const handleFingerDraw = () => {};
+
   return (
     <div className="canvas-panel-container">
       {currentUserIsPlaying && (
@@ -74,9 +77,12 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
               {word}
             </Typography>
           </div>
-          <div className="canvas-tools">
-            <div className="canvas-tools-content"></div>
-          </div>
+          <DrawingOptions
+            color={color}
+            onColorChange={setColor}
+            onClear={clear}
+            onFingerDraw={handleFingerDraw}
+          />
         </>
       )}
 
