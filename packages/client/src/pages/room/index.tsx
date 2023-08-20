@@ -67,6 +67,9 @@ const Room: FC = () => {
 
   const handleInfoSended = (roomInfo: RoomInfo) => {
     if (!roomInfo) return;
+    if (roomInfo.status == "waiting-room") {
+      navigate(`/home?room=${roomInfo.code}`);
+    }
     console.log("get-info", roomInfo);
     setRoomInfo(roomInfo);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
