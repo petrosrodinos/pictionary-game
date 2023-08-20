@@ -178,6 +178,30 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
   }
 };
 
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const sortDirection = req.query.sort;
+
+    let orderBy: any;
+
+    if (sortDirection) {
+      orderBy = {
+        level: sortDirection,
+      };
+    }
+
+    const users = await prisma.user.findMany({
+      orderBy: orderBy,
+    });
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(409).json({
+      message: "Could not get users",
+    });
+  }
+};
+
 function exclude(user: any, ...keys: any) {
   for (let key of keys) {
     delete user[key];

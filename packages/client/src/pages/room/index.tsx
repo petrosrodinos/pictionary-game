@@ -173,7 +173,6 @@ const Room: FC = () => {
     if (newPoints >= POINTS_PER_LEVEL) {
       newPoints = newPoints - POINTS_PER_LEVEL;
       data = { xp: newPoints, level: level + 1 };
-      // updateUserMutation({ userId, xp: newPoints, level: level + 1 });
     } else {
       data = { xp: newPoints };
     }
