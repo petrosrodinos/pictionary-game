@@ -2,8 +2,8 @@ import { FC } from "react";
 import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
 import { UserType } from "../../../../interfaces/typing";
-import "./style.scss";
 import { POINTS_PER_LEVEL } from "../../../../constants/game";
+import "./style.scss";
 
 interface LeaderBoardItemProps {
   item: UserType;

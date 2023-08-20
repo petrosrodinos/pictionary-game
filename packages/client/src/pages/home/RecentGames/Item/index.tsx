@@ -1,11 +1,11 @@
 import { FC } from "react";
 import Typography from "../../../../components/ui/Typography";
+import { Game } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface RecentGamesItemProps {
-  item: UserType;
+  item: Game;
 }
-
 
 const RecentGamesItem: FC<RecentGamesItemProps> = ({ item }) => {
   return (
@@ -13,17 +13,16 @@ const RecentGamesItem: FC<RecentGamesItemProps> = ({ item }) => {
       <span className="recent-rank-container">
         <Typography>{item.rank}</Typography>
       </span>
-     
-      <div className="recent-user-info-container">
 
+      <div className="recent-user-info-container">
         <span>
           <Typography>xp:</Typography>
-          <Typography>{item.xp}</Typography>
+          <Typography>{item.points}</Typography>
         </span>
         <span>
-        <Typography>Date:</Typography>
-        <Typography>{item.date}</Typography>
-          
+          <Typography>Date:</Typography>
+          <Typography>{item.date}</Typography>
+
           {/* <Typography>Date: {currDay}/{currMonth}/{currYear} </Typography> */}
           {/* <Typography>{item.games}</Typography> */}
         </span>

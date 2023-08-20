@@ -1,37 +1,31 @@
 import { FC } from "react";
 import Typography from "../../../components/ui/Typography";
 import RecentGamesItem from "./Item";
-import { getRandomAvatar } from "../../../utils/avatar";
+import { useQuery } from "react-query";
+import { getUser } from "../../../services/user";
+import { authStore } from "../../../store/authStore";
 import "./style.scss";
 
-const currMonth = new Date().getMonth();
-const currYear = new Date().getFullYear();
-const currDay = new Date().getDate();
-const currHour = new Date().getHours();
-const currMin = new Date().getMinutes();
-
-const TestRecentGamesItems: UserType[] = [...new Array(20)].map((_, index) => {
-  return {
-    userId: index,
-    rank: 1 + index,
-    avatar: getRandomAvatar(),
-    username: `username${index}`,
-    xp: 50 - index * 2,
-    games: 30 - index,
-    date: ` ${currDay}/${currMonth}/${currYear}, ${currHour}:${
-      currMin - index
-    }`,
-  };
-});
-
 const RecentGames: FC = () => {
+  const { userId } = authStore((state) => state);
+  const { isLoading, data } = useQuery(
+    "get-user",
+    () => {
+      return getUser(userId);
+    },
+    {
+      enabled: !!userId,
+    }
+  );
+
   return (
     <div className="recent-leader-board-container">
       <div className="recent-games-label">
         <Typography variant="header-main">My Recent Games</Typography>
       </div>
+      {isLoading && <span>loading</span>}
       <div className="recent-games-content">
-        {TestRecentGamesItems.map((item: any, index: number) => {
+        {data?.games?.map((item: any, index: number) => {
           return <RecentGamesItem key={index} item={item} />;
         })}
       </div>
