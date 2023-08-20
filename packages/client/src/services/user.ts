@@ -44,3 +44,12 @@ export const getUser = async (userId: string): Promise<any> => {
     console.log("err", err);
   }
 };
+
+export const getUsers = async (): Promise<any> => {
+  try {
+    const result = await axios.get(`${API_URL}users?sort=desc`, getConfig());
+    return result.data;
+  } catch (err) {
+    console.log("err", err);
+  }
+};

@@ -169,6 +169,12 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
       },
     });
 
+    if (user && user.games) {
+      user.games.sort((a, b) => {
+        return b.date.getTime() - a.date.getTime();
+      });
+    }
+
     res.status(201).json(exclude(user, "password"));
   } catch (err) {
     res.status(409).json({
@@ -192,6 +198,13 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 
     const users = await prisma.user.findMany({
       orderBy: orderBy,
+      select: {
+        username: true,
+        xp: true,
+        level: true,
+        avatar: true,
+        games: true,
+      },
     });
 
     res.status(200).json(users);
