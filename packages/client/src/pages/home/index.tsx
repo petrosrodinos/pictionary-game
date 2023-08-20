@@ -42,7 +42,7 @@ const Home: FC = () => {
   const handleJoinRoom = (code: string) => {
     if (!code) return;
     setSearchParams({
-      waitingRoom: code,
+      room: code,
     });
   };
 

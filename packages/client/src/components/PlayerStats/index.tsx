@@ -14,7 +14,7 @@ interface PlayerStatsProps {
 }
 
 const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
-  const { username, level, avatar, points } = authStore((state) => state);
+  const { username, level, avatar, xp } = authStore((state) => state);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   return (
     <>
@@ -38,7 +38,7 @@ const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
           <Avatar image={avatar} />
           <div className="user-xp">
             <Typography variant="text-main" className="user-xp-text">
-              xp:{points}
+              xp:{xp}
             </Typography>
           </div>
         </div>

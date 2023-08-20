@@ -20,7 +20,7 @@ import "./style.scss";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
-  const { userId, username, avatar, level, points, inGamePoints } = authStore((state) => state);
+  const { userId, username, avatar, level, xp, updateProfile } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
@@ -168,20 +168,34 @@ const Room: FC = () => {
   }, [roomInfo?.status]);
 
   const updateUserInfo = () => {
-    let newPoints = points + inGamePoints;
+    let newPoints = xp + 5;
+    let data = {};
     if (newPoints >= POINTS_PER_LEVEL) {
       newPoints = newPoints - POINTS_PER_LEVEL;
-      updateUserMutation({ userId, xp: newPoints, level: level + 1 });
+      data = { xp: newPoints, level: level + 1 };
+      // updateUserMutation({ userId, xp: newPoints, level: level + 1 });
     } else {
-      updateUserMutation(
-        { userId, xp: newPoints },
-        {
-          onSuccess: (data) => {
-            console.log("updated", data);
-          },
-        }
-      );
+      data = { xp: newPoints };
     }
+    updateUserMutation(
+      {
+        userId,
+        game: {
+          points: 5,
+          rank: 2,
+        },
+        ...data,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("updated", data);
+          updateProfile({
+            xp: data.xp,
+            level: data.level,
+          });
+        },
+      }
+    );
   };
 
   // window.onbeforeunload = function () {
@@ -194,9 +208,9 @@ const Room: FC = () => {
     <>
       {Object.keys(roomInfo).length != 0 ? (
         <>
-          {/* <Modal title={chooseTitle()} isOpen={!!activeModal}>
+          <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
-          </Modal> */}
+          </Modal>
           <Container className="room-page-container">
             <Info timer={takeTime} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">

@@ -153,39 +153,6 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
   }
 };
 
-export const addGameToUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const { points, rank } = req.body;
-
-  if (req.userId !== id) {
-    return res.status(401).json({
-      message: "You are not authorized",
-    });
-  }
-
-  try {
-    const user = await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        games: {
-          points: points,
-          rank: rank,
-          date: new Date(),
-        },
-      },
-    });
-
-    res.status(201).json(exclude(user, "password"));
-  } catch (err) {
-    res.status(409).json({
-      message: "Could not update user",
-      error: JSON.stringify(err),
-    });
-  }
-};
-
 export const getUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { id } = req.params;
 

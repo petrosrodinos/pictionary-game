@@ -9,7 +9,7 @@ interface PointsEarnedProps {
 }
 
 const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
-  const { level, points: currentPoints } = authStore((state) => state);
+  const { level, xp: currentPoints } = authStore((state) => state);
 
   return (
     <div className="points-earned-container">

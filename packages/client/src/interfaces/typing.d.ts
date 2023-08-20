@@ -30,6 +30,10 @@ interface UserToUpdate {
   xp?: number;
   level?: number;
   userId: string;
+  game?: {
+    points: number;
+    rank: number;
+  };
 }
 
 interface UserType {

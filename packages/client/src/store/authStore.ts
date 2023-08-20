@@ -8,14 +8,11 @@ interface AuthState {
   userId: string;
   username: string;
   level: number;
-  points: number;
+  xp: number;
   avatar: string;
-  inGamePoints: number;
   logOut: () => void;
   logIn: (payload: any) => void;
   updateProfile: (payload: any) => void;
-  addToInGamePoints: (payload: number) => void;
-  clearInGamePoints: (payload: number) => void;
 }
 
 const initialStateValues = {
@@ -24,9 +21,8 @@ const initialStateValues = {
   username: "",
   userId: "",
   level: 0,
-  points: 0,
+  xp: 0,
   avatar: "",
-  inGamePoints: 20,
 };
 
 export const authStore = create<AuthState>()(
@@ -46,23 +42,13 @@ export const authStore = create<AuthState>()(
             userId: payload.userId,
             username: payload.username,
             level: payload.level,
-            points: payload.points,
-            avatar: payload?.avatar, //|| getRandomAvatar(),
+            xp: payload.xp,
+            avatar: payload?.avatar,
           }),
         updateProfile: (payload: any) =>
           set((state) => ({
             ...state,
             ...payload,
-          })),
-        addToInGamePoints: (payload: number) =>
-          set((state) => ({
-            ...state,
-            inGamePoints: state.inGamePoints + payload,
-          })),
-        clearInGamePoints: () =>
-          set((state) => ({
-            ...state,
-            inGamePoints: 0,
           })),
       }),
       {

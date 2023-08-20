@@ -4,8 +4,8 @@ import Button from "../../../components/ui/Button";
 import { authStore } from "../../../store/authStore";
 import PointsEarned from "./PointsEarned";
 import Players from "../WaitingWord/Players";
-import "./style.scss";
 import { UserType } from "../../../interfaces/typing";
+import "./style.scss";
 
 interface GameFinishedProps {
   players: UserType[];
