@@ -13,5 +13,8 @@
     "./packages/server"
   ],
   "author": "Petros Rodinos, Eleftherios Tsoudanis",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-spinners": "^0.13.8"
+  }
 }

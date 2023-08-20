@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
+import { UserType } from "../../../../interfaces/typing";
 import "./style.scss";
 
 interface LeaderBoardItemProps {
@@ -11,7 +12,7 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
   return (
     <div className="leader-board-item">
       <span className="rank-container">
-        <Typography>5</Typography>
+        <Typography>{item.level}</Typography>
       </span>
       <Avatar image={item.avatar} />
       <div className="user-info-container">
@@ -24,7 +25,7 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
         </span>
         <span>
           <Typography>games: </Typography>
-          <Typography>{item.games}</Typography>
+          <Typography>{item?.games?.length}</Typography>
         </span>
       </div>
     </div>

@@ -36,12 +36,18 @@ interface UserToUpdate {
   };
 }
 
+interface Games {
+  date: string;
+  points: number;
+  rank: number;
+}
+
 interface UserType {
   userId: number;
   avatar: string;
   username: string;
   xp?: number;
-  games?: number;
+  games?: Games[];
   level: number;
   points: number;
 }
