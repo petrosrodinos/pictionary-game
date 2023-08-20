@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { BrushSizes, PalletColors } from "../../../../constants/game";
 import { AiOutlineClear } from "react-icons/ai";
 import { MdOutlineColorLens } from "react-icons/md";
+import { TbHandFinger } from "react-icons/tb";
 import { ChromePicker } from "react-color";
 import { BsEraser } from "react-icons/bs";
 import "./style.scss";
@@ -51,6 +52,7 @@ const DrawingOptions: FC<DrawingOptionsProps> = ({
             onClick={() => onColorChange(PalletColors[1])}
             className="pallet-icon pallet-item"
           />
+          <TbHandFinger onClick={onFingerDraw} className="pallet-icon pallet-item" />
           {showColorPicker && (
             <div className="popover">
               <div className="cover" onClick={handleClose} />
