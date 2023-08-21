@@ -47,7 +47,7 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         onChange={handleChipChanged}
       />
       <Typography variant="text-main" className="category-label">
-        Difficalty
+        Difficulty
       </Typography>
       <ChipSelector
         defaultValue

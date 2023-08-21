@@ -24,7 +24,7 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
         </Typography>
         <Typography>
           <Typography variant="text-accent" className="waiting-room-label">
-            DIFFICALTY:
+            DIFFICULTY:
           </Typography>
           <Typography variant="text-main" className="room-stat">
             {roomInfo.difficalty}

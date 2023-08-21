@@ -4,21 +4,21 @@ import { TEXT_SECONDARY } from "../../../constants/colors";
 import "./style.scss";
 
 interface LoaderProps {
-  time: number;
-  onFinish?: () => void;
+  time?: number;
+  value?: number;
+  max?: number;
 }
 
-const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
+const Loader: FC<LoaderProps> = ({ time, value, max }) => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
+    if (!time) return;
     let timeToTimer = 0;
-    const targetTime = time / 1000;
     const x = setInterval(() => {
-      timeToTimer = timeToTimer + 1;
+      timeToTimer = timeToTimer + 1000;
       setTimeLeft(timeToTimer);
-      if (timeToTimer === targetTime) {
-        onFinish?.();
+      if (timeToTimer === time) {
         clearInterval(x);
       }
     }, 1000);
@@ -30,8 +30,8 @@ const Loader: FC<LoaderProps> = ({ time, onFinish }) => {
         isLabelVisible={false}
         bgColor={TEXT_SECONDARY}
         height="30px"
-        completed={timeLeft}
-        maxCompleted={time / 1000}
+        completed={value || timeLeft}
+        maxCompleted={max || time}
         transitionTimingFunction="linear"
       />
     </div>
