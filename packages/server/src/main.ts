@@ -42,6 +42,7 @@ socket.on("connection", (socket: any) => {
       drawings: [],
       status: "created",
       round: 1,
+      chat: [],
     };
   });
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
@@ -126,6 +127,9 @@ socket.on("connection", (socket: any) => {
     // για το Input game chat
     socket.on("game-input-message", (message: string) => {
       console.log("game-input-message", message);
+      room.chat.push(message);
+      socket.in(code).emit("game-message" , message);
+      socket.emit("game-message" , message);
     });
   });
 });

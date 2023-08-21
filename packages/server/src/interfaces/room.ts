@@ -11,6 +11,7 @@ export interface Room {
   roundTime: number;
   choosingWordTime: number;
   category: string;
+  chat: string[];
 }
 
 export type Status = "created" | "waiting-room" | "selecting-word" | "playing" | "finished";
