@@ -18,8 +18,9 @@ import ImagePicker from "../../../components/ui/ImagePicker";
 import { BsPerson } from "react-icons/bs";
 import { NewUser, UserToUpdate } from "../../../interfaces/typing";
 import TabMenu from "../../../components/ui/TabMenu";
-import "./style.scss";
+import { IoIosSend } from "react-icons/io";
 import SelectAvatar from "../../../components/SelectAvatar";
+import "./style.scss";
 
 interface RegisterProps {
   values?: NewUser;
@@ -216,7 +217,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       <Button
         type="submit"
         loading={isLoading || isUpdating}
-        icon={BsPerson}
+        icon={isEditing ? IoIosSend : BsPerson}
         title={isEditing ? "Save" : "Register"}
         variant="primary"
       />
