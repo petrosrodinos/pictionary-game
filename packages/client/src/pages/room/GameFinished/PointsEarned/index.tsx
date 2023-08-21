@@ -22,12 +22,12 @@ const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
         </Typography>
       </Typography>
       <div className="progress-container">
-        <Loader max={POINTS_PER_LEVEL} value={currentPoints + points} />
         {/* <div
           style={{ width: `${currentPoints + points * 3.7}px` }}
           className="progress-loader"
         ></div> */}
         <Star className="star-item-left" label={level} />
+        <Loader max={POINTS_PER_LEVEL} value={currentPoints + points} />
         <Star className="star-item-right" label={level + 1} />
       </div>
     </div>

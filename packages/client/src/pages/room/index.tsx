@@ -88,7 +88,9 @@ const Room: FC = () => {
     if (roomInfo.message) {
       setMessage(roomInfo.message);
     } else {
-      setMessage("The word was " + roomInfo.lastWord);
+      if (roomInfo.lastWord) {
+        setMessage("The word was " + roomInfo.lastWord);
+      }
     }
     if (roomInfo.currentArtist) {
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
@@ -119,7 +121,9 @@ const Room: FC = () => {
 
   const handleGameFinished = (roomInfo: RoomInfo) => {
     console.log("game-finished", roomInfo);
-    setMessage("The word was " + roomInfo.lastWord);
+    if (roomInfo.lastWord) {
+      setMessage("The word was " + roomInfo.lastWord);
+    }
     setActiveModal("game-finished");
     updateUserInfo();
   };

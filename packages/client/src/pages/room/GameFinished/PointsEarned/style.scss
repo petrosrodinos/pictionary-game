@@ -22,20 +22,13 @@
   background-color: var(--text-secondary);
   height: 30px;
 
-  .progress-loader {
-    background-color: var(--secondary-background-color-medium);
-    width: 100px;
-    border-radius: var(--border-radius);
-    height: 30px;
-  }
-
   .star-item-left {
     position: absolute;
-    left: -20px;
+    left: -10px;
   }
 
   .star-item-right {
     position: absolute;
-    right: -20px;
+    right: -10px;
   }
 }

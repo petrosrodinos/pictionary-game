@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import Typography from "../ui/Typography";
 import Avatar from "../ui/Avatar";
-import StarLevelImage from "../../assets/player-level-star.png";
 import { authStore } from "../../store/authStore";
 import { FiSettings } from "react-icons/fi";
 import Modal from "../ui/Modal";
 import EditProfile from "./EditProfile";
+import Star from "../ui/Star";
 import "./style.scss";
 
 interface PlayerStatsProps {
@@ -23,15 +23,7 @@ const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
       </Modal>
       <div className={`player-stats ${className}`} style={style}>
         <div className="user-stats-row">
-          <div className="player-level">
-            <div className="star-level">
-              <img src={StarLevelImage} className="star-level-image" />
-            </div>
-
-            <Typography variant="text-accent" className="level-text">
-              {level}
-            </Typography>
-          </div>
+          <Star label={level} />
           <span onClick={() => setActiveModal(true)} className="settings-icon">
             <FiSettings />
           </span>
