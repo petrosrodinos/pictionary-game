@@ -3,13 +3,13 @@
 .dropdown {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 99%;
 }
 
 .dropdownSelect {
   width: 100%;
   height: 40px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   border: 2px solid var(--input-color);
   box-shadow: 4px 4px var(--input-color);
   color: var(--input-color);

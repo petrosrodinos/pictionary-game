@@ -170,6 +170,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     >
       <Typography variant="sub-header-main">{isEditing ? "Edit Profile" : "Register"}</Typography>
       <Input
+        label="Username"
         error={errors.username?.message}
         name="username"
         register={register}
@@ -177,6 +178,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       />
 
       <Input
+        label="Password"
         error={errors.password?.message}
         name="password"
         register={register}
@@ -192,6 +194,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         label="Choose role"
       />
       <DatePicker
+        label="Age"
         max={new Date().toISOString().slice(0, 10)}
         value={values?.age}
         onChange={handleAgeChange}

@@ -45,6 +45,7 @@ const Input: FC<InputProps> = ({
         name={name}
         placeholder={placeholder}
         type={type}
+        autoComplete="on"
         {...props}
         {...register?.(name)}
       ></input>

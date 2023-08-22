@@ -34,6 +34,11 @@ const Dropdown: FC<DropdownProps> = ({
   };
   return (
     <div className={`dropdown ${className}`} style={style}>
+      {label && (
+        <Typography variant="text-main" className="input-label">
+          {label}
+        </Typography>
+      )}
       <select value={option} onChange={handleChange} className="dropdownSelect">
         <option value="">{label}</option>
         {options.map((option) => (

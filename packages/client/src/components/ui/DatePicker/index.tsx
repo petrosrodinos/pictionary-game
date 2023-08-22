@@ -4,6 +4,7 @@ import "./style.scss";
 
 interface DatePickerProps {
   value?: string;
+  label?: string;
   className?: string;
   style?: React.CSSProperties;
   onChange?: (e: React.ChangeEvent<HTMLDataElement>) => void;
@@ -33,6 +34,7 @@ const DatePicker: FC<DatePickerProps> = ({
   value,
   min,
   max,
+  label,
 }) => {
   const [dateValue, setDateValue] = useState(getDate(value));
 
@@ -43,6 +45,11 @@ const DatePicker: FC<DatePickerProps> = ({
 
   return (
     <div className={`datepicker ${className}`} style={style}>
+      {label && (
+        <Typography variant="text-main" className="input-label">
+          {label}
+        </Typography>
+      )}
       <input
         min={min}
         max={max}

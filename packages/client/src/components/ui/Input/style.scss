@@ -1,12 +1,11 @@
 .input-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  // position: relative;
+  width: 99%;
 
   input {
     height: 30px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     border: 2px solid var(--input-color);
     box-shadow: 4px 4px var(--input-color);
     color: var(--input-color);

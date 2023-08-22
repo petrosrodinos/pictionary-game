@@ -66,12 +66,14 @@ const Login: FC = () => {
     <form className="login-page-container" onSubmit={handleSubmit(handleLogin)}>
       <Typography variant="sub-header-main">Login</Typography>
       <Input
+        label="Username"
         error={errors.username?.message}
         name="username"
         register={register}
         placeholder="@username"
       />
       <Input
+        label="Password"
         error={errors.password?.message}
         name="password"
         register={register}
