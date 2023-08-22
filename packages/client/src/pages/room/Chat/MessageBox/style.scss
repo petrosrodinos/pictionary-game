@@ -1,11 +1,10 @@
 .message-box-container {
-  background-color: rgb(25, 163, 152);
-  //  max-width: 100;
+  background-color: var(--secondary-background-color-dark);
+  //background-color: var(--secondary-background-color-medium);
   margin: 20px;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
-  //   border: 2px solid black;
   border: 2px solid var(--input-color);
   box-shadow: 4px 4px var(--input-color);
 }

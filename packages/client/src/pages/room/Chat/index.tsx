@@ -11,10 +11,10 @@ interface ChatProps {
 }
 
 const Chat: FC<ChatProps> = ({ socket }) => {
-  const message = "kano diaroia ";
+  //const message = "kano diaroia ";
   function send_data() {
     console.log("Chat");
-    socket?.emit("game-input-message", message);
+    //  socket?.emit("game-input-message", message);
     //socket?.emit("game-input-message", "hello world");
   }
   useEffect(() => {
@@ -25,18 +25,14 @@ const Chat: FC<ChatProps> = ({ socket }) => {
   return (
     <div className="chat-container">
       <MessageBox />
-      <div className="chat-input">
-        <Input name="Answer" placeholder="Answer" />
-        <div className="chat-input-gap"></div>
-        <Button
-          type="submit"
-          title="Send"
-          variant="primary"
-          icon={BiSend}
-          className="answer-button"
-          onClick={send_data}
+      <form className="chat-send-container" onSubmit={send_data}>
+        <Input
+          //     error={errors.username?.message}
+          name="send a message"
+          placeholder="send a message"
         />
-      </div>
+        <Button type="submit" icon={BiSend} title="Send" variant="primary" />
+      </form>
     </div>
   );
 };

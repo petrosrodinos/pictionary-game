@@ -29,9 +29,11 @@ const Login: FC = () => {
     },
   });
 
-  const { mutate: loginMutation, isLoading } = useMutation((user: UserLogin) => {
-    return loginUser(user);
-  });
+  const { mutate: loginMutation, isLoading } = useMutation(
+    (user: UserLogin) => {
+      return loginUser(user);
+    }
+  );
 
   const handleLogin = async (values: UserLogin) => {
     loginMutation(
@@ -78,7 +80,13 @@ const Login: FC = () => {
         placeholder="Password"
         type="password"
       />
-      <Button type="submit" loading={isLoading} icon={BiLogIn} title="Login" variant="primary" />
+      <Button
+        type="submit"
+        loading={isLoading}
+        icon={BiLogIn}
+        title="Login"
+        variant="primary"
+      />
     </form>
   );
 };

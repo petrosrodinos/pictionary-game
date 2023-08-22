@@ -55,7 +55,10 @@ socket.on("connection", (socket: any) => {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       //checks if user is already in room
       socket.join(code);
-      if (room.status == Statuses.WAITING_ROOM || room.status == Statuses.CREATED) {
+      if (
+        room.status == Statuses.WAITING_ROOM ||
+        room.status == Statuses.CREATED
+      ) {
         room.status = Statuses.WAITING_ROOM;
       }
       if (
@@ -73,7 +76,10 @@ socket.on("connection", (socket: any) => {
         socket.emit("user-joined", room);
       }
       //checks if all players are in room and starts game
-      if (room.status == Statuses.WAITING_ROOM && room.players.length === room.maxPlayers) {
+      if (
+        room.status == Statuses.WAITING_ROOM &&
+        room.players.length === room.maxPlayers
+      ) {
         room.currentArtist = room.players[0];
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
@@ -165,7 +171,11 @@ socket.on("connection", (socket: any) => {
     socket.on("disconnect", () => {
       room.players = room.players.filter((u) => u.userId !== user.userId);
       console.log("disconnect", room.players.length);
-      if (room.players.length === 1 && room.maxPlayers > 2 && room.status !== Statuses.FINISHED) {
+      if (
+        room.players.length === 1 &&
+        room.maxPlayers > 2 &&
+        room.status !== Statuses.FINISHED
+      ) {
         clearTimeout(roundTimer);
         clearTimeout(choosingWordTimer);
         room.message = "Looks like game is finished";
@@ -194,8 +204,6 @@ socket.on("connection", (socket: any) => {
       socket.in(code).emit("chat-message", room);
       socket.emit("chat-message", room);
     });
-    // για το Input game chat
-   
   });
 });
 
