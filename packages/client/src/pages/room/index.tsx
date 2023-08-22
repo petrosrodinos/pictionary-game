@@ -69,6 +69,7 @@ const Room: FC = () => {
     if (!roomInfo) return;
     if (roomInfo.status == "waiting-room") {
       navigate(`/home?room=${roomInfo.code}`);
+      return;
     }
     console.log("get-info", roomInfo);
     setRoomInfo(roomInfo);

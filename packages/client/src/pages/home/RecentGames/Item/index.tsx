@@ -17,11 +17,11 @@ const RecentGamesItem: FC<RecentGamesItemProps> = ({ item }) => {
 
       <div className="recent-game-info-container">
         <span>
-          <Typography>XP earned:</Typography>
+          <Typography className="recent-game-item-label">XP earned:</Typography>
           <Typography>{item.points}</Typography>
         </span>
         <span>
-          <Typography>Played At:</Typography>
+          <Typography className="recent-game-item-label">Played At:</Typography>
           <Typography>{formatDate(item.date)}</Typography>
         </span>
       </div>
