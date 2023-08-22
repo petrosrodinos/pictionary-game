@@ -1,10 +1,11 @@
 import { FC } from "react";
 import "./style.scss";
+import PlayerStats from "./PlayerStats";
 
 const NavBar: FC = () => {
   return (
     <div className="nav-bar-container">
-      <div className="nav-bar-content"></div>
+      <PlayerStats />
     </div>
   );
 };

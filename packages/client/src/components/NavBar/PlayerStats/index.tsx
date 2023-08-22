@@ -1,11 +1,10 @@
 import { FC, useState } from "react";
-import Typography from "../ui/Typography";
-import Avatar from "../ui/Avatar";
-import { authStore } from "../../store/authStore";
-import { FiSettings } from "react-icons/fi";
-import Modal from "../ui/Modal";
+import Typography from "../../ui/Typography";
+import Avatar from "../../ui/Avatar";
+import { authStore } from "../../../store/authStore";
+import Modal from "../../ui/Modal";
 import EditProfile from "./EditProfile";
-import Star from "../ui/Star";
+import Star from "../../ui/Star";
 import "./style.scss";
 
 interface PlayerStatsProps {

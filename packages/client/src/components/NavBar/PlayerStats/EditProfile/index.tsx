@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { useQuery } from "react-query";
-import Register from "../../../pages/auth/register";
-import { getUser } from "../../../services/user";
-import { authStore } from "../../../store/authStore";
+import Register from "../../../../pages/auth/register";
+import { getUser } from "../../../../services/user";
+import { authStore } from "../../../../store/authStore";
 import "./style.scss";
 
 const EditProfile: FC = () => {

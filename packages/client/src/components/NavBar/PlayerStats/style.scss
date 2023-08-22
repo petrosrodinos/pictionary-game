@@ -1,7 +1,7 @@
-@use "../../styles/mixins";
+@use "../../../styles/mixins";
 
 .player-stats {
-  position: relative;
+  margin-top: 5px;
   display: flex;
   flex-direction: column;
   width: min-content;
