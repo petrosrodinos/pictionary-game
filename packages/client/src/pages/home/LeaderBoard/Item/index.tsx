@@ -10,7 +10,7 @@ interface LeaderBoardItemProps {
 }
 
 const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
-  const totalPoints = item.level * POINTS_PER_LEVEL;
+  const totalPoints = item.level * POINTS_PER_LEVEL + item.xp;
   return (
     <div className="leader-board-item">
       <span className="rank-container">

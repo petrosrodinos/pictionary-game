@@ -186,18 +186,7 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const sortDirection = req.query.sort;
-
-    let orderBy: any;
-
-    if (sortDirection) {
-      orderBy = {
-        level: sortDirection,
-      };
-    }
-
     const users = await prisma.user.findMany({
-      orderBy: orderBy,
       select: {
         username: true,
         xp: true,
@@ -206,6 +195,12 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
         games: true,
       },
     });
+
+    if (users && users.length > 0) {
+      users.sort((a, b) => {
+        return b.level + b.xp - (a.level + a.xp);
+      });
+    }
 
     res.status(200).json(users);
   } catch (err) {
