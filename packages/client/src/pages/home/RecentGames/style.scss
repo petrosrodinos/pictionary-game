@@ -9,25 +9,19 @@
   background-color: var(--secondary-background-color-dark);
   border-radius: var(--border-radius);
   padding: 5px;
-  max-height: 300px;
+  max-height: 200px;
   min-height: 50px;
   overflow: auto;
 }
 
 .recent-games-content {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
 .recent-games-label {
   margin-left: 30px;
-}
-
-@media (max-width: 600px) {
-  .recent-games-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 420px) {
