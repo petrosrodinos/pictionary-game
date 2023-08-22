@@ -1,9 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import Typography from "../../ui/Typography";
 import Avatar from "../../ui/Avatar";
 import { authStore } from "../../../store/authStore";
-import Modal from "../../ui/Modal";
-import EditProfile from "./EditProfile";
 import Star from "../../ui/Star";
 import "./style.scss";
 
@@ -14,18 +12,12 @@ interface PlayerStatsProps {
 
 const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
   const { username, level, avatar, xp } = authStore((state) => state);
-  const [activeModal, setActiveModal] = useState<boolean>(false);
   return (
     <>
-      <Modal onClose={() => setActiveModal(false)} isOpen={activeModal}>
-        <EditProfile />
-      </Modal>
       <div className={`player-stats ${className}`} style={style}>
         <div className="user-stats-row">
           <Star label={level} />
-          {/* <span onClick={() => setActiveModal(true)} className="settings-icon">
-            <FiSettings />
-          </span> */}
+
           <Avatar image={avatar} />
           <div className="user-xp">
             <Typography variant="sub-header-main" className="user-xp-text">
