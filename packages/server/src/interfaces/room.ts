@@ -24,6 +24,7 @@ export interface Room {
   category: string;
   message: string;
   difficalty: string;
+  chat: string[];//object[]//ConnectedUser[]
 }
 
 export type Status =
