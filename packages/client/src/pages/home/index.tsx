@@ -87,6 +87,7 @@ const Home: FC = () => {
   };
 
   return (
+    // <div className="home-container">
     <Container className="home-page-container">
       <PlayerStats />
       <Modal
@@ -104,6 +105,7 @@ const Home: FC = () => {
         <RecentGames />
       </div>
     </Container>
+    // </div>
   );
 };
 

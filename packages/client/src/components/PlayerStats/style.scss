@@ -1,11 +1,10 @@
 @use "../../styles/mixins";
 
 .player-stats {
-  position: absolute;
-  left: 20px;
-  top: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
+  width: min-content;
 }
 
 .user-stats-row {
@@ -14,28 +13,12 @@
   margin-left: 20px;
 }
 
-.player-level {
-  position: absolute;
-
-  .star-level {
-    margin-top: -14px;
-    margin-left: -18px;
-  }
-
-  .level-text {
-    position: absolute;
-    left: -7px;
-    top: -10px;
-    color: var(--text-secondary-light);
-  }
-}
-
 .settings-icon {
-  position: absolute;
-  right: 10px;
+  position: relative;
+  right: -10px;
   top: -20px;
-  margin-top: 10px;
-  margin-right: 10px;
+  // margin-top: 10px;
+  // margin-right: 10px;
   cursor: pointer;
 
   svg {

@@ -24,12 +24,12 @@ const PlayerStats: FC<PlayerStatsProps> = ({ style, className = "" }) => {
       <div className={`player-stats ${className}`} style={style}>
         <div className="user-stats-row">
           <Star label={level} />
-          <span onClick={() => setActiveModal(true)} className="settings-icon">
+          {/* <span onClick={() => setActiveModal(true)} className="settings-icon">
             <FiSettings />
-          </span>
+          </span> */}
           <Avatar image={avatar} />
           <div className="user-xp">
-            <Typography variant="text-main" className="user-xp-text">
+            <Typography variant="sub-header-main" className="user-xp-text">
               xp:{xp}
             </Typography>
           </div>
