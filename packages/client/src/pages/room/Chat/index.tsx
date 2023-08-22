@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import "./style.scss";
 import MessageBox from "./MessageBox";
 import Input from "../../../components/ui/Input";
@@ -11,28 +11,46 @@ interface ChatProps {
 }
 
 const Chat: FC<ChatProps> = ({ socket }) => {
-  //const message = "kano diaroia ";
+  const [message, setMessage] = useState("");
+
   function send_data() {
-    console.log("Chat");
-    //  socket?.emit("game-input-message", message);
-    //socket?.emit("game-input-message", "hello world");
+    socket?.emit("game-input-message", message);
   }
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
       console.log("message", roomInfo.chat);
     });
   }, [socket]);
+
   return (
     <div className="chat-container">
+      <MessageBox value="entexno" />
       <MessageBox />
-      <form className="chat-send-container" onSubmit={send_data}>
+      <MessageBox />
+      <MessageBox value="xysia" />
+      <MessageBox />
+      <MessageBox />
+      <MessageBox />
+      <MessageBox />
+      <MessageBox />
+      <MessageBox />
+      <div className="chat-input">
         <Input
-          //     error={errors.username?.message}
-          name="send a message"
-          placeholder="send a message"
+          name="Answer"
+          placeholder="Answer"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <Button type="submit" icon={BiSend} title="Send" variant="primary" />
-      </form>
+        <div className="chat-input-gap"></div>
+        <Button
+          type="submit"
+          title="Send"
+          variant="primary"
+          icon={BiSend}
+          className="answer-button"
+          onClick={send_data}
+        />
+      </div>
     </div>
   );
 };

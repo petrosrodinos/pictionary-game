@@ -13,13 +13,19 @@ interface MessageBoxProps {
 const MessageBox: FC<MessageBoxProps> = ({ value, style, className = "" }) => {
   const currHour = new Date().getHours();
   const currMin = new Date().getMinutes();
-  value = "Hello World Hello WorldHello WorldHello WorldHello World";
+  //value = "skata";
   const time = `${currHour}:${currMin}`;
-  const { username, level, avatar, xp } = authStore((state) => state);
+  const { username, avatar } = authStore((state) => state);
 
   return (
     <div className={`message-box-container ${className}`} style={style}>
       <div className="message-box-left">
+        <Typography
+          variant="small-text-accent"
+          className="message-box-username"
+        >
+          {username}
+        </Typography>
         <Avatar className="message-box-avatar" image={avatar}></Avatar>
         <Typography variant="small-text-accent" className="message-box-time">
           {time}
