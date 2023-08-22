@@ -3,9 +3,10 @@ import { MoonLoader } from "react-spinners";
 
 interface SpinnerProps {
   loading: boolean;
+  style?: CSSProperties;
 }
 
-const Spinner: FC<SpinnerProps> = ({ loading }) => {
+const Spinner: FC<SpinnerProps> = ({ loading, style }) => {
   const override: CSSProperties = {
     margin: "0 auto",
   };
@@ -13,7 +14,7 @@ const Spinner: FC<SpinnerProps> = ({ loading }) => {
     <MoonLoader
       color="#eac7c7"
       loading={loading}
-      cssOverride={override}
+      cssOverride={{ ...override, ...style }}
       size={40}
       aria-label="Loading Spinner"
       data-testid="loader"

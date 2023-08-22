@@ -25,13 +25,14 @@ const RecentGames: FC = () => {
         My Recent Games
       </Typography>
       <div className="recent-games-content-container">
-        <Spinner loading={isLoading} />
-        {!data ||
-          (data.length == 0 && !isLoading && (
-            <div className="no-games-exist">
+        {(!data || data.games.length == 0) && (
+          <div className="no-games-exist">
+            <Spinner loading={isLoading} />
+            {!isLoading && (
               <Typography variant="sub-header-main">You have not played any games yet</Typography>
-            </div>
-          ))}
+            )}
+          </div>
+        )}
         <div className="recent-games-content">
           {data?.games?.map((item: any, index: number) => {
             return <RecentGamesItem key={index} item={item} />;

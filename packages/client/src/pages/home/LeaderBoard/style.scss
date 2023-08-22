@@ -30,4 +30,7 @@
   border: 1px solid var(--secondary-background-color-medium);
   border-radius: var(--border-radius);
   height: 100%;
+  span {
+    color: var(--secondary-background-color-medium);
+  }
 }
