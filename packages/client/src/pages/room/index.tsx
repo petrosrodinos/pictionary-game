@@ -226,7 +226,7 @@ const Room: FC = () => {
                 word={roomInfo?.word}
                 currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
               />
-              <Chat />
+              <Chat socket={socket} />
             </div>
           </Container>
         </>
