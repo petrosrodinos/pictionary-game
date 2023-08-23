@@ -14,14 +14,20 @@
     max-width: 100%;
   }
 }
-.chat-gap {
+.chat-input-gap {
   width: 15px;
 }
 
 .chat-input {
   display: flex;
+  flex-direction: row;
   margin-bottom: 10px;
   margin-left: 15px;
   position: sticky;
   bottom: 0;
+}
+.message-form{
+  display: flex;
+  flex-direction: row;
+  
 }
