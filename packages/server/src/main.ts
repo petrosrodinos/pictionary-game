@@ -116,12 +116,23 @@ socket.on("connection", (socket: any) => {
   socket.on("join-room", async (code: string, user: ConnectedUser) => {
     let room = rooms[code];
     if (!room || room.players.length > room.maxPlayers) return;
-    if (!room.players.find((u) => u.userId === user.userId)) {
+    const playerToJoin = room.players.find((u) => u.userId === user.userId);
+
+    if (!playerToJoin) {
       room.players.push({
         ...user,
         points: 0,
+        connected: true,
+      });
+    } else if (playerToJoin && !playerToJoin?.connected) {
+      room.players = room.players.map((u) => {
+        if (u.userId === user.userId) {
+          u.connected = true;
+        }
+        return u;
       });
     }
+
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", room);

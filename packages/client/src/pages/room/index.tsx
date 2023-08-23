@@ -73,7 +73,9 @@ const Room: FC = () => {
     }
     console.log("get-info", roomInfo);
     setRoomInfo(roomInfo);
-    setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    if (roomInfo.status !== "playing" && roomInfo.status != "finished") {
+      setActiveModal(chooseOption(roomInfo.currentArtist.username));
+    }
   };
 
   const handleWordChanged = (roomInfo: RoomInfo) => {
