@@ -50,6 +50,7 @@ interface UserType {
   games?: Game[];
   level: number;
   points: number;
+  connected?: boolean;
 }
 
 interface GameSettings {

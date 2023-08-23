@@ -18,6 +18,7 @@
   padding: 10px;
   height: 30px;
   cursor: pointer;
+  box-shadow: 1px 1px 1px 1px var(--secondary-background-color-dark);
 
   &:hover {
     background-color: var(--secondary-background-color-dark);

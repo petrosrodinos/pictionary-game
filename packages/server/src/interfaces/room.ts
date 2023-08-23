@@ -40,4 +40,5 @@ export interface ConnectedUser {
   avatar: string;
   level?: number;
   points?: number;
+  connected: boolean;
 }

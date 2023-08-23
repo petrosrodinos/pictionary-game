@@ -21,7 +21,6 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfoInt>();
   const [searchParams, _] = useSearchParams();
-  const [message, setMessage] = useState<string>("");
   const { socket } = useSocket();
 
   useEffect(() => {

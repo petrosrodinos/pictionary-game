@@ -57,19 +57,25 @@ socket.on("connection", (socket: any) => {
       if (room.status == Statuses.WAITING_ROOM || room.status == Statuses.CREATED) {
         room.status = Statuses.WAITING_ROOM;
       }
-      if (
-        !room.players.find((u) => u.userId === user.userId) &&
-        room.players.length < room.maxPlayers
-      ) {
+      const playerToJoin = room.players.find((u) => u.userId === user.userId);
+      if (!playerToJoin && room.players.length < room.maxPlayers) {
         console.log("join-waiting-room", code);
         room.players.push({
           ...user,
           points: 0,
+          connected: true,
         });
         socket.in(code).emit("user-joined", room);
-      }
-      if (room.players.find((u) => u.userId === user.userId)) {
         socket.emit("user-joined", room);
+      } else if (playerToJoin && !playerToJoin?.connected) {
+        room.players = room.players.map((u) => {
+          if (u.userId === user.userId) {
+            u.connected = true;
+          }
+          return u;
+        });
+        socket.emit("user-joined", room);
+        socket.in(code).emit("user-joined", room);
       }
       //checks if all players are in room and starts game
       if (room.status == Statuses.WAITING_ROOM && room.players.length === room.maxPlayers) {
@@ -93,7 +99,13 @@ socket.on("connection", (socket: any) => {
           delete rooms[code];
         } else if (room.status == Statuses.WAITING_ROOM) {
           console.log("disconnect", code);
-          room.players = room.players.filter((u) => u.userId !== user.userId);
+          // room.players = room.players.filter((u) => u.userId !== user.userId);
+          room.players = room.players.map((u) => {
+            if (u.userId === user.userId) {
+              u.connected = false;
+            }
+            return u;
+          });
           socket.in(code).emit("user-left", room);
           socket.emit("user-left", room);
         }
@@ -152,14 +164,6 @@ socket.on("connection", (socket: any) => {
         socket.in(code).emit("round-finished", room);
         startChoosingWordInGame(room, socket, code);
       }, room.roundTime);
-    });
-    //when artist leaves choosing word screen
-    socket.on("leave-choosing-word", (code: string) => {
-      // room.players = room.players.filter((u) => u.userId !== userId);
-      room.status = Statuses.SELECTING_WORD;
-      room.currentArtist = room.players[room.round];
-      socket.in(code).emit("artist-left", room);
-      socket.emit("artist-left", room);
     });
     socket.on("disconnect", () => {
       room.players = room.players.filter((u) => u.userId !== user.userId);
