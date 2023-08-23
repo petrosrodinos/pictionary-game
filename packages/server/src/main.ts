@@ -159,16 +159,26 @@ socket.on("connection", (socket: any) => {
           return;
         }
         room.round++;
-        room.currentArtist = room.players[room.round - 1];
+        room.currentArtist = findNextArtist(room.players, room.round);
         socket.emit("round-finished", room);
         socket.in(code).emit("round-finished", room);
         startChoosingWordInGame(room, socket, code);
       }, room.roundTime);
     });
     socket.on("disconnect", () => {
-      room.players = room.players.filter((u) => u.userId !== user.userId);
+      room.players = room.players.map((u) => {
+        if (u.userId === user.userId) {
+          u.connected = false;
+        }
+        return u;
+      });
+
       console.log("disconnect", room.players.length);
-      if (room.players.length === 1 && room.maxPlayers > 2 && room.status !== Statuses.FINISHED) {
+      if (
+        findDisconnectedUsersLength(room.players) === 1 &&
+        room.maxPlayers > 2 &&
+        room.status !== Statuses.FINISHED
+      ) {
         clearTimeout(roundTimer);
         clearTimeout(choosingWordTimer);
         room.message = "Looks like game is finished";
@@ -184,7 +194,7 @@ socket.on("connection", (socket: any) => {
       ) {
         room.word = "";
         room.round++;
-        room.currentArtist = room.players[room.round - 1];
+        room.currentArtist = findNextArtist(room.players, room.round);
         room.status = Statuses.SELECTING_WORD;
         room.message = "Artist left the game";
         socket.in(code).emit("round-finished", room);
@@ -210,7 +220,7 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
       delete rooms[code];
     } else {
       // if the player didn't choose a word, pass the turn to the next player
-      room.currentArtist = room.players[room.round - 1];
+      room.currentArtist = findNextArtist(room.players, room.round);
       socket.emit("choosing-word-time-finished", room);
       socket.in(code).emit("choosing-word-time-finished", room);
       startChoosingWord(room, socket, code);
@@ -229,10 +239,20 @@ function startChoosingWord(room: Room, socket: any, code: string) {
       socket.in(code).emit("game-finished", room);
     } else {
       // if the player didn't choose a word, pass the turn to the next player
-      room.currentArtist = room.players[room.round - 1];
+      room.currentArtist = findNextArtist(room.players, room.round);
       socket.emit("choosing-word-time-finished", room);
       socket.in(code).emit("choosing-word-time-finished", room);
       startChoosingWord(room, socket, code);
     }
   }, room.choosingWordTime);
 }
+
+const findDisconnectedUsersLength = (players: ConnectedUser[]) => {
+  return players.filter((u) => !u.connected).length;
+};
+
+const findNextArtist = (players: ConnectedUser[], round: number) => {
+  let onlinePlayers = players.filter((u) => u.connected);
+  let nextArtist = onlinePlayers[round - 1];
+  return nextArtist;
+};
