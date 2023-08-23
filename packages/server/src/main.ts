@@ -175,7 +175,7 @@ socket.on("connection", (socket: any) => {
 
       console.log("disconnect", room.players.length);
       if (
-        findDisconnectedUsersLength(room.players) === 1 &&
+        findConnectedUsersLength(room.players) === 1 &&
         room.maxPlayers > 2 &&
         room.status !== Statuses.FINISHED
       ) {
@@ -247,8 +247,8 @@ function startChoosingWord(room: Room, socket: any, code: string) {
   }, room.choosingWordTime);
 }
 
-const findDisconnectedUsersLength = (players: ConnectedUser[]) => {
-  return players.filter((u) => !u.connected).length;
+const findConnectedUsersLength = (players: ConnectedUser[]) => {
+  return players.filter((u) => u.connected).length;
 };
 
 const findNextArtist = (players: ConnectedUser[], round: number) => {
