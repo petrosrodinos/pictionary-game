@@ -198,11 +198,11 @@ socket.on("connection", (socket: any) => {
         startChoosingWordInGame(room, socket, code);
       }
     });
-    socket.on("game-input-message", (message: string) => {
+    socket.on("game-input-message", (message: ConnectedUser) => {
       console.log("game-input-message", message);
       room.chat.push(message);
-      socket.in(code).emit("chat-message", room); //gia emena
-      socket.emit("chat-message", room); //gia toys alloys paixtes
+      socket.in(code).emit("chat-message", room); //gia receiver
+      socket.emit("chat-message", room); //gia emena
     });
   });
 });

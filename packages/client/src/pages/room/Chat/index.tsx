@@ -5,7 +5,6 @@ import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
 import { BiSend } from "react-icons/bi";
 import { RoomInfo } from "../../../interfaces/typing";
-//import RoomInfo from "../../home/WaitingRoom/RoomInfo";
 import { authStore } from "../../../store/authStore";
 
 interface ChatProps {
@@ -14,33 +13,49 @@ interface ChatProps {
 
 const Chat: FC<ChatProps> = ({ socket }) => {
   const [formValue, setFormValue] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
   const { username, avatar } = authStore((state) => state);
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
 
-  //edw stelno oti exei to input
+  //edw stelno oti exei to input ta stoixeia toy xristi kai thn ora
   function send_data(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    socket?.emit("game-input-message", formValue);
+    socket?.emit("game-input-message", {
+      message: formValue,
+      username,
+      avatar,
+      time: get_time(),
+    });
   }
-  //edw kano broadcast to messages poy exw labei
+
+  // TI KANEI O CLIENT OTAN LAMBANEI MYNHMA APO TON SERVER
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
-      setMessages(roomInfo.chat);
-      console.log("chat-message", {
-        username,
-        avatar,
-        messages: formValue,
-      });
+      setRoomInfo(roomInfo);
+      console.log("chat-message", roomInfo);
     });
     return () => {
       socket?.off("chat-message");
     };
   }, [socket]);
 
+  //function gia na pairnoy thn wra
+  function get_time() {
+    const currHour = new Date().getHours();
+    const currMin = new Date().getMinutes();
+    const time = `${currHour}:${currMin}`;
+    return time;
+  }
+
   return (
     <div className="chat-container">
-      {messages.map((msg, index) => (
-        <MessageBox key={index} value={msg} />
+      {roomInfo?.chat.map((msg, index) => (
+        <MessageBox
+          key={index}
+          value={msg.message}
+          username={msg.username}
+          time={msg.time}
+          image={msg.avatar}
+        />
       ))}
       <div className="chat-input">
         <form className="message-form" onSubmit={send_data}>

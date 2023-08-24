@@ -2,21 +2,25 @@ import { FC } from "react";
 import "./style.scss";
 import Typography from "../../../../components/ui/Typography";
 import Avatar from "../../../../components/ui/Avatar";
-import { authStore } from "../../../../store/authStore";
+//import { authStore } from "../../../../store/authStore";
 
 interface MessageBoxProps {
-  value?: string;
+  value: string;
   style?: React.CSSProperties;
   className?: string;
+  username: string;
+  image: string;
+  time: string;
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ value, style, className = "" }) => {
-  const currHour = new Date().getHours();
-  const currMin = new Date().getMinutes();
-  //value = "skata";
-  const time = `${currHour}:${currMin}`;
-  const { username, avatar } = authStore((state) => state);
-
+const MessageBox: FC<MessageBoxProps> = ({
+  image,
+  username,
+  value,
+  style,
+  className = "",
+  time,
+}) => {
   return (
     <div className={`message-box-container ${className}`} style={style}>
       <div className="message-box-left">
@@ -26,7 +30,7 @@ const MessageBox: FC<MessageBoxProps> = ({ value, style, className = "" }) => {
         >
           {username}
         </Typography>
-        <Avatar className="message-box-avatar" image={avatar}></Avatar>
+        <Avatar className="message-box-avatar" image={image}></Avatar>
         <Typography variant="small-text-accent" className="message-box-time">
           {time}
         </Typography>
