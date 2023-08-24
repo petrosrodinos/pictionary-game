@@ -95,7 +95,7 @@ socket.on("connection", (socket: any) => {
         startChoosingWord(room, socket, code);
       });
       socket.on("disconnect", () => {
-        if (room.status == Statuses.WAITING_ROOM && room.players.length === 1) {
+        if (room.status == Statuses.WAITING_ROOM && findConnectedUsersLength(room.players) === 1) {
           delete rooms[code];
         } else if (room.status == Statuses.WAITING_ROOM) {
           console.log("disconnect", code);
@@ -150,6 +150,7 @@ socket.on("connection", (socket: any) => {
     //when artist selects word
     socket.on("word-selected", (code: string, word: string) => {
       clearTimeout(choosingWordTimer);
+      clearTimeout(roundTimer);
       const room = rooms[code];
       room.word = word;
       room.drawings = [];
@@ -160,15 +161,18 @@ socket.on("connection", (socket: any) => {
       roundTimer = setTimeout(() => {
         room.lastWord = room.word;
         room.word = "";
-        room.status = Statuses.SELECTING_WORD;
         let nextRound = room.round + 1;
-        if (nextRound > room.players.length) {
+        if (
+          nextRound > findConnectedUsersLength(room.players) &&
+          room.status !== Statuses.FINISHED
+        ) {
           room.status = Statuses.FINISHED;
           socket.emit("game-finished", room);
           socket.in(code).emit("game-finished", room);
           delete rooms[code];
           return;
         }
+        room.status = Statuses.SELECTING_WORD;
         room.round++;
         room.currentArtist = findNextArtist(room.players, room.round);
         socket.emit("round-finished", room);
@@ -184,7 +188,13 @@ socket.on("connection", (socket: any) => {
         return u;
       });
 
-      console.log("disconnect", room.players.length);
+      console.log(
+        "disconnect",
+        findConnectedUsersLength(room.players),
+        room.maxPlayers,
+        room.status
+      );
+
       if (
         findConnectedUsersLength(room.players) === 1 &&
         room.maxPlayers > 2 &&
@@ -198,13 +208,13 @@ socket.on("connection", (socket: any) => {
         delete rooms[code];
         return;
       }
+      //if artist left the game
       if (
         room.currentArtist &&
         room.currentArtist.userId === user.userId &&
         room.status !== Statuses.FINISHED
       ) {
         room.word = "";
-        room.round++;
         room.currentArtist = findNextArtist(room.players, room.round);
         room.status = Statuses.SELECTING_WORD;
         room.message = "Artist left the game";
@@ -223,18 +233,20 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
   //starts timer for choosing word and emit event when time is up
   room.message = "";
   choosingWordTimer = setTimeout(() => {
-    room.round++;
-    if (room.round > room.players.length) {
+    const nextRound = room.round + 1;
+    if (nextRound > findConnectedUsersLength(room.players) && room.status !== Statuses.FINISHED) {
+      clearTimeout(roundTimer);
       room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
       delete rooms[code];
     } else {
       // if the player didn't choose a word, pass the turn to the next player
+      room.round++;
       room.currentArtist = findNextArtist(room.players, room.round);
       socket.emit("choosing-word-time-finished", room);
       socket.in(code).emit("choosing-word-time-finished", room);
-      startChoosingWord(room, socket, code);
+      startChoosingWordInGame(room, socket, code);
     }
   }, room.choosingWordTime);
 }
@@ -244,7 +256,8 @@ function startChoosingWord(room: Room, socket: any, code: string) {
   //starts timer for choosing word and emit event when time is up
   choosingWordTimer = setTimeout(() => {
     room.round++;
-    if (room.round > room.players.length) {
+    if (room.round > findConnectedUsersLength(room.players)) {
+      clearTimeout(roundTimer);
       room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
