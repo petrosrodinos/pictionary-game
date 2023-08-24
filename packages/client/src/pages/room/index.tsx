@@ -119,7 +119,7 @@ const Room: FC = () => {
   const handleAllUsersLeft = (roomInfo: RoomInfo) => {
     console.log("all-users-left", roomInfo);
     setRoomInfo({} as RoomInfo);
-    setActiveModal("");
+    setMessage(roomInfo.message);
   };
 
   const handleGameFinished = (roomInfo: RoomInfo) => {
