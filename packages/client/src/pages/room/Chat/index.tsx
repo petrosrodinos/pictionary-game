@@ -58,24 +58,22 @@ const Chat: FC<ChatProps> = ({ socket }) => {
           className=""
         />
       ))}
-      <div className="chat-input">
-        <form className="message-form" onSubmit={send_data}>
-          <Input
-            name="Answer"
-            placeholder="Answer"
-            value={formValue}
-            onChange={(e) => setFormValue(e.target.value)}
-          />
-          <div className="chat-input-gap"></div>
-          <Button
-            type="submit"
-            title="Send"
-            variant="primary"
-            icon={BiSend}
-            className="answer-button"
-          />
-        </form>
-      </div>
+      <form className="message-form" onSubmit={send_data}>
+        <Input
+          name="Answer"
+          placeholder="Answer"
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+        />
+        {/* <div className="chat-input-gap"></div> */}
+        <Button
+          type="submit"
+          title="Send"
+          variant="primary"
+          icon={BiSend}
+          className="answer-button"
+        />
+      </form>
     </div>
   );
 };
