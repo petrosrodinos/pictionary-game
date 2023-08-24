@@ -40,24 +40,38 @@ const Chat: FC<ChatProps> = ({ socket }) => {
 
   //function gia na pairnoy thn wra
   function get_time() {
-    const currHour = new Date().getHours();
+    //const currHour = new Date().getHours();
+    const currHour = 2;
+    let hour = currHour.toString();
+    if (hour.length < 2) {
+      hour.toString();
+      hour = "0" + hour;
+    }
     const currMin = new Date().getMinutes();
-    const time = `${currHour}:${currMin}`;
+    let min = currMin.toString();
+    if (min.length < 2) {
+      min.toString();
+      min = "0" + min;
+    }
+    const time = `${hour}:${min}`;
+    console.log(time);
     return time;
   }
 
   return (
-    <div className="chat-container">
-      {roomInfo?.chat.map((msg, index) => (
-        <MessageBox
-          key={index}
-          value={msg.message}
-          username={msg.username}
-          time={msg.time}
-          image={msg.avatar}
-          className=""
-        />
-      ))}
+    <div className="chat">
+      <div className="chat-container">
+        {roomInfo?.chat.map((msg, index) => (
+          <MessageBox
+            key={index}
+            value={msg.message}
+            username={msg.username}
+            time={msg.time}
+            image={msg.avatar}
+            className=""
+          />
+        ))}
+      </div>
       <form className="message-form" onSubmit={send_data}>
         <Input
           name="Answer"
