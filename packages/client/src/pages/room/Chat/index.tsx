@@ -31,7 +31,7 @@ const Chat: FC<ChatProps> = ({ socket }) => {
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
       setRoomInfo(roomInfo);
-      console.log("chat-message", roomInfo);
+      console.log("chat-message", roomInfo.chat);
     });
     return () => {
       socket?.off("chat-message");
@@ -55,6 +55,7 @@ const Chat: FC<ChatProps> = ({ socket }) => {
           username={msg.username}
           time={msg.time}
           image={msg.avatar}
+          className=""
         />
       ))}
       <div className="chat-input">

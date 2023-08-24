@@ -7,7 +7,7 @@ import Avatar from "../../../../components/ui/Avatar";
 interface MessageBoxProps {
   value: string;
   style?: React.CSSProperties;
-  className?: string;
+  className: string;
   username: string;
   image: string;
   time: string;
