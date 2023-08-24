@@ -175,6 +175,10 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
       });
     }
 
+    if (user && user.games && user.games.length > 10) {
+      user.games = user.games.slice(0, 10);
+    }
+
     res.status(201).json(exclude(user, "password"));
   } catch (err) {
     res.status(409).json({
