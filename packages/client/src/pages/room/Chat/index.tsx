@@ -65,7 +65,7 @@ const Chat: FC<ChatProps> = ({ socket }) => {
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
         />
-        {/* <div className="chat-input-gap"></div> */}
+        <div className="chat-input-gap"></div>
         <Button
           type="submit"
           title="Send"
