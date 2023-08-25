@@ -41,3 +41,9 @@
   font-size: 12px;
   line-height: 18px;
 }
+
+@mixin text-message{
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px
+}

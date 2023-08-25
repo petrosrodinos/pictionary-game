@@ -1,21 +1,11 @@
-// .message-box-container {
-//   background-color: var(--secondary-background-color-dark);
-//   //background-color: var(--secondary-background-color-medium);
-//   margin: 20px;
-//   border-radius: 10px;
-//   display: flex;
-//   flex-direction: row;
-//   border: 2px solid var(--input-color);
-//   box-shadow: 4px 4px var(--input-color);
-// }
+
 
 .player-me{
   background-color: var(--secondary-background-color-dark);
   margin: 20px;
   border-radius: 10px;
   display: flex;
-  //flex-direction: row;
-  justify-content: space-between;
+  flex-direction: row;
   border: 2px solid var(--input-color);
   box-shadow: 4px 4px var(--input-color);
   
@@ -35,17 +25,15 @@
 
 .player-credentials-me {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  order: 2;
-  //padding: 10px 0px 0px 40px;
   
 }
 
 .player-credentials-another {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   //order: 2;
@@ -59,11 +47,21 @@
 
 .message-box-text {
   margin: 5px 15px 5px 15px;
+  white-space: nowrap;
 }
 
 .message-box-text-container {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+//  / overflow: hidden;
+  //white-space: nowrap;
+}
+.message-box-username{
+  display: flex;
+  justify-content: center;
   align-items: center;
 }

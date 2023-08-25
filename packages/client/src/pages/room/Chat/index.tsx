@@ -69,6 +69,13 @@ const Chat: FC<ChatProps> = ({ socket }) => {
       return "another";
     }
   }
+  function player_check_name(message_name: string, my_name: string) {
+    if (message_name === my_name) {
+      return "Me";
+    } else {
+      return message_name;
+    }
+  }
   return (
     <div className="chat">
       <div className="chat-container">
@@ -76,7 +83,7 @@ const Chat: FC<ChatProps> = ({ socket }) => {
           <MessageBox
             key={index}
             value={msg.message}
-            username={msg.username}
+            username={player_check_name(msg.username, username)}
             // username={msg.username}
             time={msg.time}
             image={msg.avatar}
