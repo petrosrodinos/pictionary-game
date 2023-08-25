@@ -1,6 +1,27 @@
-.message-box-container {
+// .message-box-container {
+//   background-color: var(--secondary-background-color-dark);
+//   //background-color: var(--secondary-background-color-medium);
+//   margin: 20px;
+//   border-radius: 10px;
+//   display: flex;
+//   flex-direction: row;
+//   border: 2px solid var(--input-color);
+//   box-shadow: 4px 4px var(--input-color);
+// }
+
+.player-me{
   background-color: var(--secondary-background-color-dark);
-  //background-color: var(--secondary-background-color-medium);
+  margin: 20px;
+  border-radius: 10px;
+  display: flex;
+  //flex-direction: row;
+  justify-content: space-between;
+  border: 2px solid var(--input-color);
+  box-shadow: 4px 4px var(--input-color);
+  
+}
+.player-another{
+  background-color: var(--secondary-background-color-medium);
   margin: 20px;
   border-radius: 10px;
   display: flex;
@@ -12,11 +33,23 @@
   border: 1px solid black;
 }
 
-.message-box-left {
+.player-credentials-me {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  order: 2;
+  //padding: 10px 0px 0px 40px;
+  
+}
+
+.player-credentials-another {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  //order: 2;
+  
 }
 
 .message-box-avatar {

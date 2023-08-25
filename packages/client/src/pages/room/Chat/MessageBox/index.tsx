@@ -18,12 +18,12 @@ const MessageBox: FC<MessageBoxProps> = ({
   username,
   value,
   style,
-  className = "",
+  className,
   time,
 }) => {
   return (
-    <div className={`message-box-container ${className}`} style={style}>
-      <div className="message-box-left">
+    <div className={`player-${className}`} style={style}>
+      <div className={`player-credentials-${className}`}>
         <Typography
           variant="small-text-accent"
           className="message-box-username"

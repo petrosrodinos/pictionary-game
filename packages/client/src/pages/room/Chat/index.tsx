@@ -26,12 +26,16 @@ const Chat: FC<ChatProps> = ({ socket }) => {
       time: get_time(),
     });
   }
-
+  let i = 0;
   // TI KANEI O CLIENT OTAN LAMBANEI MYNHMA APO TON SERVER
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
       setRoomInfo(roomInfo);
-      console.log("chat-message", roomInfo.chat);
+      console.log("chat-message", roomInfo.chat[i]);
+      i++;
+
+      roomInfo.chat[i].person = "me";
+      console.log("chat-message", roomInfo.chat[i - 1]);
     });
     return () => {
       socket?.off("chat-message");
@@ -40,8 +44,8 @@ const Chat: FC<ChatProps> = ({ socket }) => {
 
   //function gia na pairnoy thn wra
   function get_time() {
-    //const currHour = new Date().getHours();
-    const currHour = 2;
+    const currHour = new Date().getHours();
+    //const currHour = 2;
     let hour = currHour.toString();
     if (hour.length < 2) {
       hour.toString();
@@ -58,6 +62,13 @@ const Chat: FC<ChatProps> = ({ socket }) => {
     return time;
   }
 
+  function player_check(message_name: string, my_name: string) {
+    if (message_name === my_name) {
+      return "me";
+    } else {
+      return "another";
+    }
+  }
   return (
     <div className="chat">
       <div className="chat-container">
@@ -66,9 +77,11 @@ const Chat: FC<ChatProps> = ({ socket }) => {
             key={index}
             value={msg.message}
             username={msg.username}
+            // username={msg.username}
             time={msg.time}
             image={msg.avatar}
-            className=""
+            className={player_check(msg.username, username)}
+            //className="me"
           />
         ))}
       </div>
