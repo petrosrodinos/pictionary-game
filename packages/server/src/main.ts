@@ -232,6 +232,7 @@ socket.on("connection", (socket: any) => {
 function startChoosingWordInGame(room: Room, socket: any, code: string) {
   //starts timer for choosing word and emit event when time is up
   room.message = "";
+  room.status = Statuses.SELECTING_WORD;
   choosingWordTimer = setTimeout(() => {
     const nextRound = room.round + 1;
     if (nextRound > findConnectedUsersLength(room.players) && room.status !== Statuses.FINISHED) {
@@ -253,16 +254,19 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
 
 function startChoosingWord(room: Room, socket: any, code: string) {
   room.status = Statuses.SELECTING_WORD;
+  room.message = "";
   //starts timer for choosing word and emit event when time is up
   choosingWordTimer = setTimeout(() => {
-    room.round++;
-    if (room.round > findConnectedUsersLength(room.players)) {
+    const nextRound = room.round + 1;
+
+    if (nextRound > findConnectedUsersLength(room.players) && room.status !== Statuses.FINISHED) {
       clearTimeout(roundTimer);
       room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
     } else {
       // if the player didn't choose a word, pass the turn to the next player
+      room.round++;
       room.currentArtist = findNextArtist(room.players, room.round);
       socket.emit("choosing-word-time-finished", room);
       socket.in(code).emit("choosing-word-time-finished", room);
