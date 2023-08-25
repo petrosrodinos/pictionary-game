@@ -2,9 +2,9 @@ import { FC } from "react";
 import { authStore } from "../../../../store/authStore";
 import Typography from "../../../../components/ui/Typography";
 import Star from "../../../../components/ui/Star";
-import "./style.scss";
 import Loader from "../../../../components/ui/Loader";
 import { POINTS_PER_LEVEL } from "../../../../constants/game";
+import "./style.scss";
 
 interface PointsEarnedProps {
   points: number;
@@ -22,10 +22,6 @@ const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
         </Typography>
       </Typography>
       <div className="progress-container">
-        {/* <div
-          style={{ width: `${currentPoints + points * 3.7}px` }}
-          className="progress-loader"
-        ></div> */}
         <Star className="star-item-left" label={level} />
         <Loader max={POINTS_PER_LEVEL} value={currentPoints + points} />
         <Star className="star-item-right" label={level + 1} />

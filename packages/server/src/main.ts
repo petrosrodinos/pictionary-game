@@ -178,7 +178,7 @@ socket.on("connection", (socket: any) => {
         socket.emit("round-finished", room);
         socket.in(code).emit("round-finished", room);
         startChoosingWordInGame(room, socket, code);
-      }, room.roundTime);
+      }, room.roundTime + 1000);
     });
     socket.on("disconnect", () => {
       room.players = room.players.map((u) => {

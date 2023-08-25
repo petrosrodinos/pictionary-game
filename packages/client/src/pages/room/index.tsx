@@ -12,24 +12,17 @@ import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import Container from "../../components/Container";
 import NoRoom from "./Message";
-import { POINTS_PER_LEVEL } from "../../constants/game";
-import { updateUser } from "../../services/user";
-import { useMutation } from "react-query";
-import { RoomInfo, UserToUpdate } from "../../interfaces/typing";
+import { RoomInfo } from "../../interfaces/typing";
 import "./style.scss";
 
 const Room: FC = () => {
   const { id: roomId } = useParams();
-  const { userId, username, avatar, level, xp, updateProfile } = authStore((state) => state);
+  const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
   const { socket } = useSocket();
   const navigate = useNavigate();
-
-  const { mutate: updateUserMutation } = useMutation((user: UserToUpdate) => {
-    return updateUser(user);
-  });
 
   useEffect(() => {
     const joinedUser = {
@@ -60,7 +53,7 @@ const Room: FC = () => {
       socket?.off("game-finished");
 
       () => {
-        "Are you sure you want to leave?";
+        return "Are you sure you want to leave?";
       };
     };
   }, [socket]);
@@ -128,7 +121,6 @@ const Room: FC = () => {
       setMessage("The word was " + roomInfo.lastWord);
     }
     setActiveModal("game-finished");
-    updateUserInfo();
   };
 
   const handleWordSelected = (word: string) => {
@@ -176,42 +168,6 @@ const Room: FC = () => {
   const takeTime = useMemo(() => {
     return roomInfo?.status === "playing" ? roomInfo?.roundTime : 0;
   }, [roomInfo?.status]);
-
-  const updateUserInfo = () => {
-    let newPoints = xp + 5;
-    let data = {};
-    if (newPoints >= POINTS_PER_LEVEL) {
-      newPoints = newPoints - POINTS_PER_LEVEL;
-      data = { xp: newPoints, level: level + 1 };
-    } else {
-      data = { xp: newPoints };
-    }
-    updateUserMutation(
-      {
-        userId,
-        game: {
-          points: 5,
-          rank: 2,
-        },
-        ...data,
-      },
-      {
-        onSuccess: (data) => {
-          console.log("updated", data);
-          updateProfile({
-            xp: data.xp,
-            level: data.level,
-          });
-        },
-      }
-    );
-  };
-
-  // window.onbeforeunload = function () {
-  //   if (activeModal === "choosing-word") {
-  //     socket?.emit("leave-choosing-word", roomId, userId);
-  //   }
-  // };
 
   return (
     <>

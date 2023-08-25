@@ -107,6 +107,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
             token: data.token,
             role: data.role,
             avatar: data.avatar,
+            xp: data.xp,
           });
           navigate("/home");
         },

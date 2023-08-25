@@ -22,7 +22,7 @@ const Loader: FC<LoaderProps> = ({ time, value, max }) => {
         clearInterval(x);
       }
     }, 1000);
-  }, []);
+  }, [time]);
 
   return (
     <div className="loader-container">

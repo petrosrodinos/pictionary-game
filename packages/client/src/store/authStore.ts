@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-//import { getRandomAvatar } from "../utils/avatar";
 
 interface AuthState {
   isLoggedIn: boolean;

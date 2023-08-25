@@ -12,6 +12,8 @@ export const STARTING_TIME_IN_SECONDS = 2;
 
 export const POINTS_PER_LEVEL = 100;
 
+export const MAX_LEVEL = 99;
+
 export const SELECTABLE_WORDS_LIST_LENGTH = 5;
 
 export const Difficalty = {

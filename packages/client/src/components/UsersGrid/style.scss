@@ -1,13 +1,16 @@
 .users-grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  max-width: 400px;
 }
 .user-container {
   display: flex;
   background-color: var(--secondary-background-color-dark);
   border-radius: var(--border-radius);
-  position: relative;
+  max-width: 120px;
+  min-width: 90px;
 }
 
 .user-content {
@@ -21,6 +24,7 @@
 
 .user-username {
   color: var(--text-secondary-light);
+  word-break: break-all;
 }
 
 .user-rank {
