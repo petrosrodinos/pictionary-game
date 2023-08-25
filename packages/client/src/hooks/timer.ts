@@ -5,7 +5,10 @@ export const useTimer = (time?: number | null, onTimerFinish?: () => void) => {
   const [countDownInSeconds, setCountDownInSeconds] = useState<number>(0);
 
   useEffect(() => {
-    if (!time) return;
+    if (!time) {
+      setCountDown("00:00");
+      return;
+    }
     const countDownTime = time / 1000;
 
     let remainingTime = countDownTime;
