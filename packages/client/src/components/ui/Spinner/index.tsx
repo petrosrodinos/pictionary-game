@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { MoonLoader } from "react-spinners";
+import { PacmanLoader } from "react-spinners";
 
 interface SpinnerProps {
   loading: boolean;
@@ -11,7 +11,7 @@ const Spinner: FC<SpinnerProps> = ({ loading, style }) => {
     margin: "0 auto",
   };
   return (
-    <MoonLoader
+    <PacmanLoader
       color="#eac7c7"
       loading={loading}
       cssOverride={{ ...override, ...style }}
