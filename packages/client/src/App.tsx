@@ -15,21 +15,18 @@ function App() {
         <Routes>
           {isLoggedIn && (
             <>
-              <Route
-                path="/"
-                element={<Navigate to={isLoggedIn ? "/home" : "/user/login"} />}
-              ></Route>
+              <Route path="/" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />}></Route>
               <Route path="/home" element={<Home />} />
               <Route path="/room/:id" element={<Room />} />
             </>
           )}
           {!isLoggedIn && (
-            <Route path="/user" element={<AuthLayout />}>
+            <Route path="/" element={<AuthLayout />}>
               <Route path="register" element={<Register />} />
               <Route path="login" element={<Login />} />
             </Route>
           )}
-          <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/user/login"} />} />
+          <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />} />
         </Routes>
       </div>
     </BrowserRouter>

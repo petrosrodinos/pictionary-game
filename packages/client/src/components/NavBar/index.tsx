@@ -5,8 +5,8 @@ import EditProfile from "./EditProfile";
 import { FiSettings, FiPower } from "react-icons/fi";
 import { authStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
-import "./style.scss";
 import LanguagePicker from "./LanguagePicker";
+import "./style.scss";
 
 const NavBar: FC = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const NavBar: FC = () => {
 
   const handleLogOut = () => {
     logOut();
-    navigate("/user/login");
+    navigate("/login");
   };
 
   return (

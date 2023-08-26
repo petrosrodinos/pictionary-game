@@ -24,7 +24,7 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
 
   const handleMenuChange = (data: { name: string; value: string }) => {
     setSelectedOption(data.value);
-    navigate(`/user/${data.value}`);
+    navigate(`/${data.value}`);
   };
 
   const authOptions = [
