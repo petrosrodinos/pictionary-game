@@ -88,6 +88,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
   };
 
   const handleRegister = async (values: NewUser) => {
+    if (!values.avatar) {
+      alert("Please select avatar");
+      return;
+    }
     registerMutation(
       {
         username: values.username,
@@ -192,7 +196,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         options={options}
         onChange={handleRoleChange}
         error={errors.role?.message}
-        label="Choose role"
+        label="Role"
       />
       <DatePicker
         label="Age"
