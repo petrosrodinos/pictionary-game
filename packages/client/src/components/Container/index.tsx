@@ -7,7 +7,7 @@ interface ContainerProps {
   style?: React.CSSProperties;
 }
 
-const Container: FC<ContainerProps> = ({ children, className, style }) => {
+const Container: FC<ContainerProps> = ({ children, className = "", style }) => {
   return (
     <div style={style} className={`main-content-container ${className}`}>
       {children}

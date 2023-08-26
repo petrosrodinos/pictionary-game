@@ -87,21 +87,23 @@ const Home: FC = () => {
   };
 
   return (
-    <Container className="home-page-container">
-      <NavBar />
-      <Modal
-        title={ModalComponents?.[activeModal]?.title}
-        isOpen={!!activeModal}
-        onClose={() => handleModalClose(ModalComponents?.[activeModal])}
-      >
-        {ModalComponents?.[activeModal]?.component}
-      </Modal>
-      <div className="home-page-content">
-        <div className="first-row">
-          <RoomActions onActionClick={handleActionClick} />
-          <LeaderBoard />
+    <Container>
+      <div className="home-page-container">
+        <NavBar />
+        <Modal
+          title={ModalComponents?.[activeModal]?.title}
+          isOpen={!!activeModal}
+          onClose={() => handleModalClose(ModalComponents?.[activeModal])}
+        >
+          {ModalComponents?.[activeModal]?.component}
+        </Modal>
+        <div className="home-page-content">
+          <div className="first-row">
+            <RoomActions onActionClick={handleActionClick} />
+            <LeaderBoard />
+          </div>
+          <RecentGames />
         </div>
-        <RecentGames />
       </div>
     </Container>
   );
