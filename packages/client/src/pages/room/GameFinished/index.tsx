@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Typography from "../../../components/ui/Typography";
 import Button from "../../../components/ui/Button";
 import { authStore } from "../../../store/authStore";
@@ -18,6 +18,7 @@ interface GameFinishedProps {
 }
 
 const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
+  const updatedProfile = useRef(false);
   const [pointsEarned, setPointsEarned] = useState<number>(0);
   const [rank, setRank] = useState<number>(0);
   const { username, updateProfile, level, xp, userId } = authStore((state) => state);
@@ -51,6 +52,8 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
   };
 
   const updateUserInfo = () => {
+    if (updatedProfile.current) return;
+    updatedProfile.current = true;
     let newPoints = xp + 5;
     let data = {};
     if (newPoints >= POINTS_PER_LEVEL && level < MAX_LEVEL) {
