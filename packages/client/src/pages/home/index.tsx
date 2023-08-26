@@ -51,8 +51,7 @@ const Home: FC = () => {
   };
 
   const handleCreateRoom = (settings: GameSettings) => {
-    if (!socket) return;
-    socket.emit("create-room", {
+    socket?.emit("create-room", {
       ...settings,
       creator: userId,
     });

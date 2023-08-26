@@ -3,10 +3,10 @@
   flex-direction: column;
   gap: 15px;
   align-items: center;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  justify-content: center;
+  align-self: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .room-stat {

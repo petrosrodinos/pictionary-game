@@ -173,7 +173,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       className="register-page-container"
       onSubmit={handleSubmit(isEditing ? handleSave : handleRegister)}
     >
-      <Typography variant="sub-header-main">{isEditing ? "Edit Profile" : "Register"}</Typography>
+      {!isEditing && <Typography variant="sub-header-main">Register</Typography>}
       <Input
         label="Username"
         error={errors.username?.message}

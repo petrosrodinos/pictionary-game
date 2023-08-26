@@ -20,7 +20,7 @@ const NavBar: FC = () => {
 
   return (
     <div className="nav-bar-container">
-      <Modal onClose={() => setActiveModal(false)} isOpen={activeModal}>
+      <Modal title="Edit Profile" onClose={() => setActiveModal(false)} isOpen={activeModal}>
         <EditProfile />
       </Modal>
       <PlayerStats />
