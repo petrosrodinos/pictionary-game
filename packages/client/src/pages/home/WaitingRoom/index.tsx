@@ -80,16 +80,28 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           <UsersGrid users={roomInfo.players} />
           <RoomSettings roomInfo={roomInfo} />
           {countDownInSeconds > 0 && (
-            <Button disabled={true} title={`GAME STARTING IN ${countDownInSeconds.toString()}`} />
+            <Button
+              className="waiting-room-button"
+              disabled={true}
+              title={`GAME STARTING IN ${countDownInSeconds.toString()}`}
+            />
           )}
           {countDownInSeconds <= 0 &&
             roomInfo.players.length > 1 &&
             roomInfo.creator === userId &&
             roomInfo.status == "waiting-room" && (
-              <Button onClick={startGameByCreator} title={`START GAME`} />
+              <Button
+                className="waiting-room-button"
+                onClick={startGameByCreator}
+                title={`START GAME`}
+              />
             )}
           {countDownInSeconds <= 0 && roomInfo.status != "waiting-room" && (
-            <Button onClick={startGame} title="GAME IS ON, GO BACK" />
+            <Button
+              className="waiting-room-button"
+              onClick={startGame}
+              title="GAME IS ON, GO BACK"
+            />
           )}
         </>
       ) : (

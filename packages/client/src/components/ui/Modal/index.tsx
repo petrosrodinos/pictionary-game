@@ -47,7 +47,7 @@ const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
                 <Typography variant="text-main">{title}</Typography>
               </div>
             )}
-            <>{children}</>
+            <div className="content-container">{children}</div>
           </div>
         </div>
       )}
