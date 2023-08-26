@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { cloudinary } from "../utils/cloudinary";
 import { ExtendedRequest } from "../interfaces";
 import { isBase64 } from "../utils/file";
+import { POINTS_PER_LEVEL } from "../constants/game";
 
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
@@ -198,11 +199,12 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
         avatar: true,
         games: true,
       },
+      // orderBy: [{ level: "desc" }, { xp: "desc" }],
     });
 
     if (users && users.length > 0) {
       users.sort((a, b) => {
-        return b.level + b.xp - (a.level + a.xp);
+        return POINTS_PER_LEVEL * b.level + b.xp - (POINTS_PER_LEVEL * a.level + a.xp);
       });
     }
 
