@@ -47,7 +47,7 @@ interface UserType {
   avatar: string;
   username: string;
   xp: number;
-  games?: Game[];
+  games: Game[];
   level: number;
   points: number;
   connected?: boolean;
