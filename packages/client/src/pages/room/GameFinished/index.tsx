@@ -5,10 +5,11 @@ import { authStore } from "../../../store/authStore";
 import PointsEarned from "./PointsEarned";
 import Players from "../WaitingWord/Players";
 import { UserToUpdate, UserType } from "../../../interfaces/typing";
-import "./style.scss";
 import { useMutation } from "react-query";
 import { MAX_LEVEL, POINTS_PER_LEVEL } from "../../../constants/game";
 import { updateUser } from "../../../services/user";
+import { useSound } from "../../../hooks/sound";
+import "./style.scss";
 
 interface GameFinishedProps {
   players: UserType[];
@@ -20,12 +21,14 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
   const [pointsEarned, setPointsEarned] = useState<number>(0);
   const [rank, setRank] = useState<number>(0);
   const { username, updateProfile, level, xp, userId } = authStore((state) => state);
+  const { play } = useSound();
 
   const { mutate: updateUserMutation } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
 
   useEffect(() => {
+    play("points-earned");
     updateUserInfo();
     const sortedUsers = players.sort((a, b) => b.points - a.points);
     const userRank = sortedUsers.findIndex((user) => user.username === username);

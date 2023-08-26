@@ -13,6 +13,7 @@ import Chat from "./Chat";
 import Container from "../../components/Container";
 import NoRoom from "./Message";
 import { RoomInfo } from "../../interfaces/typing";
+import { useSound } from "../../hooks/sound";
 import "./style.scss";
 
 const Room: FC = () => {
@@ -22,6 +23,7 @@ const Room: FC = () => {
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
   const { socket } = useSocket();
+  const { play } = useSound();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,12 +76,14 @@ const Room: FC = () => {
   const handleWordChanged = (roomInfo: RoomInfo) => {
     console.log("word-changed", roomInfo);
     setRoomInfo(roomInfo);
+    play("game-starting");
     setMessage("");
     setActiveModal("");
   };
 
   const handleRoundFinished = (roomInfo: RoomInfo) => {
     console.log("round-finished", roomInfo);
+    play("round-finished");
     setRoomInfo(roomInfo);
     if (roomInfo.message) {
       setMessage(roomInfo.message);

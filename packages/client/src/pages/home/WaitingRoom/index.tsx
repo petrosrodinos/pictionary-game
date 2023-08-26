@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { useTimer } from "../../../hooks/timer";
 import { STARTING_TIME_IN_SECONDS } from "../../../constants/game";
 import { RoomInfo as RoomInfoInt } from "../../../interfaces/typing";
+import { useSound } from "../../../hooks/sound";
 import "./style.scss";
 
 interface WaitingRoomProps {}
 
 const WaitingRoom: FC<WaitingRoomProps> = () => {
+  const { play } = useSound();
   const navigate = useNavigate();
   const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const { userId, username, avatar, level } = authStore((state) => state);
@@ -69,6 +71,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   };
 
   function startGame() {
+    play("game-starting");
     navigate(`/room/${searchParams.get("room")}`);
   }
 
