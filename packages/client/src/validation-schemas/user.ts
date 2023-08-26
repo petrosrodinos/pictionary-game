@@ -10,7 +10,7 @@ export const RegisterValidationSchema = yup.object({
   password: yup.string().required("Password is required"),
   role: yup.string().required("Role is required"),
   age: yup.string().required("Age is required"),
-  avatar: yup.string().required("Avatar is required"),
+  // avatar: yup.string().required("Avatar is required"),
 });
 
 export const EditProfileValidationSchema = yup.object({
@@ -18,5 +18,5 @@ export const EditProfileValidationSchema = yup.object({
   password: yup.string(),
   role: yup.string().required("Role is required"),
   age: yup.string().required("Age is required"),
-  avatar: yup.string().required("Avatar is required"),
+  // avatar: yup.string().required("Avatar is required"),
 });

@@ -18,7 +18,7 @@ interface NewUser {
   password: string | undefined;
   role: string;
   age: string;
-  avatar: string;
+  avatar?: string;
 }
 
 interface UserToUpdate {

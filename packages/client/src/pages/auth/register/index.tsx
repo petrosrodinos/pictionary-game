@@ -20,6 +20,8 @@ import { NewUser, UserToUpdate } from "../../../interfaces/typing";
 import TabMenu from "../../../components/ui/TabMenu";
 import { IoIosSend } from "react-icons/io";
 import SelectAvatar from "../../../components/SelectAvatar";
+import Toast from "../../../components/ui/Toast";
+import { toast } from "react-toastify";
 import "./style.scss";
 
 interface RegisterProps {
@@ -89,7 +91,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
 
   const handleRegister = async (values: NewUser) => {
     if (!values.avatar) {
-      alert("Please select avatar");
+      toast.warn("Please select an avatar");
       return;
     }
     registerMutation(
@@ -103,7 +105,8 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       {
         onSuccess: (data: any) => {
           if (!data) {
-            return alert("Username exists");
+            toast.error("Could not register, please try later");
+            return;
           }
           logIn({
             userId: data.id,
@@ -116,7 +119,11 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           navigate("/home");
         },
         onError: (error: any) => {
-          alert(error.message);
+          if (error) {
+            toast.error(error);
+          } else {
+            toast.error("Could not register, please try later");
+          }
         },
       }
     );
@@ -130,11 +137,13 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         age: values.age,
         avatar: values.avatar,
         userId: userId,
+        password: values.password,
       },
       {
         onSuccess: (data: any) => {
           if (!data) {
-            return alert("Could not update profile");
+            toast.error("Could not update profile, please try later");
+            return;
           }
           updateProfile({
             username: data.username,
@@ -142,10 +151,14 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
             age: data.age,
             avatar: data.avatar,
           });
-          alert("Profile updated successfully");
+          toast.success("Profile updated successfully");
         },
         onError: (error: any) => {
-          alert(error.message);
+          if (error) {
+            toast.error(error);
+          } else {
+            toast.error("Could not update profile, please try later");
+          }
         },
       }
     );
@@ -173,6 +186,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       className="register-page-container"
       onSubmit={handleSubmit(isEditing ? handleSave : handleRegister)}
     >
+      <Toast />
       {!isEditing && <Typography variant="sub-header-main">Register</Typography>}
       <Input
         label="Username"

@@ -25,8 +25,6 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       avatarUrl = result.url;
     }
 
-    console.log("avatarUrl", avatarUrl);
-
     const user = await prisma.user.create({
       data: {
         username: username,
@@ -47,7 +45,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     });
   } catch (err) {
     res.status(409).json({
-      message: "Could not create user",
+      message: "Username already exists",
     });
   }
 };
@@ -148,7 +146,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
     res.status(201).json(exclude(user, "password"));
   } catch (err) {
     res.status(409).json({
-      message: "Could not update user",
+      message: "Username already exists",
       error: JSON.stringify(err),
     });
   }

@@ -10,8 +10,10 @@ import { authStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { loginUser } from "../../../services/user";
-import "./style.scss";
 import { UserLogin } from "../../../interfaces/typing";
+import { toast } from "react-toastify";
+import Toast from "../../../components/ui/Toast";
+import "./style.scss";
 
 const Login: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -52,11 +54,15 @@ const Login: FC = () => {
             });
             navigate("/home");
           } else {
-            alert("Invalid username or password");
+            toast.error("Invalid username or password");
           }
         },
         onError: (error: any) => {
-          alert(error.message);
+          if (error) {
+            toast.error(error);
+          } else {
+            toast.error("Could not login, please try later");
+          }
         },
       }
     );
@@ -64,6 +70,7 @@ const Login: FC = () => {
 
   return (
     <form className="login-page-container" onSubmit={handleSubmit(handleLogin)}>
+      <Toast />
       <Typography variant="sub-header-main">Login</Typography>
       <Input
         label="Username"
