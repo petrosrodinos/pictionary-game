@@ -2,6 +2,7 @@ import { FC } from "react";
 import Typography from "../Typography";
 import { ImSpinner6 } from "react-icons/im";
 import "./style.scss";
+import { useSound } from "../../../hooks/sound";
 
 interface ButtonProps {
   title: string;
@@ -27,13 +28,20 @@ const Button: FC<ButtonProps> = ({
   icon,
   ...props
 }) => {
+  const { play } = useSound();
   const Icon = icon;
+
+  const handleClick = () => {
+    play("click");
+    onClick?.();
+  };
+
   return (
     <button
       style={style}
       type={type}
       disabled={disabled}
-      onClick={onClick}
+      onClick={handleClick}
       className={`button-container button-${variant} ${className}`}
       {...props}
     >
