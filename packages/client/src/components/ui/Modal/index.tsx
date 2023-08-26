@@ -1,6 +1,7 @@
 import { FC, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Typography from "../Typography";
+import { useTransition, animated } from "react-spring";
 import "./style.scss";
 
 interface IProps {
@@ -24,6 +25,13 @@ const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
     };
   }, [onClose]);
 
+  const transitions = useTransition(isOpen, {
+    from: { opacity: 0, transform: "translateY(-40px)" },
+    enter: { opacity: 1, transform: "translateY(0)" },
+    leave: { opacity: 0, transform: "translateY(-40px)" },
+    config: { duration: 200 },
+  });
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -32,11 +40,11 @@ const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
     }
   }, [isOpen]);
 
-  return (
-    <>
-      {isOpen && (
+  return transitions(
+    (styles, item) =>
+      item && (
         <div className="modal__container">
-          <div className="modal-content__container">
+          <animated.div style={styles} className="modal-content__container">
             {onClose && (
               <div onClick={onClose} className="close-button">
                 <AiOutlineClose />
@@ -48,10 +56,9 @@ const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
               </div>
             )}
             <div className="content-container">{children}</div>
-          </div>
+          </animated.div>
         </div>
-      )}
-    </>
+      )
   );
 };
 
