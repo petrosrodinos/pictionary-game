@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import "./style.scss";
 import Typography from "../Typography";
+import "./style.scss";
 
 interface IProps {
   children: any;
