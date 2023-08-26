@@ -3,10 +3,10 @@ import PlayerStats from "./PlayerStats";
 import Modal from "../ui/Modal";
 import EditProfile from "./EditProfile";
 import { FiSettings, FiPower } from "react-icons/fi";
-import { MdLanguage } from "react-icons/md";
 import { authStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
+import LanguagePicker from "./LanguagePicker";
 
 const NavBar: FC = () => {
   const navigate = useNavigate();
@@ -16,10 +16,6 @@ const NavBar: FC = () => {
   const handleLogOut = () => {
     logOut();
     navigate("/user/login");
-  };
-
-  const handleChangeLanguage = () => {
-    console.log("change language");
   };
 
   return (
@@ -32,9 +28,7 @@ const NavBar: FC = () => {
         <span onClick={() => setActiveModal(true)} className="nav-bar-icon">
           <FiSettings />
         </span>
-        <span onClick={handleChangeLanguage} className="nav-bar-icon">
-          <MdLanguage />
-        </span>
+        <LanguagePicker />
         <span onClick={handleLogOut} className="nav-bar-icon">
           <FiPower />
         </span>
