@@ -1,13 +1,11 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { COLORS } from "../constants/colors";
 
 interface ConfigSettings {
   disabledSound: boolean;
   volume: number;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+  colors: any;
 }
 
 interface ConfigState {
@@ -15,6 +13,7 @@ interface ConfigState {
   setTime: (payload: any) => void;
   config: ConfigSettings;
   setConfig: (payload: ConfigSettings) => void;
+  resetColors: () => void;
 }
 
 const initialStateValues = {
@@ -22,12 +21,13 @@ const initialStateValues = {
   config: {
     disabledSound: false,
     volume: 0.5,
-    colors: {
-      primary: "#000000",
-      secondary: "#ffffff",
-    },
+    colors: COLORS,
   },
 };
+
+// for (const color in COLORS) {
+//   root?.style?.setProperty(color, COLORS[color]);
+// }
 
 export const configStore = create<ConfigState>()(
   devtools(
@@ -42,6 +42,13 @@ export const configStore = create<ConfigState>()(
           set({
             config: payload,
           }),
+        resetColors: () =>
+          set({
+            config: {
+              ...initialStateValues.config,
+              colors: COLORS,
+            },
+          }),
       }),
       {
         name: "config-pictionary",
@@ -50,6 +57,12 @@ export const configStore = create<ConfigState>()(
   )
 );
 
-export const getConfigState = (): ConfigState => {
+export function getConfigState() {
   return configStore.getState();
-};
+}
+
+var root: any = document.querySelector(":root");
+
+for (const color in getConfigState().config.colors) {
+  root?.style?.setProperty(color, getConfigState().config.colors[color]);
+}

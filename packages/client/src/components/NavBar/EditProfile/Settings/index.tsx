@@ -6,6 +6,7 @@ import SoundIconDisabled from "../../../../assets/icons/sound-disabled.png";
 import Range from "../../../ui/Range";
 import { useSound } from "../../../../hooks/sound";
 import "./style.scss";
+import Colors from "./Colors";
 
 const Preferences: FC = () => {
   const { config, setConfig } = configStore((state) => state);
@@ -41,6 +42,7 @@ const Preferences: FC = () => {
           </Typography>
           <Range values={[5]} min={1} max={10} step={1} onChange={handleRangeChange} />
         </div>
+        <Colors />
       </div>
     </div>
   );
