@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import "react-toastify/dist/ReactToastify.css";
 import "./utils/i18n";
 import "./main.scss";
+// import "./handsfree.ts";
 
 const queryClient = new QueryClient({
   defaultOptions: {

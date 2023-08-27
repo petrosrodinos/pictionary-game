@@ -12,9 +12,11 @@
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
     "@ramonak/react-progress-bar": "^5.0.3",
+    "@tensorflow/tfjs-backend-cpu": "^4.10.0",
     "@types/i18next": "^13.0.0",
     "@types/react-i18next": "^8.1.0",
     "axios": "^1.4.0",
+    "handsfree": "^8.5.1",
     "i18next": "^23.4.6",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.1",

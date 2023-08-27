@@ -11,8 +11,9 @@ import CreateRoom from "./CreateRoom";
 import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
 import { GameSettings } from "../../interfaces/typing";
-import "./style.scss";
 import NavBar from "../../components/NavBar";
+
+import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
