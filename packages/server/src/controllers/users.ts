@@ -199,20 +199,20 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
       };
     }
 
-    const users = await prisma.user.findMany({
+    const users: any = await prisma.user.findMany({
       orderBy: orderBy,
       select: {
         username: true,
-        //xp: true,
+        xp: true,
         level: true,
         avatar: true,
-        //  games: true,
+        games: true,
       },
       // orderBy: [{ level: "desc" }, { xp: "desc" }],
     });
 
     if (users && users.length > 0) {
-      users.sort((a, b) => {
+      users.sort((a: any, b: any) => {
         return POINTS_PER_LEVEL * b.level + b.xp - (POINTS_PER_LEVEL * a.level + a.xp);
       });
     }
