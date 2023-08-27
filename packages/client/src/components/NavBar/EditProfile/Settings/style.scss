@@ -15,7 +15,7 @@
 .settings-content {
   display: flex;
   flex-direction: column;
-  //   align-items: flex-start;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -25,10 +25,14 @@
   align-items: center;
   gap: 20px;
 }
+
+.volume-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
 .sound-label {
   color: var(--text-secondary);
-}
-
-.volume-label {
-  margin-right: 40px;
 }

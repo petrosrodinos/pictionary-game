@@ -35,10 +35,12 @@ const Preferences: FC = () => {
           </Typography>
           <img onClick={toggleSound} src={soundIcons[config.disabledSound ? "off" : "on"]} />
         </div>
-        <Typography className="volume-label" variant="sub-header-main">
-          Volume:
-        </Typography>
-        <Range values={[5]} min={1} max={10} step={1} onChange={handleRangeChange} />
+        <div className="volume-container">
+          <Typography className="volume-label" variant="sub-header-main">
+            Volume:
+          </Typography>
+          <Range values={[5]} min={1} max={10} step={1} onChange={handleRangeChange} />
+        </div>
       </div>
     </div>
   );
