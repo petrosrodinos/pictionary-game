@@ -37,7 +37,7 @@ const DrawingOptions: FC<DrawingOptionsProps> = ({
   return (
     <div className="canvas-options-container">
       <div className="canvas-options">
-        <div className="colors-container">
+        <div className="canvas-colors-container">
           {PalletColors.map((c, index) => (
             <div
               key={index}
@@ -54,8 +54,8 @@ const DrawingOptions: FC<DrawingOptionsProps> = ({
           />
           <TbHandFinger onClick={onFingerDraw} className="pallet-icon pallet-item" />
           {showColorPicker && (
-            <div className="popover">
-              <div className="cover" onClick={handleClose} />
+            <div className="canvas-popover">
+              <div className="canvas-cover" onClick={handleClose} />
               <ChromePicker onChange={(c) => onColorChange(c.hex)} color={color} />
             </div>
           )}
