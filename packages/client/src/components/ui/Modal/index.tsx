@@ -2,6 +2,7 @@ import { FC, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Typography from "../Typography";
 import { useTransition, animated } from "react-spring";
+import { useSound } from "../../../hooks/sound";
 import "./style.scss";
 
 interface IProps {
@@ -12,18 +13,11 @@ interface IProps {
 }
 
 const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
-    window.addEventListener("keydown", handleEsc);
-
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [onClose]);
+  const { play } = useSound();
+  const handleClose = () => {
+    play("close");
+    onClose?.();
+  };
 
   const transitions = useTransition(isOpen, {
     from: { opacity: 0, transform: "translateY(-40px)" },
@@ -46,7 +40,7 @@ const Modal: FC<IProps> = ({ children, isOpen, title, onClose }) => {
         <div className="modal__container">
           <animated.div style={styles} className="modal-content__container">
             {onClose && (
-              <div onClick={onClose} className="close-button">
+              <div onClick={handleClose} className="close-button">
                 <AiOutlineClose />
               </div>
             )}
