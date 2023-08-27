@@ -5,7 +5,7 @@ export function formatDate(inputDate: string) {
   const mm = String(date.getMonth() + 1).padStart(2, "0");
   const yyyy = date.getFullYear();
   const hh = date.getHours();
-  const min = date.getMinutes();
+  const min = date.getMinutes().toString().padStart(2, "0");
 
   return `${dd}/${mm}/${yyyy}, ${hh}:${min}`;
 }

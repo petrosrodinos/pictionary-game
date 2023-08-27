@@ -1,0 +1,7 @@
+.copable-item {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--secondary-background-color-dark);
+  }
+}

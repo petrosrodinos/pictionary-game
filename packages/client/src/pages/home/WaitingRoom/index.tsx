@@ -108,7 +108,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           )}
         </>
       ) : (
-        <Typography>Room does not exist or it is full :(</Typography>
+        <Typography variant="sub-header-main">Room does not exist or it is full :(</Typography>
       )}
     </div>
   );

@@ -14,6 +14,7 @@ import { transformToMilliseconds } from "../../../utils/time";
 import { GameSettings as GameSettingsInt } from "../../../interfaces/typing";
 import GameSettings from "./GameSettings";
 import "./style.scss";
+import Copable from "../../../components/ui/Copable";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -59,12 +60,16 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       <Typography variant="text-accent" className="text-primary-label">
         To play with friends,send them the code
       </Typography>
-      <Typography className="text-secondary-label">#{settings.code}</Typography>
+      <Typography variant="small-text-main" className="text-secondary-label">
+        <Copable value={settings.code}>{settings.code}</Copable>
+      </Typography>
       <Typography variant="text-accent" className="text-primary-label">
         Or the link
       </Typography>
-      <Typography className="text-secondary-label game-link">
-        {CLIENT_URL}home?room={settings.code}
+      <Typography variant="small-text-main" className="text-secondary-label">
+        <Copable value={`${CLIENT_URL}home?room=${settings.code}`}>
+          {CLIENT_URL}home?room={settings.code}
+        </Copable>
       </Typography>
       <GameSettings settings={settings} onChange={handleSettingsChanged} />
       <div className="buttons-container">
