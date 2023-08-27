@@ -2,7 +2,7 @@ import { FC } from "react";
 import "./style.scss";
 
 interface AvatarProps {
-  image?: string;
+  image: string;
   style?: React.CSSProperties;
   className?: string;
   onClick?: () => void;
@@ -10,7 +10,12 @@ interface AvatarProps {
 
 const Avatar: FC<AvatarProps> = ({ image, style, className = "", onClick }) => {
   return (
-    <img onClick={onClick} className={`avatar-image ${className}`} src={image} style={style} />
+    <img
+      onClick={onClick}
+      className={`avatar-image ${className}`}
+      src={image}
+      style={style}
+    />
   );
 };
 

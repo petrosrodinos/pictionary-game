@@ -1,11 +1,21 @@
-.message-box-container {
-  background-color: rgb(25, 163, 152);
-  //  max-width: 100;
+
+
+.player-me{
+  background-color: var(--secondary-background-color-dark);
   margin: 20px;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
-  //   border: 2px solid black;
+  border: 2px solid var(--input-color);
+  box-shadow: 4px 4px var(--input-color);
+  
+}
+.player-another{
+  background-color: var(--secondary-background-color-medium);
+  margin: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
   border: 2px solid var(--input-color);
   box-shadow: 4px 4px var(--input-color);
 }
@@ -13,11 +23,21 @@
   border: 1px solid black;
 }
 
-.message-box-left {
+.player-credentials-me {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  
+}
+
+.player-credentials-another {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  //order: 2;
+  
 }
 
 .message-box-avatar {
@@ -27,11 +47,21 @@
 
 .message-box-text {
   margin: 5px 15px 5px 15px;
+  white-space: nowrap;
 }
 
 .message-box-text-container {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+//  / overflow: hidden;
+  //white-space: nowrap;
+}
+.message-box-username{
+  display: flex;
+  justify-content: center;
   align-items: center;
 }

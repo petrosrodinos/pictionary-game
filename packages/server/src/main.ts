@@ -45,6 +45,7 @@ socket.on("connection", (socket: any) => {
       round: 1,
       message: "",
       lastWord: "",
+      chat: [],
     };
   });
   //join waiting room
@@ -222,9 +223,11 @@ socket.on("connection", (socket: any) => {
         startChoosingWordInGame(room, socket, code);
       }
     });
-    // για το Input game chat
-    socket.on("game-input-message", (message: string) => {
+    socket.on("game-input-message", (message: ConnectedUser) => {
       console.log("game-input-message", message);
+      room.chat.push(message);
+      socket.in(code).emit("chat-message", room); //gia receiver
+      socket.emit("chat-message", room); //gia emena
     });
   });
 });

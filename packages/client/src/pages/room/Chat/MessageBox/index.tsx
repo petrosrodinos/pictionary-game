@@ -2,31 +2,41 @@ import { FC } from "react";
 import "./style.scss";
 import Typography from "../../../../components/ui/Typography";
 import Avatar from "../../../../components/ui/Avatar";
-import { authStore } from "../../../../store/authStore";
+//import { authStore } from "../../../../store/authStore";
 
 interface MessageBoxProps {
-  value?: string;
+  value: string;
   style?: React.CSSProperties;
-  className?: string;
+  className: string;
+  username: string;
+  image: string;
+  time: string;
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ value, style, className = "" }) => {
-  const currHour = new Date().getHours();
-  const currMin = new Date().getMinutes();
-  value = "Hello World Hello WorldHello WorldHello WorldHello World";
-  const time = `${currHour}:${currMin}`;
-  const { username, level, avatar, xp } = authStore((state) => state);
-
+const MessageBox: FC<MessageBoxProps> = ({
+  image,
+  username,
+  value,
+  style,
+  className,
+  time,
+}) => {
   return (
-    <div className={`message-box-container ${className}`} style={style}>
-      <div className="message-box-left">
-        <Avatar className="message-box-avatar" image={avatar}></Avatar>
-        <Typography variant="small-text-accent" className="message-box-time">
+    <div className={`player-${className}`} style={style}>
+      <div className={`player-credentials-${className}`}>
+        <Typography variant="description-accent" className="message-box-time">
           {time}
         </Typography>
+        <Avatar className="message-box-avatar" image={image}></Avatar>
       </div>
       <div className="message-box-text-container">
-        <Typography variant="text-accent" className="message-box-text">
+        <Typography
+          variant="small-text-accent"
+          className="message-box-username"
+        >
+          {username}
+        </Typography>
+        <Typography variant="text-message" className="message-box-text">
           {value}
         </Typography>
       </div>

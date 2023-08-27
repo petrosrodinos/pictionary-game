@@ -25,7 +25,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       avatarUrl = result.url;
     }
 
-    const user = await prisma.user.create({
+    const user: any = await prisma.user.create({
       data: {
         username: username,
         password: hasedPassword,
@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password: userPassword } = req.body;
 
-  const user = await prisma.user.findUnique({
+  const user: any = await prisma.user.findUnique({
     where: {
       username,
     },
@@ -136,7 +136,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
       };
     }
 
-    const user = await prisma.user.update({
+    const user: any = await prisma.user.update({
       where: {
         id,
       },
@@ -162,14 +162,14 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user: any = await prisma.user.findUnique({
       where: {
         id,
       },
     });
 
     if (user && user.games) {
-      user.games.sort((a, b) => {
+      user.games.sort((a: any, b: any) => {
         return b.date.getTime() - a.date.getTime();
       });
     }
@@ -189,13 +189,24 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const sortDirection = req.query.sort;
+
+    let orderBy: any;
+
+    if (sortDirection) {
+      orderBy = {
+        level: sortDirection,
+      };
+    }
+
     const users = await prisma.user.findMany({
+      orderBy: orderBy,
       select: {
         username: true,
-        xp: true,
+        //xp: true,
         level: true,
         avatar: true,
-        games: true,
+        //  games: true,
       },
       // orderBy: [{ level: "desc" }, { xp: "desc" }],
     });

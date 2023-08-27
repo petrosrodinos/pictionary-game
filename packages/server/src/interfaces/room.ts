@@ -24,6 +24,7 @@ export interface Room {
   category: string;
   message: string;
   difficalty: string;
+  chat: ConnectedUser[];
 }
 
 export type Status =
@@ -35,10 +36,12 @@ export type Status =
   | "starting";
 
 export interface ConnectedUser {
-  userId: string;
-  username: string;
-  avatar: string;
+  userId?: string;
+  username?: string;
+  avatar?: string;
   level?: number;
   points?: number;
   connected: boolean;
+  message?: string;
+  time?: string;
 }
