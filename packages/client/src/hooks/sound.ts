@@ -15,11 +15,11 @@ export const sounds: Record<SoundKey, string> = {
 };
 
 export const useSound = () => {
-  const { disabledSound } = configStore((state) => state.config);
+  const { disabledSound, volume } = configStore((state) => state.config);
   const play = (sound: SoundKey) => {
     if (disabledSound) return;
     const audio = new Audio(sounds[sound]);
-    audio.volume = 0.5;
+    audio.volume = volume / 100;
     audio.play();
   };
   return { play };

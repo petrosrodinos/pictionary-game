@@ -187,7 +187,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       onSubmit={handleSubmit(isEditing ? handleSave : handleRegister)}
     >
       <Toast />
-      {!isEditing && <Typography variant="sub-header-main">Register</Typography>}
+      <Typography variant="sub-header-main">{isEditing ? "Edit Profile" : "Register"}</Typography>
       <Input
         label="Username"
         error={errors.username?.message}

@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import Typography from "../../ui/Typography";
 import GreekFlag from "../../../assets/flags/greek.png";
 import EnglishFlag from "../../../assets/flags/english.png";
+import { useSound } from "../../../hooks/sound";
 import "./style.scss";
 
 const LanguagePicker: FC = () => {
+  const { play } = useSound();
   const languagePickerRef = useRef<any>(null);
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState<string>(i18n.language);
@@ -30,6 +32,7 @@ const LanguagePicker: FC = () => {
   }, []);
 
   const toggleLanguagePicker = () => {
+    play("click");
     setOpen(!open);
   };
 

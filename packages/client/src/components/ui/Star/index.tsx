@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Typography from "../Typography";
-import StarLevelImage from "../../../assets/star.png";
+import StarLevelImage from "../../../assets/icons/star.png";
 import "./style.scss";
 
 interface StarProps {

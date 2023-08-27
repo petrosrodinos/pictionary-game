@@ -6,9 +6,11 @@ import { FiSettings, FiPower } from "react-icons/fi";
 import { authStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import LanguagePicker from "./LanguagePicker";
+import { useSound } from "../../hooks/sound";
 import "./style.scss";
 
 const NavBar: FC = () => {
+  const { play } = useSound();
   const navigate = useNavigate();
   const { logOut } = authStore((state) => state);
   const [activeModal, setActiveModal] = useState<boolean>(false);
@@ -18,14 +20,19 @@ const NavBar: FC = () => {
     navigate("/login");
   };
 
+  const handleClick = () => {
+    play("click");
+    setActiveModal(true);
+  };
+
   return (
     <div className="nav-bar-container">
-      <Modal title="Edit Profile" onClose={() => setActiveModal(false)} isOpen={activeModal}>
+      <Modal title="SETTINGS" onClose={() => setActiveModal(false)} isOpen={activeModal}>
         <EditProfile />
       </Modal>
       <PlayerStats />
       <div className="icons-container">
-        <span onClick={() => setActiveModal(true)} className="nav-bar-icon">
+        <span onClick={handleClick} className="nav-bar-icon">
           <FiSettings />
         </span>
         <LanguagePicker />
