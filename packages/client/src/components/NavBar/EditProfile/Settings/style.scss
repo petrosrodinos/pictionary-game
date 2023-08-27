@@ -1,32 +1,32 @@
-.settings-container {
+.preferences-container {
   margin-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  img {
-    border-radius: 50%;
+.preferences-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
 
-    &:hover {
-      cursor: pointer;
-    }
+  span {
+    color: var(--text-secondary);
   }
 }
 
-.settings-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.preference-container {
+.sound-item-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 20px;
   width: 100%;
-}
-
-.sound-label {
-  color: var(--text-secondary);
+  img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

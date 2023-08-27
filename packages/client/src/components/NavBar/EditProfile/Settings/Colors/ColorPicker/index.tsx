@@ -31,7 +31,7 @@ const ColorPicker: FC<ColorPickerProps> = ({ label, color, name, onChange }) => 
   };
 
   return (
-    <div>
+    <div className="color-picker-item">
       <Typography>{label}</Typography>
       <div className="swatch" onClick={handleClick}>
         <div

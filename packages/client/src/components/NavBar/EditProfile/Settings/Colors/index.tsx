@@ -1,10 +1,12 @@
 import { FC } from "react";
 import { configStore } from "../../../../../store/config";
-import "./style.scss";
 import ColorPicker from "./ColorPicker";
+import Typography from "../../../../ui/Typography";
+import Button from "../../../../ui/Button";
+import "./style.scss";
 
 const Colors: FC = () => {
-  const { config, setConfig } = configStore((state) => state);
+  const { config, setConfig, resetColors } = configStore((state) => state);
   var root: any = document.querySelector(":root");
 
   const handleChange = (value: { name: string; color: string }) => {
@@ -19,13 +21,20 @@ const Colors: FC = () => {
   };
 
   return (
-    <div className="colors-container">
-      <ColorPicker
-        name="--primary-background-color-rgba"
-        color="red"
-        label="primary"
-        onChange={handleChange}
-      />
+    <div className="colors-main-container">
+      <Typography variant="sub-header-main">Colors:</Typography>
+      <div className="colors-container">
+        {Object.keys(config.colors).map((key, index) => (
+          <ColorPicker
+            key={index}
+            name={key}
+            color={config.colors[key]}
+            label={key.replace("--", "")}
+            onChange={handleChange}
+          />
+        ))}
+      </div>
+      <Button title="Reset" onClick={resetColors} />
     </div>
   );
 };

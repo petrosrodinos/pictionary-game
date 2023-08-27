@@ -42,13 +42,15 @@ export const configStore = create<ConfigState>()(
           set({
             config: payload,
           }),
-        resetColors: () =>
+        resetColors: () => {
           set({
             config: {
               ...initialStateValues.config,
               colors: COLORS,
             },
-          }),
+          });
+          setVariables();
+        },
       }),
       {
         name: "config-pictionary",
@@ -61,8 +63,11 @@ export function getConfigState() {
   return configStore.getState();
 }
 
-var root: any = document.querySelector(":root");
+setVariables();
 
-for (const color in getConfigState().config.colors) {
-  root?.style?.setProperty(color, getConfigState().config.colors[color]);
+function setVariables() {
+  var root: any = document.querySelector(":root");
+  for (const color in getConfigState().config.colors) {
+    root?.style?.setProperty(color, getConfigState().config.colors[color]);
+  }
 }
