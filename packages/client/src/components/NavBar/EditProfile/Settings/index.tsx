@@ -29,13 +29,13 @@ const Preferences: FC = () => {
       <Typography variant="sub-header-main">Preferences</Typography>
 
       <div className="settings-content">
-        <div className="sound-container">
+        <div className="preference-container">
           <Typography className="sound-label" variant="sub-header-main">
             Sound:
           </Typography>
           <img onClick={toggleSound} src={soundIcons[config.disabledSound ? "off" : "on"]} />
         </div>
-        <div className="volume-container">
+        <div className="preference-container">
           <Typography className="volume-label" variant="sub-header-main">
             Volume:
           </Typography>
