@@ -1,8 +1,16 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import Typography from "../../../components/ui/Typography";
 import DrawingOptions from "./DrawingOptions";
 import "./style.scss";
+import * as handTrack from "handtrackjs";
+
+const modelParams = {
+  flipHorizontal: true,
+  maxNumBoxes: 1, // only one hand will be tracked for drawing
+  iouThreshold: 0.5,
+  scoreThreshold: 0.7,
+};
 
 interface CanvasProps {
   word: string;
@@ -16,6 +24,10 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const [lineWidth, setLineWidth] = useState<number>(5);
   const [canvasWidth, setCanvasWidth] = useState(1030);
   const [canvasHeight, setCanvasHeight] = useState(900);
+  const videoRef = useRef<any>(null);
+  let isDrawing = false;
+  let model: any = null;
+
   const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({
     color,
     lineWidth,
@@ -49,6 +61,52 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       drawPixel(data);
     });
   }, [canvasData]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const canvas: any = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+
+    handTrack.load(modelParams).then((loadedModel: any) => {
+      model = loadedModel;
+
+      handTrack.startVideo(video).then((status: any) => {
+        if (status) {
+          const drawLoop = () => {
+            model.detect(video).then((predictions: any) => {
+              if (predictions.length > 0) {
+                const hand = predictions[0].bbox;
+                const [x, y, width, height] = hand;
+                console.log("x", x, "y", y, width, height);
+                drawPixel({ x: x + width / 2, y: y + height / 2 });
+                // if (!isDrawing) {
+                //   context.beginPath();
+                //   context.moveTo(x + width / 2, y + height / 2);
+                //   isDrawing = true;
+                // } else {
+                //   context.lineTo(x + width / 2, y + height / 2);
+                //   context.stroke();
+                // }
+              } else {
+                isDrawing = false;
+              }
+              requestAnimationFrame(drawLoop);
+            });
+          };
+
+          drawLoop();
+        }
+      });
+    });
+
+    return () => {
+      if (video && video.srcObject) {
+        video.pause();
+        video.srcObject.getTracks().forEach((track: any) => track.stop());
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const handler = (data: any) => {
@@ -98,7 +156,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           />
         </>
       )}
-
+      <video ref={videoRef} width="640" height="480" style={{ display: "none" }}></video>
       <canvas
         width={canvasWidth}
         height={canvasHeight}
