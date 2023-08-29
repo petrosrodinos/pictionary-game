@@ -80,14 +80,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
                 const [x, y, width, height] = hand;
                 console.log("x", x, "y", y, width, height);
                 drawPixel({ x: x + width / 2, y: y + height / 2 });
-                // if (!isDrawing) {
-                //   context.beginPath();
-                //   context.moveTo(x + width / 2, y + height / 2);
-                //   isDrawing = true;
-                // } else {
-                //   context.lineTo(x + width / 2, y + height / 2);
-                //   context.stroke();
-                // }
               } else {
                 isDrawing = false;
               }
@@ -136,7 +128,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
 
   return (
     <div className="canvas-panel-container">
-      {currentUserIsPlaying && (
+      {true && (
         <>
           <div className="word-container">
             <Typography variant="text-accent" className="word-label">
@@ -156,7 +148,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           />
         </>
       )}
-      <video ref={videoRef} width="640" height="480" style={{ display: "none" }}></video>
+      <video ref={videoRef} width="1030" height="900" style={{ display: "none" }}></video>
       <canvas
         width={canvasWidth}
         height={canvasHeight}
