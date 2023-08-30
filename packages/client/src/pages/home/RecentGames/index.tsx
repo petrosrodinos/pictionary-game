@@ -26,7 +26,7 @@ const RecentGames: FC = () => {
       </Typography>
       <div className="recent-games-content-container">
         {(!data || data.games.length == 0) && (
-          <div className="no-games-exist">
+          <div style={{ overflow: isLoading ? "hidden" : "auto" }} className="no-games-exist">
             <Spinner style={{ margin: "5px" }} loading={isLoading} />
             {!isLoading && (
               <Typography variant="sub-header-main">You have not played any games yet</Typography>
