@@ -169,7 +169,7 @@ export const getUser = async (req: ExtendedRequest, res: Response, next: NextFun
     });
 
     if (user && user.games) {
-      user.games.sort((a, b) => {
+      user.games.sort((a: any, b: any) => {
         return b.date.getTime() - a.date.getTime();
       });
     }
@@ -201,7 +201,7 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
     });
 
     if (users && users.length > 0) {
-      users.sort((a, b) => {
+      users.sort((a: any, b: any) => {
         return POINTS_PER_LEVEL * b.level + b.xp - (POINTS_PER_LEVEL * a.level + a.xp);
       });
     }
