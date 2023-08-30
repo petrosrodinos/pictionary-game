@@ -246,7 +246,12 @@ const Room: FC = () => {
                   username === roomInfo?.currentArtist?.username
                 }
               />
-              <Chat socket={socket} />
+              <Chat
+                socket={socket}
+                currentUserIsPlaying={
+                  username != roomInfo?.currentArtist?.username
+                }
+              />
             </div>
           </Container>
         </>
