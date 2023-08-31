@@ -1,5 +1,6 @@
 .copable-item {
   cursor: pointer;
+  z-index: 100;
 
   &:hover {
     color: var(--secondary-background-color-dark);

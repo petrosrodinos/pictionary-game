@@ -265,10 +265,9 @@ socket.on("connection", (socket: any) => {
       }
     });
     socket.on("game-input-message", (message: ConnectedUser) => {
-      console.log("game-input-message", message);
       room.chat.push(message);
-      socket.in(code).emit("chat-message", room); //gia receiver
-      socket.emit("chat-message", room); //gia emena
+      socket.in(code).emit("chat-message", room);
+      socket.emit("chat-message", room);
     });
   });
 });

@@ -14,7 +14,12 @@ const Copable: FC<CopableProps> = ({ value, children }) => {
   return (
     <span className="copable-item" data-tooltip-id="copable-tooltip" onClick={handleClick}>
       {children}
-      <Tooltip id="copable-tooltip" place="bottom" content="Click to copy" />
+      <Tooltip
+        style={{ zIndex: "10" }}
+        id="copable-tooltip"
+        place="bottom"
+        content="Click to copy"
+      />
     </span>
   );
 };
