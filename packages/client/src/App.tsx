@@ -13,9 +13,9 @@ function App() {
     <BrowserRouter>
       <div className="main-container">
         <Routes>
+          <Route path="/" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />}></Route>
           {isLoggedIn && (
             <>
-              <Route path="/" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />}></Route>
               <Route path="/home" element={<Home />} />
               <Route path="/room/:id" element={<Room />} />
             </>

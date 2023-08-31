@@ -14,7 +14,7 @@ const Star: FC<StarProps> = ({ label, className }) => {
       <img src={StarLevelImage} className="star-image" />
 
       <Typography
-        style={label > 1 ? { left: "8px", top: "6px" } : { left: "14px", top: "5px" }}
+        style={label <= 9 ? { left: "13px", top: "6px" } : { left: "9px", top: "6px" }}
         variant="text-accent"
         className="star-text"
       >

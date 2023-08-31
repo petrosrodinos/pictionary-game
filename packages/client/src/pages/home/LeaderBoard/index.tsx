@@ -8,7 +8,7 @@ import Spinner from "../../../components/ui/Spinner";
 import "./style.scss";
 
 const LeaderBoard: FC = () => {
-  const { isLoading, data } = useQuery("get-users", () => {
+  const { isLoading, data, error } = useQuery("get-users", () => {
     return getUsers();
   });
 
@@ -20,7 +20,11 @@ const LeaderBoard: FC = () => {
           {(!data || data.length == 0) && (
             <div className="no-games-exist">
               <Spinner style={{ alignSelf: "center" }} loading={isLoading} />
-              {!isLoading && <Typography variant="sub-header-main">No games exist yet</Typography>}
+              {!isLoading && (
+                <Typography variant="sub-header-main">
+                  {error ? "Could not get leader board" : "No users exist yet"}
+                </Typography>
+              )}
             </div>
           )}
           {data?.map((item: UserType, index: number) => {

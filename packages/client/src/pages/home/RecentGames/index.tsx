@@ -9,7 +9,7 @@ import "./style.scss";
 
 const RecentGames: FC = () => {
   const { userId } = authStore((state) => state);
-  const { isLoading, data } = useQuery(
+  const { isLoading, data, error } = useQuery(
     "get-user",
     () => {
       return getUser(userId);
@@ -25,19 +25,21 @@ const RecentGames: FC = () => {
         My Recent Games
       </Typography>
       <div className="recent-games-content-container">
-        {(!data || data.games.length == 0) && (
-          <div className="no-games-exist">
-            <Spinner style={{ margin: "5px" }} loading={isLoading} />
-            {!isLoading && (
-              <Typography variant="sub-header-main">You have not played any games yet</Typography>
-            )}
-          </div>
-        )}
         <div className="recent-games-content">
           {data?.games?.map((item: any, index: number) => {
             return <RecentGamesItem key={index} item={item} />;
           })}
         </div>
+        {(!data || data.games.length == 0) && (
+          <div style={{ overflow: "hidden" }} className="no-games-exist">
+            <Spinner style={{ margin: "5px" }} loading={isLoading} />
+            {!isLoading && (
+              <Typography variant="sub-header-main">
+                {error ? "Could not get your recent games" : "You have not played any games yet"}
+              </Typography>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
