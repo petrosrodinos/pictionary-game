@@ -24,20 +24,17 @@ const MessageBox: FC<MessageBoxProps> = ({
   return (
     <div className={`player-${className}`} style={style}>
       <div className={`player-credentials-${className}`}>
-        <Typography variant="description-accent" className="message-box-time">
-          {time}
-        </Typography>
         <Avatar className="message-box-avatar" image={image}></Avatar>
       </div>
       <div className="message-box-text-container">
-        <Typography
-          variant="small-text-accent"
-          className="message-box-username"
-        >
+        <Typography variant="small-text-main " className="message-box-username">
           {username}
         </Typography>
-        <Typography variant="text-message" className="message-box-text">
+        <Typography variant="small-text-accent" className="message-box-text">
           {value}
+        </Typography>
+        <Typography variant="description-accent" className="message-box-time">
+          {time}
         </Typography>
       </div>
     </div>

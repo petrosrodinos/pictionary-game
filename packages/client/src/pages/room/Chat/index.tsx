@@ -9,21 +9,22 @@ import { authStore } from "../../../store/authStore";
 
 interface ChatProps {
   socket: any;
+  currentUserIsPlaying: boolean;
 }
 
-const Chat: FC<ChatProps> = ({ socket }) => {
+const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
   const [formValue, setFormValue] = useState("");
   const { username, avatar } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
 
   //edw stelno oti exei to input ta stoixeia toy xristi kai thn ora
-  function send_data(event: React.FormEvent<HTMLFormElement>) {
+  function sendData(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     socket?.emit("game-input-message", {
       message: formValue,
       username,
       avatar,
-      time: get_time(),
+      time: getTime(),
     });
   }
   let i = 0;
@@ -43,7 +44,7 @@ const Chat: FC<ChatProps> = ({ socket }) => {
   }, [socket]);
 
   //function gia na pairnoy thn wra
-  function get_time() {
+  function getTime() {
     const currHour = new Date().getHours();
     //const currHour = 2;
     let hour = currHour.toString();
@@ -62,14 +63,14 @@ const Chat: FC<ChatProps> = ({ socket }) => {
     return time;
   }
 
-  function player_check(message_name: string, my_name: string) {
+  function playerCheck(message_name: string, my_name: string) {
     if (message_name === my_name) {
       return "me";
     } else {
       return "another";
     }
   }
-  function player_check_name(message_name: string, my_name: string) {
+  function playerCheckName(message_name: string, my_name: string) {
     if (message_name === my_name) {
       return "Me";
     } else {
@@ -83,31 +84,35 @@ const Chat: FC<ChatProps> = ({ socket }) => {
           <MessageBox
             key={index}
             value={msg.message}
-            username={player_check_name(msg.username, username)}
+            username={playerCheckName(msg.username, username)}
             // username={msg.username}
             time={msg.time}
             image={msg.avatar}
-            className={player_check(msg.username, username)}
+            className={playerCheck(msg.username, username)}
             //className="me"
           />
         ))}
       </div>
-      <form className="message-form" onSubmit={send_data}>
-        <Input
-          name="Answer"
-          placeholder="Answer"
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-        />
-        <div className="chat-input-gap"></div>
-        <Button
-          type="submit"
-          title="Send"
-          variant="primary"
-          icon={BiSend}
-          className="answer-button"
-        />
-      </form>
+      {currentUserIsPlaying && (
+        <>
+          <form className="message-form" onSubmit={sendData}>
+            <Input
+              name="Answer"
+              placeholder="Answer"
+              value={formValue}
+              onChange={(e) => setFormValue(e.target.value)}
+            />
+            <div className="chat-input-gap"></div>
+            <Button
+              type="submit"
+              title="Send"
+              variant="primary"
+              icon={BiSend}
+              className="answer-button"
+            />
+          </form>
+        </>
+      )}
     </div>
   );
 };
