@@ -34,8 +34,12 @@ const socket = io(http, {
 });
 
 let rooms: { [code: string]: Room } = {};
-let choosingWordTimer: any;
-let roundTimer: any;
+let timers: {
+  [code: string]: {
+    round: NodeJS.Timeout | undefined;
+    choosingWord: NodeJS.Timeout | undefined;
+  };
+} = {};
 socket.on("connection", (socket: any) => {
   //creating room
   socket.on("create-room", async (settings: Room) => {
@@ -47,8 +51,10 @@ socket.on("connection", (socket: any) => {
       round: 1,
       message: "",
       lastWord: "",
-      roundInterval: undefined,
-      choosingWordInterval: undefined,
+    };
+    timers[settings.code] = {
+      round: undefined,
+      choosingWord: undefined,
     };
   });
   //join waiting room
@@ -102,7 +108,7 @@ socket.on("connection", (socket: any) => {
         //starts timer for choosing word and emit event when time is up
         // choosingWordTimer = setTimeout(() => {
         // clearTimeout(rooms[code].choosingWordInterval);
-        rooms[code].choosingWordInterval = setTimeout(() => {
+        timers[code].choosingWord = setTimeout(() => {
           const nextRound = room.round + 1;
 
           if (
@@ -110,7 +116,7 @@ socket.on("connection", (socket: any) => {
             room.status !== Statuses.FINISHED
           ) {
             // clearTimeout(roundTimer);
-            clearTimeout(room.roundInterval);
+            clearTimeout(timers[code].round);
             room.status = Statuses.FINISHED;
             socket.emit("game-finished", room);
             socket.in(code).emit("game-finished", room);
@@ -182,8 +188,8 @@ socket.on("connection", (socket: any) => {
       // clearTimeout(choosingWordTimer);
       // clearTimeout(roundTimer);
       const room = rooms[code];
-      clearTimeout(room.choosingWordInterval);
-      clearTimeout(room.roundInterval);
+      clearTimeout(timers[code].choosingWord);
+      clearTimeout(timers[code].round);
       room.word = word;
       room.drawings = [];
       room.status = Statuses.PLAYING;
@@ -191,7 +197,7 @@ socket.on("connection", (socket: any) => {
       socket.in(code).emit("word-changed", room);
       //starts timer for round and emit event when time is up
       // roundTimer = setTimeout(() => {
-      room.roundInterval = setTimeout(() => {
+      timers[code].round = setTimeout(() => {
         room.lastWord = room.word;
         room.word = "";
         let nextRound = room.round + 1;
@@ -235,8 +241,8 @@ socket.on("connection", (socket: any) => {
       ) {
         // clearTimeout(roundTimer);
         // clearTimeout(choosingWordTimer);
-        clearTimeout(room.choosingWordInterval);
-        clearTimeout(room.roundInterval);
+        clearTimeout(timers[code].choosingWord);
+        clearTimeout(timers[code].choosingWord);
         room.message = "Looks like game is finished";
         room.status = Statuses.FINISHED;
         socket.in(code).emit("all-users-left", room);
@@ -269,11 +275,11 @@ function startChoosingWordInGame(room: Room, socket: any, code: string) {
   room.message = "";
   room.status = Statuses.SELECTING_WORD;
   // choosingWordTimer = setTimeout(() => {
-  clearTimeout(rooms[code].choosingWordInterval);
-  rooms[code].choosingWordInterval = setTimeout(() => {
+  clearTimeout(timers[code].choosingWord);
+  timers[code].choosingWord = setTimeout(() => {
     const nextRound = room.round + 1;
     if (nextRound > findConnectedUsersLength(room.players) && room.status !== Statuses.FINISHED) {
-      clearTimeout(rooms[code].roundInterval);
+      clearTimeout(timers[code].round);
       room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);
@@ -294,13 +300,13 @@ function startChoosingWord(room: Room, socket: any, code: string) {
   room.message = "";
   //starts timer for choosing word and emit event when time is up
   // choosingWordTimer = setTimeout(() => {
-  clearTimeout(rooms[code].choosingWordInterval);
-  rooms[code].choosingWordInterval = setTimeout(() => {
+  clearTimeout(timers[code].choosingWord);
+  timers[code].choosingWord = setTimeout(() => {
     const nextRound = room.round + 1;
 
     if (nextRound > findConnectedUsersLength(room.players) && room.status !== Statuses.FINISHED) {
       // clearTimeout(roundTimer);
-      clearTimeout(room.roundInterval);
+      clearTimeout(timers[code].round);
       room.status = Statuses.FINISHED;
       socket.emit("game-finished", room);
       socket.in(code).emit("game-finished", room);

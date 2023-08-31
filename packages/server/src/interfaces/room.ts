@@ -24,8 +24,6 @@ export interface Room {
   category: string;
   message: string;
   difficalty: string;
-  choosingWordInterval: NodeJS.Timeout | undefined;
-  roundInterval: NodeJS.Timeout | undefined;
 }
 
 export type Status =
