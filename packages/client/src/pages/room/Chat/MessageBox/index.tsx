@@ -1,8 +1,7 @@
 import { FC } from "react";
-import "./style.scss";
 import Typography from "../../../../components/ui/Typography";
 import Avatar from "../../../../components/ui/Avatar";
-//import { authStore } from "../../../../store/authStore";
+import "./style.scss";
 
 interface MessageBoxProps {
   value: string;
@@ -13,19 +12,10 @@ interface MessageBoxProps {
   time: string;
 }
 
-const MessageBox: FC<MessageBoxProps> = ({
-  image,
-  username,
-  value,
-  style,
-  className,
-  time,
-}) => {
+const MessageBox: FC<MessageBoxProps> = ({ image, username, value, style, className, time }) => {
   return (
-    <div className={`player-${className}`} style={style}>
-      <div className={`player-credentials-${className}`}>
-        <Avatar className="message-box-avatar" image={image}></Avatar>
-      </div>
+    <div className={`message-box player-${className}`} style={style}>
+      <Avatar image={image}></Avatar>
       <div className="message-box-text-container">
         <Typography variant="small-text-main " className="message-box-username">
           {username}

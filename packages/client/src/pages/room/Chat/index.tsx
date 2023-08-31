@@ -70,40 +70,35 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
     }
   }
   return (
-    <div className="chat">
-      <div className="chat-container">
+    <div className="chat-container">
+      <div className="messages-container">
         {roomInfo?.chat.map((msg, index) => (
           <MessageBox
             key={index}
             value={msg.message}
             username={playerCheckName(msg.username, username)}
-            // username={msg.username}
             time={msg.time}
             image={msg.avatar}
             className={playerCheck(msg.username, username)}
-            //className="me"
           />
         ))}
       </div>
       {currentUserIsPlaying && (
-        <>
-          <form className="message-form" onSubmit={sendData}>
-            <Input
-              name="Answer"
-              placeholder="Answer"
-              value={formValue}
-              onChange={(e) => setFormValue(e.target.value)}
-            />
-            <div className="chat-input-gap"></div>
-            <Button
-              type="submit"
-              title="Send"
-              variant="primary"
-              icon={BiSend}
-              className="answer-button"
-            />
-          </form>
-        </>
+        <form className="message-form" onSubmit={sendData}>
+          <Input
+            name="Answer"
+            placeholder="Answer"
+            value={formValue}
+            onChange={(e) => setFormValue(e.target.value)}
+          />
+          <Button
+            type="submit"
+            title="Send"
+            variant="primary"
+            icon={BiSend}
+            className="answer-button"
+          />
+        </form>
       )}
     </div>
   );
