@@ -17,7 +17,6 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
   const { username, avatar } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
 
-  //edw stelno oti exei to input ta stoixeia toy xristi kai thn ora
   function sendData(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     socket?.emit("game-input-message", {
@@ -27,16 +26,10 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       time: getTime(),
     });
   }
-  let i = 0;
-  // TI KANEI O CLIENT OTAN LAMBANEI MYNHMA APO TON SERVER
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
       setRoomInfo(roomInfo);
-      console.log("chat-message", roomInfo.chat[i]);
-      i++;
-
-      roomInfo.chat[i].person = "me";
-      console.log("chat-message", roomInfo.chat[i - 1]);
+      console.log("chat-message", roomInfo);
     });
     return () => {
       socket?.off("chat-message");
@@ -59,7 +52,6 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       min = "0" + min;
     }
     const time = `${hour}:${min}`;
-    console.log(time);
     return time;
   }
 
