@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import "./style.scss";
 import MessageBox from "./MessageBox";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
 import { BiSend } from "react-icons/bi";
 import { RoomInfo } from "../../../interfaces/typing";
 import { authStore } from "../../../store/authStore";
+import "./style.scss";
 
 interface ChatProps {
   socket: any;
@@ -14,7 +14,7 @@ interface ChatProps {
 
 const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
   const [formValue, setFormValue] = useState("");
-  const { username, avatar } = authStore((state) => state);
+  const { username, avatar, userId } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>();
 
   function sendData(event: React.FormEvent<HTMLFormElement>) {
@@ -23,7 +23,7 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       message: formValue,
       username,
       avatar,
-      time: getTime(),
+      userId,
     });
   }
   useEffect(() => {
@@ -31,29 +31,15 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       setRoomInfo(roomInfo);
       console.log("chat-message", roomInfo);
     });
+    socket?.on("word-guessed", (roomInfo: RoomInfo) => {
+      setRoomInfo(roomInfo);
+      console.log("word-guessed", roomInfo);
+    });
     return () => {
       socket?.off("chat-message");
+      socket?.off("word-guessed");
     };
   }, [socket]);
-
-  //function gia na pairnoy thn wra
-  function getTime() {
-    const currHour = new Date().getHours();
-    //const currHour = 2;
-    let hour = currHour.toString();
-    if (hour.length < 2) {
-      hour.toString();
-      hour = "0" + hour;
-    }
-    const currMin = new Date().getMinutes();
-    let min = currMin.toString();
-    if (min.length < 2) {
-      min.toString();
-      min = "0" + min;
-    }
-    const time = `${hour}:${min}`;
-    return time;
-  }
 
   function playerCheck(message_name: string, my_name: string) {
     if (message_name === my_name) {
@@ -62,6 +48,7 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       return "another";
     }
   }
+
   function playerCheckName(message_name: string, my_name: string) {
     if (message_name === my_name) {
       return "Me";
