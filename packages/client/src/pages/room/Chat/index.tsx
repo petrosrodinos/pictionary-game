@@ -44,6 +44,12 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
     }
   }
 
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      sendData();
+    }
+  };
+
   return (
     <div className="chat-container">
       <div className="messages-container">
@@ -58,6 +64,7 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
             placeholder="Answer"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <Button
             onClick={sendData}
