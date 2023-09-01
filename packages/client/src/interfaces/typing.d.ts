@@ -72,6 +72,13 @@ interface RoomInfo extends GameSettings {
   status: string;
   message: string;
   lastWord: string;
-  chat: any[];
-  //username: string;
+  chat: Message[];
+}
+
+export interface Message {
+  userId: string;
+  username: string;
+  avatar: string;
+  message: string;
+  correct: boolean;
 }

@@ -37,10 +37,10 @@ export type Status =
   | "starting";
 
 export interface ConnectedUser {
-  userId?: string;
-  username?: string;
-  avatar?: string;
-  level?: number;
+  userId: string;
+  username: string;
+  avatar: string;
+  level: number;
   points: number;
   connected: boolean;
 }
@@ -50,4 +50,5 @@ export interface Message {
   username: string;
   avatar: string;
   message: string;
+  correct: boolean;
 }

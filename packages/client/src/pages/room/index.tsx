@@ -187,11 +187,11 @@ const Room: FC = () => {
                 canvasData={roomInfo?.drawings}
                 socket={socket}
                 word={roomInfo?.word}
-                currentUserIsPlaying={username === roomInfo?.currentArtist?.username}
+                currentUserIsPlaying={username == roomInfo?.currentArtist?.username}
               />
               <Chat
                 socket={socket}
-                currentUserIsPlaying={username != roomInfo?.currentArtist?.username}
+                currentUserIsPlaying={username == roomInfo?.currentArtist?.username}
               />
             </div>
           </Container>

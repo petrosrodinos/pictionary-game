@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Message, Room, Statuses } from "./interfaces/room";
 import cors from "cors";
-import { Points } from "./utils/points";
+import { Points } from "./utils/game";
 const EventEmitter = require("events");
 const eventEmitter = new EventEmitter();
 const usersRoutes = require("./routes/users");
@@ -195,8 +195,9 @@ socket.on("connection", (socket: any) => {
       clearTimeout(timers[code].choosingWord);
       clearTimeout(timers[code].round);
       room.usersFoundWordOrder = [];
-      room.word = word;
+      room.chat = [];
       room.drawings = [];
+      room.word = word;
       room.status = Statuses.PLAYING;
       socket.emit("word-changed", room);
       socket.in(code).emit("word-changed", room);
@@ -269,18 +270,20 @@ socket.on("connection", (socket: any) => {
       }
     });
     socket.on("game-input-message", (message: Message) => {
-      room.chat.push(message);
-      if (message.message === room.word) {
+      const newMessage = message;
+      if (message.message === room.word && !room.usersFoundWordOrder.includes(message.userId)) {
         room.players = room.players.map((u) => {
-          if (u.userId === message.userId && !room.usersFoundWordOrder.includes(u.userId)) {
+          if (u.userId === message.userId) {
             room.usersFoundWordOrder.push(u.userId);
             u.points += Points[room.usersFoundWordOrder.length];
           }
           return u;
         });
-        socket.in(code).emit("word-guessed", room);
-        socket.emit("word-guessed", room);
+        newMessage.correct = true;
+      } else {
+        newMessage.correct = false;
       }
+      room.chat.push(newMessage);
       socket.in(code).emit("chat-message", room);
       socket.emit("chat-message", room);
     });

@@ -3,7 +3,7 @@ import MessageBox from "./MessageBox";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
 import { BiSend } from "react-icons/bi";
-import { RoomInfo } from "../../../interfaces/typing";
+import { Message, RoomInfo } from "../../../interfaces/typing";
 import { authStore } from "../../../store/authStore";
 import "./style.scss";
 
@@ -13,31 +13,26 @@ interface ChatProps {
 }
 
 const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
-  const [formValue, setFormValue] = useState("");
+  const [message, setMessage] = useState("");
   const { username, avatar, userId } = authStore((state) => state);
-  const [roomInfo, setRoomInfo] = useState<RoomInfo>();
+  const [messages, setMessages] = useState<Message[]>();
 
-  function sendData(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function sendData() {
     socket?.emit("game-input-message", {
-      message: formValue,
+      message: message,
       username,
       avatar,
       userId,
     });
+    setMessage("");
   }
+
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
-      setRoomInfo(roomInfo);
-      console.log("chat-message", roomInfo);
-    });
-    socket?.on("word-guessed", (roomInfo: RoomInfo) => {
-      setRoomInfo(roomInfo);
-      console.log("word-guessed", roomInfo);
+      setMessages(roomInfo.chat);
     });
     return () => {
       socket?.off("chat-message");
-      socket?.off("word-guessed");
     };
   }, [socket]);
 
@@ -49,43 +44,30 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
     }
   }
 
-  function playerCheckName(message_name: string, my_name: string) {
-    if (message_name === my_name) {
-      return "Me";
-    } else {
-      return message_name;
-    }
-  }
   return (
     <div className="chat-container">
       <div className="messages-container">
-        {roomInfo?.chat.map((msg, index) => (
-          <MessageBox
-            key={index}
-            value={msg.message}
-            username={playerCheckName(msg.username, username)}
-            time={msg.time}
-            image={msg.avatar}
-            className={playerCheck(msg.username, username)}
-          />
+        {messages?.map((msg, index) => (
+          <MessageBox key={index} message={msg} className={playerCheck(msg.username, username)} />
         ))}
       </div>
-      {currentUserIsPlaying && (
-        <form className="message-form" onSubmit={sendData}>
+      {!currentUserIsPlaying && (
+        <div className="message-form">
           <Input
             name="Answer"
             placeholder="Answer"
-            value={formValue}
-            onChange={(e) => setFormValue(e.target.value)}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
           <Button
+            onClick={sendData}
             type="submit"
             title="Send"
             variant="primary"
             icon={BiSend}
             className="answer-button"
           />
-        </form>
+        </div>
       )}
     </div>
   );
