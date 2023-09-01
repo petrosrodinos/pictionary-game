@@ -54,7 +54,7 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
   const updateUserInfo = () => {
     if (updatedProfile.current) return;
     updatedProfile.current = true;
-    let newPoints = xp + 5;
+    let newPoints = xp + pointsEarned;
     let data = {};
     if (newPoints >= POINTS_PER_LEVEL && level < MAX_LEVEL) {
       newPoints = newPoints - POINTS_PER_LEVEL;
