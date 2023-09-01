@@ -32,23 +32,23 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
     play("points-earned");
     updateUserInfo();
     const sortedUsers = players.sort((a, b) => b.points - a.points);
+    console.log("sortedUsers", sortedUsers);
     const userRank = sortedUsers.findIndex((user) => user.username === username);
     setRank(userRank);
     setPointsEarned(sortedUsers[userRank].points);
   }, [players]);
 
   const division: any = {
-    0: "LAST",
-    1: "FIRST",
-    2: "SECOND",
-    3: "THIRD",
-    4: "FOURTH",
-    5: "FIFTH",
-    6: "SIXTH",
-    7: "SEVENTH",
-    8: "EIGHTH",
-    9: "NINTH",
-    10: "TENTH",
+    0: "FIRST",
+    1: "SECOND",
+    2: "THIRD",
+    3: "FOURTH",
+    4: "FIFTH",
+    5: "SIXTH",
+    6: "SEVENTH",
+    7: "EIGHTH",
+    8: "NINTH",
+    9: "TENTH",
   };
 
   const updateUserInfo = () => {
