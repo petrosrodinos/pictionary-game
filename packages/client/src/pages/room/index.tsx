@@ -121,6 +121,7 @@ const Room: FC = () => {
 
   const handleGameFinished = (roomInfo: RoomInfo) => {
     console.log("game-finished", roomInfo);
+    setRoomInfo(roomInfo);
     if (roomInfo.lastWord) {
       setMessage("The word was " + roomInfo.lastWord);
     }
