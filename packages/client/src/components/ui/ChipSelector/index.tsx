@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import Typography from "../Typography";
+import { useTrail, animated } from "react-spring";
 import "./style.scss";
 
 interface ChipSelectorProps {
@@ -37,16 +38,24 @@ const ChipSelector: FC<ChipSelectorProps> = ({
       value,
     });
   };
+
+  const trail = useTrail(chips.length, {
+    from: { transform: "rotate3d(1, 0, 0, -90deg)", opacity: 0 },
+    to: { transform: "rotate3d(1, 0, 0, 0deg)", opacity: 1 },
+    config: { tension: 280, friction: 30 },
+  });
+
   return (
     <div style={style} className="chip-selector-container">
-      {chips.map((chip, index) => (
-        <div
+      {trail.map((props, index) => (
+        <animated.div
           key={index}
-          className={`chip-item ${selectedChip == chip ? "selected-chip" : ""}`}
-          onClick={() => handleChange(chip)}
+          style={props}
+          className={`chip-item ${selectedChip == chips[index] ? "selected-chip" : ""}`}
+          onClick={() => handleChange(chips[index])}
         >
-          <Typography>{chip}</Typography>
-        </div>
+          <Typography>{chips[index]}</Typography>
+        </animated.div>
       ))}
     </div>
   );

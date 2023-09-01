@@ -17,7 +17,8 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
   const { username, avatar, userId } = authStore((state) => state);
   const [messages, setMessages] = useState<Message[]>();
 
-  function sendData() {
+  const sendData = () => {
+    if (!message) return;
     socket?.emit("game-input-message", {
       message: message,
       username,
@@ -25,7 +26,7 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       userId,
     });
     setMessage("");
-  }
+  };
 
   useEffect(() => {
     socket?.on("chat-message", (roomInfo: RoomInfo) => {
