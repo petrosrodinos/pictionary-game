@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import Typography from "../Typography";
 import { useTrail, animated } from "react-spring";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface ChipSelectorProps {
@@ -20,6 +21,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   onChange,
   style,
 }) => {
+  const { t } = useTranslation();
   const [selectedChip, setSelectedChip] = useState<string>("");
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({
           className={`chip-item ${selectedChip == chips[index] ? "selected-chip" : ""}`}
           onClick={() => handleChange(chips[index])}
         >
-          <Typography>{chips[index]}</Typography>
+          <Typography>{t(`${name}.${chips[index]}`)}</Typography>
         </animated.div>
       ))}
     </div>

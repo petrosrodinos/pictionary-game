@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Tooltip } from "react-tooltip";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface CopableProps {
@@ -8,6 +9,7 @@ interface CopableProps {
 }
 
 const Copable: FC<CopableProps> = ({ value, children }) => {
+  const { t } = useTranslation();
   const handleClick = () => {
     navigator.clipboard.writeText(value);
   };
@@ -18,7 +20,7 @@ const Copable: FC<CopableProps> = ({ value, children }) => {
         style={{ zIndex: "10" }}
         id="copable-tooltip"
         place="bottom"
-        content="Click to copy"
+        content={t("click-to-copy")}
       />
     </span>
   );

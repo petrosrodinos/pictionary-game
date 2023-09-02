@@ -12,12 +12,13 @@ import { authStore } from "../../store/authStore";
 import { useSocket } from "../../hooks/socket";
 import { GameSettings } from "../../interfaces/typing";
 import NavBar from "../../components/NavBar";
-
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
+  const { t } = useTranslation();
   const { userId } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
@@ -67,15 +68,15 @@ const Home: FC = () => {
 
   const ModalComponents: any = {
     ["join-room"]: {
-      title: "JOIN A ROOM",
+      title: t("join-a-room"),
       component: <JoinRoom onJoinRoom={handleJoinRoom} />,
     },
     ["create-room"]: {
-      title: "CREATE A ROOM",
+      title: t("create-a-room"),
       component: <CreateRoom onCancel={handleCancelRoomCreation} onCreate={handleCreateRoom} />,
     },
     ["waiting-room"]: {
-      title: "WAITING ROOM",
+      title: t("waiting-room"),
       component: <WaitingRoom />,
       onClose: handleLeaveWaitingRoom,
     },

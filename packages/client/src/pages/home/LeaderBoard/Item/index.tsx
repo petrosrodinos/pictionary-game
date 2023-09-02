@@ -3,6 +3,7 @@ import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
 import { UserType } from "../../../../interfaces/typing";
 import { POINTS_PER_LEVEL } from "../../../../constants/game";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface LeaderBoardItemProps {
@@ -10,6 +11,7 @@ interface LeaderBoardItemProps {
 }
 
 const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
+  const { t } = useTranslation();
   const totalPoints = item.level * POINTS_PER_LEVEL + item.xp;
   return (
     <div className="leader-board-item">
@@ -22,11 +24,11 @@ const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
           @{item.username}
         </Typography>
         <span>
-          <Typography>xp:</Typography>
+          <Typography>{t("xp")}:</Typography>
           <Typography>{totalPoints == POINTS_PER_LEVEL ? 0 : totalPoints}</Typography>
         </span>
         <span>
-          <Typography>games: </Typography>
+          <Typography>{t("games")}: </Typography>
           <Typography>{item?.games?.length}</Typography>
         </span>
       </div>

@@ -12,11 +12,13 @@ import { useTimer } from "../../../hooks/timer";
 import { STARTING_TIME_IN_SECONDS } from "../../../constants/game";
 import { RoomInfo as RoomInfoInt } from "../../../interfaces/typing";
 import { useSound } from "../../../hooks/sound";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface WaitingRoomProps {}
 
 const WaitingRoom: FC<WaitingRoomProps> = () => {
+  const { t } = useTranslation();
   const { play } = useSound();
   const navigate = useNavigate();
   const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
@@ -86,7 +88,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
             <Button
               className="waiting-room-button"
               disabled={true}
-              title={`GAME STARTING IN ${countDownInSeconds.toString()}`}
+              title={`${t("game-starting-in")} ${countDownInSeconds.toString()}`}
             />
           )}
           {countDownInSeconds <= 0 &&
@@ -96,19 +98,15 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
               <Button
                 className="waiting-room-button"
                 onClick={startGameByCreator}
-                title={`START GAME`}
+                title={t("start-game")}
               />
             )}
           {countDownInSeconds <= 0 && roomInfo.status != "waiting-room" && (
-            <Button
-              className="waiting-room-button"
-              onClick={startGame}
-              title="GAME IS ON, GO BACK"
-            />
+            <Button className="waiting-room-button" onClick={startGame} title={t("game-is-one")} />
           )}
         </>
       ) : (
-        <Typography variant="sub-header-main">Room does not exist or it is full :(</Typography>
+        <Typography variant="sub-header-main">{t("room-doest-exist")}</Typography>
       )}
     </div>
   );

@@ -6,9 +6,11 @@ import SoundIconDisabled from "../../../../assets/icons/sound-disabled.png";
 import Range from "../../../ui/Range";
 import { useSound } from "../../../../hooks/sound";
 import Colors from "./Colors";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const Preferences: FC = () => {
+  const { t } = useTranslation();
   const { config, setConfig } = configStore((state) => state);
   const { play } = useSound();
   const soundIcons = {
@@ -28,17 +30,17 @@ const Preferences: FC = () => {
   return (
     <div className="preferences-container">
       <Typography style={{ alignSelf: "center" }} variant="sub-header-main">
-        Preferences
+        {t("preferences")}
       </Typography>
 
       <div className="preferences-content">
         <div className="sound-item-container">
-          <Typography variant="sub-header-main">Sound:</Typography>
+          <Typography variant="sub-header-main">{t("sound")}:</Typography>
           <img onClick={toggleSound} src={soundIcons[config.disabledSound ? "off" : "on"]} />
         </div>
         <div className="sound-item-container">
           <Typography className="volume-label" variant="sub-header-main">
-            Volume:
+            {t("volume")}:
           </Typography>
           <Range values={[config.volume]} min={1} max={10} step={1} onChange={handleRangeChange} />
         </div>

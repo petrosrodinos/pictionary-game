@@ -13,8 +13,9 @@ import { createRoomCode } from "../../../utils/code";
 import { transformToMilliseconds } from "../../../utils/time";
 import { GameSettings as GameSettingsInt } from "../../../interfaces/typing";
 import GameSettings from "./GameSettings";
-import "./style.scss";
 import Copable from "../../../components/ui/Copable";
+import { useTranslation } from "react-i18next";
+import "./style.scss";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -22,6 +23,7 @@ interface CreateRoomProps {
 }
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<GameSettingsInt>({
     maxPlayers: PLAYERS_IN_ROOM,
     roundTime: ROUND_TIME_IN_SECONDS,
@@ -45,7 +47,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       !settings.roundTime ||
       !settings.maxPlayers
     )
-      return alert("Please fill out all the fields");
+      return alert(t("fill-out-all-fields"));
 
     onCreate({
       ...settings,
@@ -58,13 +60,13 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
   return (
     <div className="create-room-container">
       <Typography variant="text-accent" className="text-primary-label">
-        To play with friends,send them the code
+        {t("play-with-friends")}
       </Typography>
       <Typography variant="small-text-main" className="text-secondary-label">
         <Copable value={settings.code}>{settings.code}</Copable>
       </Typography>
       <Typography variant="text-accent" className="text-primary-label">
-        Or the link
+        {t("or-the-link")}
       </Typography>
       <Typography variant="small-text-main" className="text-secondary-label">
         <Copable value={`${CLIENT_URL}home?room=${settings.code}`}>
@@ -73,8 +75,8 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       </Typography>
       <GameSettings settings={settings} onChange={handleSettingsChanged} />
       <div className="buttons-container">
-        <Button onClick={handleCreateRoom} title="Create" />
-        <Button onClick={onCancel} variant="secondary" title="Cancel" />
+        <Button onClick={handleCreateRoom} title={t("create")} />
+        <Button onClick={onCancel} variant="secondary" title={t("cancel")} />
       </div>
     </div>
   );

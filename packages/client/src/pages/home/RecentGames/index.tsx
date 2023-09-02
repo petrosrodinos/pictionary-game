@@ -5,9 +5,11 @@ import { useQuery } from "react-query";
 import { getUser } from "../../../services/user";
 import { authStore } from "../../../store/authStore";
 import Spinner from "../../../components/ui/Spinner";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const RecentGames: FC = () => {
+  const { t } = useTranslation();
   const { userId } = authStore((state) => state);
   const { isLoading, data, error } = useQuery(
     "get-user",
@@ -22,7 +24,7 @@ const RecentGames: FC = () => {
   return (
     <div className="recent-games-container">
       <Typography variant="header-main" className="recent-games-label">
-        My Recent Games
+        {t("recent-games")}
       </Typography>
       <div className="recent-games-content-container">
         <div className="recent-games-content">
@@ -35,7 +37,7 @@ const RecentGames: FC = () => {
             <Spinner style={{ margin: "5px" }} loading={isLoading} />
             {!isLoading && (
               <Typography variant="sub-header-main">
-                {error ? "Could not get your recent games" : "You have not played any games yet"}
+                {error ? t("could-not-get-recent-games") : t("no-games-yet")}
               </Typography>
             )}
           </div>

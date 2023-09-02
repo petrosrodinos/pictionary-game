@@ -7,9 +7,11 @@ import { authStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import LanguagePicker from "./LanguagePicker";
 import { useSound } from "../../hooks/sound";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const NavBar: FC = () => {
+  const { t } = useTranslation();
   const { play } = useSound();
   const navigate = useNavigate();
   const { logOut } = authStore((state) => state);
@@ -27,7 +29,7 @@ const NavBar: FC = () => {
 
   return (
     <div className="nav-bar-container">
-      <Modal title="SETTINGS" onClose={() => setActiveModal(false)} isOpen={activeModal}>
+      <Modal title={t("settings")} onClose={() => setActiveModal(false)} isOpen={activeModal}>
         <EditProfile />
       </Modal>
       <PlayerStats />

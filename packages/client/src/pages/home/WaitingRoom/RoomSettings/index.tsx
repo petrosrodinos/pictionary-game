@@ -2,6 +2,7 @@ import { FC } from "react";
 import Typography from "../../../../components/ui/Typography";
 import { RoomInfo } from "../../../../interfaces/typing";
 import { useTrail, animated } from "react-spring";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface RoomSettingsProps {
@@ -9,12 +10,13 @@ interface RoomSettingsProps {
 }
 
 const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
+  const { t } = useTranslation();
   const items = [
-    { label: "CATEGORY:", stat: roomInfo.category },
-    { label: "DIFFICULTY:", stat: roomInfo.difficalty },
-    { label: "MAX PLAYERS:", stat: roomInfo.maxPlayers },
-    { label: "ROUND TIME:", stat: `${roomInfo.roundTime / 1000} (s)` },
-    { label: "CHOOSING WORD TIME:", stat: `${roomInfo.choosingWordTime / 1000} (s)` },
+    { label: t("CATEGORY"), stat: t(`category.${roomInfo.category}`) },
+    { label: t("DIFFICULTY"), stat: t(`difficalty.${roomInfo.difficalty}`) },
+    { label: t("MAX-PLAYERS"), stat: roomInfo.maxPlayers },
+    { label: t("ROUND-TIME"), stat: `${roomInfo.roundTime / 1000} (s)` },
+    { label: t("CHOOSING-WORD-TIME"), stat: `${roomInfo.choosingWordTime / 1000} (s)` },
   ];
 
   const trail = useTrail(items.length, {
@@ -26,7 +28,7 @@ const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
   return (
     <div className="settings-container">
       <Typography className="settings-label" variant="header-main">
-        Settings
+        {t("settings")}
       </Typography>
       <div className="settings-content">
         {trail.map((style, index) => (
