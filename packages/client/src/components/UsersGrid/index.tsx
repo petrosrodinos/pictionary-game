@@ -3,6 +3,7 @@ import Typography from "../ui/Typography";
 import Avatar from "../ui/Avatar";
 import { UserType } from "../../interfaces/typing";
 import { useTransition, animated } from "react-spring";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface UsersGridProps {
@@ -10,6 +11,7 @@ interface UsersGridProps {
 }
 
 const UsersGrid: FC<UsersGridProps> = ({ users }) => {
+  const { t } = useTranslation();
   const connectedUsers = users.filter((user) => user.connected);
   const transitions = useTransition(connectedUsers, {
     key: (user: UserType) => user.username,
@@ -25,7 +27,11 @@ const UsersGrid: FC<UsersGridProps> = ({ users }) => {
           <div className="user-content">
             <Avatar image={user.avatar} />
             <Typography className="user-username">@{user.username}</Typography>
-            {user.level && <Typography>level:{user.level}</Typography>}
+            {user.level && (
+              <Typography>
+                {t("level")}:{user.level}
+              </Typography>
+            )}
           </div>
         </animated.div>
       ))}

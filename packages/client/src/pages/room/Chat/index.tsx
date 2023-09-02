@@ -5,6 +5,7 @@ import Button from "../../../components/ui/Button";
 import { BiSend } from "react-icons/bi";
 import { Message, RoomInfo } from "../../../interfaces/typing";
 import { authStore } from "../../../store/authStore";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface ChatProps {
@@ -13,6 +14,7 @@ interface ChatProps {
 }
 
 const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const { username, avatar, userId } = authStore((state) => state);
   const [messages, setMessages] = useState<Message[]>();
@@ -61,20 +63,13 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       {!currentUserIsPlaying && (
         <div className="message-form">
           <Input
-            name="Answer"
-            placeholder="Answer"
+            name="answer"
+            placeholder={t("answer")}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <Button
-            onClick={sendData}
-            type="submit"
-            title="Send"
-            variant="primary"
-            icon={BiSend}
-            className="answer-button"
-          />
+          <Button onClick={sendData} title={t("send")} variant="primary" icon={BiSend} />
         </div>
       )}
     </div>

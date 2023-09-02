@@ -4,6 +4,7 @@ import Avatar from "../../../components/ui/Avatar";
 import Loader from "../../../components/ui/Loader";
 import Players from "./Players";
 import { UserType } from "../../../interfaces/typing";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface WaitingWordsProps {
@@ -14,6 +15,7 @@ interface WaitingWordsProps {
 }
 
 const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, message }) => {
+  const { t } = useTranslation();
   return (
     <div className="waiting-word-container">
       {message && <Typography variant="text-accent">{message}</Typography>}
@@ -23,11 +25,11 @@ const WaitingWord: FC<WaitingWordsProps> = ({ artist, players, time, message }) 
           <Typography className="artist-label" variant="text-accent">
             @{artist?.username || ""}
           </Typography>
-          <Typography>IS CHOOSING WORD</Typography>
+          <Typography>{t("is-choosing-word")}</Typography>
         </div>
       </div>
       <Typography variant="text-main" className="waiting-label">
-        WAITING FOR THE ARTIST TO CHOOSE A WORD
+        {t("waiting-for-the-artist")}
       </Typography>
       <Loader time={time} />
       <Players players={players} />

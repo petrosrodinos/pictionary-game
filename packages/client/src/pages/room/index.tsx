@@ -14,9 +14,11 @@ import Container from "../../components/Container";
 import NoRoom from "./Message";
 import { RoomInfo } from "../../interfaces/typing";
 import { useSound } from "../../hooks/sound";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const Room: FC = () => {
+  const { t } = useTranslation();
   const { id: roomId } = useParams();
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
@@ -89,7 +91,7 @@ const Room: FC = () => {
       setMessage(roomInfo.message);
     } else {
       if (roomInfo.lastWord) {
-        setMessage("The word was " + roomInfo.lastWord);
+        setMessage(t("the-word-was") + " " + roomInfo.lastWord);
       }
     }
     if (roomInfo.currentArtist) {
@@ -101,7 +103,7 @@ const Room: FC = () => {
     console.log("choosing-word-time-finished", roomInfo);
     setRoomInfo(roomInfo);
     setActiveModal(chooseOption(roomInfo.currentArtist.username));
-    setMessage(`${roomInfo.players[roomInfo.round - 2].username} lost his turn`);
+    setMessage(`${roomInfo.players[roomInfo.round - 2].username} ${t("lost-his-turn")}`);
   };
 
   const handleArtistLeft = (roomInfo: RoomInfo) => {
@@ -110,7 +112,7 @@ const Room: FC = () => {
     if (roomInfo.currentArtist) {
       setActiveModal(chooseOption(roomInfo.currentArtist.username));
     }
-    setMessage(`${roomInfo.players[roomInfo.round - 2].username} left the room`);
+    setMessage(`${roomInfo.players[roomInfo.round - 2].username} ${t("left-the-room")}`);
   };
 
   const handleAllUsersLeft = (roomInfo: RoomInfo) => {
@@ -123,7 +125,7 @@ const Room: FC = () => {
     console.log("game-finished", roomInfo);
     setRoomInfo(roomInfo);
     if (roomInfo.lastWord) {
-      setMessage("The word was " + roomInfo.lastWord);
+      setMessage(t("the-word-was") + " " + roomInfo.lastWord);
     }
     setActiveModal("game-finished");
   };
@@ -162,8 +164,8 @@ const Room: FC = () => {
 
   function chooseTitle(): string {
     if (roomInfo.round >= roomInfo?.players?.length && activeModal === "game-finished")
-      return "GAME FINISHED";
-    return `ROUND ${roomInfo?.round}/${roomInfo?.players?.length} IS STARTING`;
+      return t("game-finished");
+    return `${t("round")} ${roomInfo?.round}/${roomInfo?.players?.length} ${t("is-starting")}`;
   }
 
   function chooseOption(player: string): keyof typeof ModalComponents {
@@ -198,7 +200,7 @@ const Room: FC = () => {
           </Container>
         </>
       ) : (
-        <Modal title={message ? message : "NO ROOM FOUND OR IT IS FULL"} isOpen={true}>
+        <Modal title={message ? message : t("no-room-found")} isOpen={true}>
           <NoRoom />
         </Modal>
       )}

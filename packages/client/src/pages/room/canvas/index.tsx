@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { useDraw } from "../../../hooks/useDraw";
 import Typography from "../../../components/ui/Typography";
 import DrawingOptions from "./DrawingOptions";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface CanvasProps {
@@ -12,6 +13,7 @@ interface CanvasProps {
 }
 
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
+  const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(5);
   const [canvasWidth, setCanvasWidth] = useState(1030);
@@ -82,10 +84,10 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
         <>
           <div className="word-container">
             <Typography variant="text-accent" className="word-label">
-              WORD:
+              {t("word")}:
             </Typography>
             <Typography variant="small-text-main" className="word-text">
-              {word}
+              {t(`the-words.${word}`)}
             </Typography>
           </div>
           <DrawingOptions

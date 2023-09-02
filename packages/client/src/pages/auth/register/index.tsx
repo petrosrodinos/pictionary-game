@@ -107,7 +107,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       {
         onSuccess: (data: any) => {
           if (!data) {
-            toast.error("Could not register, please try later");
+            toast.error(t("could-not-register"));
             return;
           }
           logIn({
@@ -124,7 +124,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           if (error) {
             toast.error(error);
           } else {
-            toast.error("Could not register, please try later");
+            toast.error(t("could-not-register"));
           }
         },
       }
@@ -144,7 +144,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       {
         onSuccess: (data: any) => {
           if (!data) {
-            toast.error("Could not update profile, please try later");
+            toast.error(t("could-not-update-profile"));
             return;
           }
           updateProfile({
@@ -153,13 +153,13 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
             age: data.age,
             avatar: data.avatar,
           });
-          toast.success("Profile updated successfully");
+          toast.success(t("profile-updated"));
         },
         onError: (error: any) => {
           if (error) {
             toast.error(error);
           } else {
-            toast.error("Could not update profile, please try later");
+            toast.error(t("could-not-update-profile"));
           }
         },
       }

@@ -43,7 +43,7 @@ export const WORD_LIST: any = {
     easy: ["astronaut", "alien", "spaceship", "planet", "stars", "moon", "comet", "galaxy"],
     medium: ["satellite", "telescope", "meteor", "black hole", "solar system", "nebula"],
 
-    hard: ["sun", "asteroid", "orbit", "gravity", "milky way", "space station"],
+    hard: ["sun", "asteroid", "orbit", "gravity", "space station"],
   },
   animals: {
     easy: ["dog", "cat", "bird", "fish", "snake", "turtle", "rabbit", "hamster", "elephant"],
@@ -72,7 +72,7 @@ export const WORD_LIST: any = {
   },
   transport: {
     easy: ["car", "bus", "train", "bicycle", "helicopter", "plane", "boat", "motorcycle", "truck"],
-    medium: ["scooter", "subway", "tram", "hoverboard", "hot air balloon", "ferry"],
+    medium: ["scooter", "tram", "ferry"],
     hard: ["tank", "jetski", "roller skates", "skateboard", "parachute"],
   },
   nature: {
@@ -89,12 +89,12 @@ export const WORD_LIST: any = {
       "waterfall",
     ],
     medium: ["cave", "volcano", "island", "cloud", "sunrise"],
-    hard: ["sunset", "snowflake", "hurricane", "ocean", "moonlight"],
+    hard: ["sunset", "snowflake", "hurricane", "ocean"],
   },
   toys: {
     easy: ["teddy bear", "doll", "lego", "puzzle", "robot", "kite", "ball", "yo-yo"],
-    medium: ["board game", "remote car", "jigsaw", "action figure", "trampoline", "frisbee"],
-    hard: ["magic set", "slime", "marbles", "dollhouse", "stuffed animal", "toy train"],
+    medium: ["board game", "jigsaw", "trampoline", "frisbee"],
+    hard: ["slime", "marbles", "dollhouse", "stuffed animal"],
   },
   jobs: {
     easy: [

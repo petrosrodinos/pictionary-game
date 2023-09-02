@@ -9,6 +9,7 @@ import { useMutation } from "react-query";
 import { MAX_LEVEL, POINTS_PER_LEVEL } from "../../../constants/game";
 import { updateUser } from "../../../services/user";
 import { useSound } from "../../../hooks/sound";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface GameFinishedProps {
@@ -18,6 +19,7 @@ interface GameFinishedProps {
 }
 
 const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
+  const { t } = useTranslation();
   const updatedProfile = useRef(false);
   const [pointsEarned, setPointsEarned] = useState<number>(0);
   const [rank, setRank] = useState<number>(0);
@@ -30,30 +32,30 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
 
   useEffect(() => {
     play("points-earned");
-    updateUserInfo();
     const sortedUsers = players.sort((a, b) => b.points - a.points);
     const userRank = sortedUsers.findIndex((user) => user.username === username);
     setRank(userRank);
     setPointsEarned(sortedUsers[userRank].points);
+    updateUserInfo(userRank, sortedUsers[userRank].points);
   }, [players]);
 
   const division: any = {
-    0: "FIRST",
-    1: "SECOND",
-    2: "THIRD",
-    3: "FOURTH",
-    4: "FIFTH",
-    5: "SIXTH",
-    6: "SEVENTH",
-    7: "EIGHTH",
-    8: "NINTH",
-    9: "TENTH",
+    0: t("first"),
+    1: t("second"),
+    2: t("third"),
+    3: t("fourth"),
+    4: t("fifth"),
+    5: t("sixth"),
+    6: t("seventh"),
+    7: t("eighth"),
+    8: t("ninth"),
+    9: t("tenth"),
   };
 
-  const updateUserInfo = () => {
+  const updateUserInfo = (rank: number, points: number) => {
     if (updatedProfile.current) return;
     updatedProfile.current = true;
-    let newPoints = xp + pointsEarned;
+    let newPoints = xp + points;
     let data = {};
     if (newPoints >= POINTS_PER_LEVEL && level < MAX_LEVEL) {
       newPoints = newPoints - POINTS_PER_LEVEL;
@@ -65,7 +67,7 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
       {
         userId,
         game: {
-          points: pointsEarned,
+          points: points,
           rank: rank,
         },
         ...data,
@@ -87,14 +89,14 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
 
       <Typography className="finish-message">
         <Typography className="msg-primary" variant="text-accent">
-          CONGRATULATIONS -
+          {t("congratulations")} -
         </Typography>{" "}
-        <Typography className="msg-secondary">YOU CAME IN </Typography>
+        <Typography className="msg-secondary">{t("you-came-in")} </Typography>
         <Typography className="msg-primary" variant="text-accent">
           {division?.[rank]}
         </Typography>
       </Typography>
-      <Button style={{ maxWidth: "100px" }} onClick={onExit} title="EXIT" />
+      <Button style={{ maxWidth: "fit-content" }} onClick={onExit} title={t("exit")} />
       <PointsEarned points={pointsEarned || 0} />
       <Players players={players} />
     </div>

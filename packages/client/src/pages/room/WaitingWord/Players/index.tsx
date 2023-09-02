@@ -3,6 +3,7 @@ import Avatar from "../../../../components/ui/Avatar";
 import Typography from "../../../../components/ui/Typography";
 import { UserType } from "../../../../interfaces/typing";
 import { useTransition, animated } from "react-spring";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface PlayersProps {
@@ -10,6 +11,7 @@ interface PlayersProps {
 }
 
 const Players: FC<PlayersProps> = ({ players }) => {
+  const { t } = useTranslation();
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
 
   const transitions = useTransition(sortedPlayers, {
@@ -24,7 +26,7 @@ const Players: FC<PlayersProps> = ({ players }) => {
   return (
     <>
       <Typography variant="text-accent" className="rank-label">
-        RANK
+        {t("rank")}
       </Typography>
       <div className="players-container">
         {transitions((style, player, _, index) => (
@@ -36,7 +38,9 @@ const Players: FC<PlayersProps> = ({ players }) => {
               <Avatar image={player.avatar} />
               <div className="player-info">
                 <Typography variant="text-main">@{player.username}</Typography>
-                <Typography>points: {player.points}</Typography>
+                <Typography>
+                  {t("points")}: {player.points}
+                </Typography>
               </div>
             </div>
           </animated.div>
