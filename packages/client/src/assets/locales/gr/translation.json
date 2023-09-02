@@ -1,4 +1,20 @@
 {
+  "username": "Όνομα",
+  "password": "Κωδικός",
+  "@username": "@όνομα",
+  "invalid-username": "Λάθος όνομα η κωδικός",
+  "could-not-login": "Αδυναμία σύνδεσης,προσπάθησε ξανά",
+  "login-label": "Σύνδεση",
+  "role": "Ρόλος",
+  "age": "Ηλικία",
+  "upload-avatar": "Ανέβασε άβαταρ",
+  "select-avatar": "Επέλεξε άβαταρ",
+  "register-label": "Εγγραφή",
+  "save": "Αποθήκευση",
+  "edit-profile": "Επεξεργασία προφίλ",
+  "student": "Μαθητής",
+  "teacher": "Καθηγητής",
+  "parent": "Γονέας",
   "join-room": "ΜΠΕΣ ΣΕ ΔΩΜΑΤΙΟ",
   "create-room": "ΔΗΜΙΟΥΡΓΗΣΕ ΔΩΜΑΤΙΟ"
 }

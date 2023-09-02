@@ -22,6 +22,7 @@ import { IoIosSend } from "react-icons/io";
 import SelectAvatar from "../../../components/SelectAvatar";
 import Toast from "../../../components/ui/Toast";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface RegisterProps {
@@ -30,6 +31,7 @@ interface RegisterProps {
 }
 
 const Register: FC<RegisterProps> = ({ isEditing, values }) => {
+  const { t } = useTranslation();
   const { logIn, userId, updateProfile } = authStore((state) => state);
   const [selectedOption, setSelectedOption] = useState<string>("upload");
   const navigate = useNavigate();
@@ -165,18 +167,18 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
   };
 
   const options = [
-    { value: "student", label: "Student" },
-    { value: "teacher", label: "Teacher" },
-    { value: "parent", label: "Parent" },
+    { value: "student", label: t("student") },
+    { value: "teacher", label: t("teacher") },
+    { value: "parent", label: t("parent") },
   ];
 
   const avatarOptions = [
     {
-      label: "Upload Avatar",
+      label: t("upload-avatar"),
       value: "upload",
     },
     {
-      label: "Select Avatar",
+      label: t("select-avatar"),
       value: "select",
     },
   ];
@@ -187,21 +189,23 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       onSubmit={handleSubmit(isEditing ? handleSave : handleRegister)}
     >
       <Toast />
-      <Typography variant="sub-header-main">{isEditing ? "Edit Profile" : "Register"}</Typography>
+      <Typography variant="sub-header-main">
+        {isEditing ? t("edit-profile") : t("register-label")}
+      </Typography>
       <Input
-        label="Username"
+        label={t("username")}
         error={errors.username?.message}
         name="username"
         register={register}
-        placeholder="Username"
+        placeholder={t("username")}
       />
 
       <Input
-        label="Password"
+        label={t("password")}
         error={errors.password?.message}
         name="password"
         register={register}
-        placeholder="Password"
+        placeholder={t("password")}
         type="password"
       />
 
@@ -210,10 +214,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         options={options}
         onChange={handleRoleChange}
         error={errors.role?.message}
-        label="Role"
+        label={t("role")}
       />
       <DatePicker
-        label="Age"
+        label={t("age")}
         max={new Date().toISOString().slice(0, 10)}
         value={values?.age}
         onChange={handleAgeChange}
@@ -222,7 +226,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       <TabMenu
         selected={selectedOption}
         onChange={avatarOptionChange}
-        name="avatar"
+        name={t("avatar")}
         className="avatar-tab-menu"
         items={avatarOptions}
       />
@@ -231,7 +235,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           value={values?.avatar}
           onChange={handleAvatarChange}
           name="avatar"
-          label="Select Avatar"
+          label={t("select-avatar")}
         />
       ) : (
         <SelectAvatar value={values?.avatar} onChange={handleAvatarChange} />
@@ -240,7 +244,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
         type="submit"
         loading={isLoading || isUpdating}
         icon={isEditing ? IoIosSend : BsPerson}
-        title={isEditing ? "Save" : "Register"}
+        title={isEditing ? t("save") : t("register-label")}
         variant="primary"
       />
     </form>

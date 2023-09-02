@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import { useLocation } from "react-router-dom";
 import TabMenu from "../../components/ui/TabMenu";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface AuthPageProps {
@@ -10,6 +11,7 @@ interface AuthPageProps {
 }
 
 const AuthPage: FC<AuthPageProps> = ({ children }) => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const [selectedOption, setSelectedOption] = useState<string>("login");
   const navigate = useNavigate();
@@ -29,11 +31,11 @@ const AuthPage: FC<AuthPageProps> = ({ children }) => {
 
   const authOptions = [
     {
-      label: "login",
+      label: t("login-label"),
       value: "login",
     },
     {
-      label: "register",
+      label: t("register-label"),
       value: "register",
     },
   ];

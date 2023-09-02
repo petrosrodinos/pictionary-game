@@ -1,4 +1,20 @@
 {
+  "username": "Username",
+  "password": "Password",
+  "@username": "@username",
+  "invalid-username": "Invalid username or password",
+  "could-not-login": "Could not login, please try later",
+  "login-label": "Login",
+  "role": "Role",
+  "age": "Age",
+  "upload-avatar": "Upload Avatar",
+  "select-avatar": "Select Avatar",
+  "register-label": "Register",
+  "save": "Save",
+  "edit-profile": "Edit Profile",
+  "student": "Student",
+  "teacher": "Teacher",
+  "parent": "Parent",
   "join-room": "JOIN ROOM",
   "create-room": "CREATE ROOM"
 }
