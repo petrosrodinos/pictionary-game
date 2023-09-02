@@ -32,7 +32,6 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
     play("points-earned");
     updateUserInfo();
     const sortedUsers = players.sort((a, b) => b.points - a.points);
-    console.log("sortedUsers", sortedUsers);
     const userRank = sortedUsers.findIndex((user) => user.username === username);
     setRank(userRank);
     setPointsEarned(sortedUsers[userRank].points);
@@ -66,14 +65,13 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
       {
         userId,
         game: {
-          points: 5,
-          rank: 2,
+          points: pointsEarned,
+          rank: rank,
         },
         ...data,
       },
       {
         onSuccess: (data) => {
-          console.log("updated", data);
           updateProfile({
             xp: data.xp,
             level: data.level,
