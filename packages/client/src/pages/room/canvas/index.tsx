@@ -87,7 +87,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
               {t("word")}:
             </Typography>
             <Typography variant="small-text-main" className="word-text">
-              {t(`the-words.${word}`)}
+              {word}
             </Typography>
           </div>
           <DrawingOptions

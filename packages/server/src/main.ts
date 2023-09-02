@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Message, Room, Statuses } from "./interfaces/room";
 import cors from "cors";
-import { Points } from "./utils/game";
+import { Points, removeGreekAccents } from "./utils/game";
 const EventEmitter = require("events");
 const eventEmitter = new EventEmitter();
 const usersRoutes = require("./routes/users");
@@ -271,7 +271,10 @@ socket.on("connection", (socket: any) => {
     });
     socket.on("game-input-message", (message: Message) => {
       const newMessage = message;
-      if (message.message === room.word && !room.usersFoundWordOrder.includes(message.userId)) {
+      const cleanedMessage = removeGreekAccents(message.message);
+      const cleanedWord = removeGreekAccents(room.word);
+
+      if (cleanedMessage === cleanedWord && !room.usersFoundWordOrder.includes(message.userId)) {
         room.players = room.players.map((u) => {
           if (u.userId === message.userId) {
             room.usersFoundWordOrder.push(u.userId);

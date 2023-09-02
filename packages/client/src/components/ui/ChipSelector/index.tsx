@@ -54,7 +54,9 @@ const ChipSelector: FC<ChipSelectorProps> = ({
           key={index}
           style={props}
           className={`chip-item ${selectedChip == chips[index] ? "selected-chip" : ""}`}
-          onClick={() => handleChange(chips[index])}
+          onClick={() => {
+            handleChange(chips[index]);
+          }}
         >
           <Typography>{t(`${name}.${chips[index]}`)}</Typography>
         </animated.div>

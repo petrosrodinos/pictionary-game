@@ -58,7 +58,10 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
         style={{ alignSelf: "center" }}
         chips={getRandomWords()}
         name="the-words"
-        onChange={(e: any) => onWordSelected(e.value)}
+        onChange={(e: any) => {
+          console.log(e.value, t(`the-words.${e.value}`));
+          onWordSelected(t(`the-words.${e.value}`));
+        }}
       />
       <Players players={players} />
     </div>
