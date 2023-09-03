@@ -1,8 +1,8 @@
-import { FC, useState, useEffect } from "react";
-import { useDraw } from "../../../hooks/useDraw";
+import { FC, useState, useEffect, useRef } from "react";
 import Typography from "../../../components/ui/Typography";
 import DrawingOptions from "./DrawingOptions";
 import { useTranslation } from "react-i18next";
+import CanvasDraw from "react-canvas-draw";
 import "./style.scss";
 
 interface CanvasProps {
@@ -13,51 +13,27 @@ interface CanvasProps {
 }
 
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
+  const ref = useRef<any>(null);
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(5);
-  const [canvasWidth, setCanvasWidth] = useState(1030);
-  const [canvasHeight, setCanvasHeight] = useState(900);
-  const { canvasRef, onMouseDown, clear, drawPixel } = useDraw({
-    color,
-    lineWidth,
-    emitEvent,
-    currentUserIsPlaying,
-  });
-
-  useEffect(() => {
-    const updateCanvasSize = () => {
-      const canvasElement = canvasRef.current?.parentNode as HTMLElement;
-      if (canvasElement) {
-        const { width, height } = canvasElement.getBoundingClientRect();
-        setCanvasWidth(width);
-        setCanvasHeight(height);
-      }
-    };
-
-    window.addEventListener("resize", updateCanvasSize);
-    updateCanvasSize();
-
-    return () => {
-      window.removeEventListener("resize", updateCanvasSize);
-    };
-  }, []);
 
   useEffect(() => {
     if (!canvasData || canvasData.length == 0) {
-      clear();
+      ref.current?.clear();
+    } else {
+      ref.current?.loadSaveData(canvasData, true);
     }
-    canvasData?.forEach((data) => {
-      drawPixel(data);
-    });
   }, [canvasData]);
 
   useEffect(() => {
     const handler = (data: any) => {
+      if (currentUserIsPlaying) return;
+
       if (data == null) {
-        clear();
+        ref.current?.clear();
       } else {
-        drawPixel(data);
+        ref.current?.loadSaveData(data, true);
       }
     };
     socket?.on("receive-changes", handler);
@@ -67,20 +43,23 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
     };
   }, [socket]);
 
-  function emitEvent(data: any) {
-    socket?.emit("send-changes", data);
-  }
-
   const clearCanvas = () => {
+    ref.current?.clear();
     socket?.emit("send-changes", null);
-    clear();
+  };
+
+  const handleChange = (canvas: any) => {
+    if (!currentUserIsPlaying) return;
+    const data = canvas?.getSaveData();
+    console.log(data.isDrawing);
+    socket?.emit("send-changes", data);
   };
 
   const handleFingerDraw = () => {};
 
   return (
     <div className="canvas-panel-container">
-      {currentUserIsPlaying && (
+      {true && (
         <>
           <div className="word-container">
             <Typography variant="text-accent" className="word-label">
@@ -100,14 +79,24 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           />
         </>
       )}
-
-      <canvas
+      <CanvasDraw
+        ref={ref}
+        disabled={!currentUserIsPlaying}
+        brushRadius={lineWidth}
+        backgroundColor="white"
+        brushColor={color}
+        className="canvas"
+        canvasWidth={600}
+        canvasHeight={600}
+        onChange={handleChange}
+      />
+      {/* <canvas
         width={canvasWidth}
         height={canvasHeight}
         ref={canvasRef}
         onMouseDown={onMouseDown}
         className="canvas"
-      ></canvas>
+      ></canvas> */}
     </div>
   );
 };

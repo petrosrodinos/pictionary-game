@@ -13,7 +13,7 @@ export interface Room {
   creator: string;
   maxPlayers: number;
   players: ConnectedUser[];
-  drawings: any[];
+  drawings: any;
   status: Statuses;
   word: string;
   lastWord: string;

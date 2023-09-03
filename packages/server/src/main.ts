@@ -48,7 +48,7 @@ socket.on("connection", (socket: any) => {
     rooms[settings.code] = {
       ...settings,
       players: [],
-      drawings: [],
+      drawings: "",
       status: Statuses.CREATED,
       round: 1,
       message: "",
@@ -180,11 +180,12 @@ socket.on("connection", (socket: any) => {
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       if (data == null) {
-        room.drawings = [];
+        room.drawings = "";
       }
+      // socket.in(code).emit("receive-changes", data);
       socket.broadcast.to(code).emit("receive-changes", data);
       if (data) {
-        room.drawings.push(data);
+        room.drawings = data;
       }
     });
     //when artist selects word
@@ -194,7 +195,7 @@ socket.on("connection", (socket: any) => {
       clearTimeout(timers[code].round);
       room.usersFoundWordOrder = [];
       room.chat = [];
-      room.drawings = [];
+      room.drawings = "";
       room.word = word;
       room.status = Statuses.PLAYING;
       socket.emit("word-changed", room);
