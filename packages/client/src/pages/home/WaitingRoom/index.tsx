@@ -14,6 +14,7 @@ import { RoomInfo as RoomInfoInt } from "../../../interfaces/typing";
 import { useSound } from "../../../hooks/sound";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
+import { CLIENT_URL } from "../../../constants";
 
 interface WaitingRoomProps {}
 
@@ -50,17 +51,18 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
       avatar,
       level,
     };
+    navigator.clipboard.writeText(`${CLIENT_URL}home?room=${waitingRoom}`);
     socket?.emit("join-waiting-room", waitingRoom, joinedUser);
   }, [socket, searchParams]);
 
   const handleUserJoined = (roomInfo: RoomInfoInt) => {
     console.log("user-joined", roomInfo);
+    play("enter-waiting-room");
     setRoomInfo(roomInfo);
   };
 
   const handleGameStarted = (roomInfo: RoomInfoInt) => {
     console.log("game-started", roomInfo);
-    // setRoomInfo(roomInfo);
     startCountDown(STARTING_TIME_IN_SECONDS);
   };
 

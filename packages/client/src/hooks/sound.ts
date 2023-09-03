@@ -4,6 +4,7 @@ import RoundFinished from "../assets/sounds/round-finished.mp3";
 import Close from "../assets/sounds/close.mp3";
 import WordFoundYou from "../assets/sounds/word-found-you.wav";
 import WordFoundOthers from "../assets/sounds/word-found-others.wav";
+import EnterWaitingRoom from "../assets/sounds/enter-waiting-room.mp3";
 import InGame from "../assets/sounds/in-game.mp3";
 import { configStore } from "../store/config";
 
@@ -15,7 +16,8 @@ type SoundKey =
   | "close"
   | "word-found-you"
   | "word-found-others"
-  | "in-game";
+  | "in-game"
+  | "enter-waiting-room";
 
 export const sounds: Record<SoundKey, string> = {
   click: Click,
@@ -25,6 +27,7 @@ export const sounds: Record<SoundKey, string> = {
   "word-found-you": WordFoundYou,
   "word-found-others": WordFoundOthers,
   "in-game": InGame,
+  "enter-waiting-room": EnterWaitingRoom,
   close: Close,
 };
 
@@ -34,7 +37,7 @@ export const useSound = () => {
   const play = (sound: SoundKey, config: { loop: boolean } = { loop: false }) => {
     if (disabledSound) return;
     const audio = new Audio(sounds[sound]);
-    audio.volume = volume / 100;
+    audio.volume = volume;
     audio.loop = config.loop;
     audio.play();
   };
