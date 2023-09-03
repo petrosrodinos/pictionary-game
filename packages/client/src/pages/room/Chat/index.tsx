@@ -11,9 +11,10 @@ import "./style.scss";
 interface ChatProps {
   socket: any;
   currentUserIsPlaying: boolean;
+  chat: Message[];
 }
 
-const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
+const Chat: FC<ChatProps> = ({ socket, chat, currentUserIsPlaying }) => {
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const { username, avatar, userId } = authStore((state) => state);
@@ -38,6 +39,10 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
       socket?.off("chat-message");
     };
   }, [socket]);
+
+  useEffect(() => {
+    setMessages(chat);
+  }, [chat]);
 
   function playerCheck(message_name: string, my_name: string) {
     if (message_name === my_name) {

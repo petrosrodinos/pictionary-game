@@ -193,6 +193,7 @@ const Room: FC = () => {
                 currentUserIsPlaying={username == roomInfo?.currentArtist?.username}
               />
               <Chat
+                chat={roomInfo?.chat}
                 socket={socket}
                 currentUserIsPlaying={username == roomInfo?.currentArtist?.username}
               />
