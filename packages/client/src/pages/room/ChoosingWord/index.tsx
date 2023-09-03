@@ -59,7 +59,6 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
         chips={getRandomWords()}
         name="the-words"
         onChange={(e: any) => {
-          console.log(e.value, t(`the-words.${e.value}`));
           onWordSelected(t(`the-words.${e.value}`));
         }}
       />

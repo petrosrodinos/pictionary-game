@@ -114,13 +114,13 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
     }
 
     let dataToUpdate: any = {
-      username: username,
+      username,
       password: hasedPassword,
-      role: role,
-      age: age,
+      role,
+      age,
       avatar: avatarUrl,
-      level: level,
-      xp: xp,
+      level,
+      xp,
     };
 
     if (game) {

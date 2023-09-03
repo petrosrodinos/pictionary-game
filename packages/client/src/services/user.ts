@@ -32,6 +32,7 @@ export const registerUser = async (paylaod: NewUser): Promise<any> => {
 export const updateUser = async (payload: UserToUpdate): Promise<any> => {
   try {
     const result = await axios.put(`${API_URL}user/${payload.userId}`, payload, getConfig());
+    console.log("result", result.data);
     return result.data;
   } catch (err: any) {
     console.log("err", err);
@@ -44,8 +45,8 @@ export const getUser = async (userId: string): Promise<any> => {
     const result = await axios.get(`${API_URL}user/${userId}`, getConfig());
     return result.data;
   } catch (err) {
-    throw err;
     console.log("err", err);
+    throw err;
   }
 };
 
@@ -54,7 +55,7 @@ export const getUsers = async (): Promise<any> => {
     const result = await axios.get(`${API_URL}users`, getConfig());
     return result.data;
   } catch (err) {
-    throw err;
     console.log("err", err);
+    throw err;
   }
 };

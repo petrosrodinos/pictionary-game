@@ -26,9 +26,19 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
   const { username, updateProfile, level, xp, userId } = authStore((state) => state);
   const { play } = useSound();
 
-  const { mutate: updateUserMutation } = useMutation((user: UserToUpdate) => {
-    return updateUser(user);
-  });
+  const { mutate: updateUserMutation } = useMutation(
+    (user: UserToUpdate) => {
+      return updateUser(user);
+    },
+    {
+      onSuccess: (data: any) => {
+        updateProfile({
+          xp: data.xp,
+          level: data.level,
+        });
+      },
+    }
+  );
 
   useEffect(() => {
     play("points-earned");
@@ -36,7 +46,7 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
     const userRank = sortedUsers.findIndex((user) => user.username === username);
     setRank(userRank);
     setPointsEarned(sortedUsers[userRank].points);
-    updateUserInfo(userRank, sortedUsers[userRank].points);
+    updateUserInfo(userRank + 1, sortedUsers[userRank].points);
   }, [players]);
 
   const division: any = {
@@ -52,7 +62,7 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
     9: t("tenth"),
   };
 
-  const updateUserInfo = (rank: number, points: number) => {
+  const updateUserInfo = async (rank: number, points: number) => {
     if (updatedProfile.current) return;
     updatedProfile.current = true;
     let newPoints = xp + points;
@@ -63,24 +73,14 @@ const GameFinished: FC<GameFinishedProps> = ({ message, players, onExit }) => {
     } else {
       data = { xp: newPoints };
     }
-    updateUserMutation(
-      {
-        userId,
-        game: {
-          points: points,
-          rank: rank,
-        },
-        ...data,
+    updateUserMutation({
+      userId,
+      game: {
+        points,
+        rank,
       },
-      {
-        onSuccess: (data) => {
-          updateProfile({
-            xp: data.xp,
-            level: data.level,
-          });
-        },
-      }
-    );
+      ...data,
+    });
   };
 
   return (

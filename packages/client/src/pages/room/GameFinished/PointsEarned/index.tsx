@@ -13,7 +13,7 @@ interface PointsEarnedProps {
 
 const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
   const { t } = useTranslation();
-  const { level, xp: currentPoints } = authStore((state) => state);
+  const { level, xp } = authStore((state) => state);
 
   return (
     <div className="points-earned-container">
@@ -25,7 +25,7 @@ const PointsEarned: FC<PointsEarnedProps> = ({ points }) => {
       </Typography>
       <div className="progress-container">
         <Star className="star-item-left" label={level} />
-        <Loader max={POINTS_PER_LEVEL} value={currentPoints + points} />
+        <Loader max={POINTS_PER_LEVEL} value={xp} />
         <Star className="star-item-right" label={level + 1} />
       </div>
     </div>
