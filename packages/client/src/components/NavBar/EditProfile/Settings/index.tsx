@@ -42,7 +42,13 @@ const Preferences: FC = () => {
           <Typography className="volume-label" variant="sub-header-main">
             {t("volume")}:
           </Typography>
-          <Range values={[config.volume]} min={1} max={10} step={1} onChange={handleRangeChange} />
+          <Range
+            values={[config.volume]}
+            min={0.1}
+            max={1}
+            step={0.1}
+            onChange={handleRangeChange}
+          />
         </div>
         <Colors />
       </div>

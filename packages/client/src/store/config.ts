@@ -20,7 +20,7 @@ const initialStateValues = {
   time: 0,
   config: {
     disabledSound: false,
-    volume: 5,
+    volume: 0.5,
     colors: COLORS,
   },
 };
