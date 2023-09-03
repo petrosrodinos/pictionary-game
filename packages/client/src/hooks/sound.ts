@@ -40,11 +40,8 @@ export const useSound = () => {
     audio.volume = volume;
     audio.loop = config.loop;
     audio.play();
+    return () => audio.pause();
   };
 
-  const stopSound = (sound: SoundKey) => {
-    const audio = new Audio(sounds[sound]);
-    audio.pause();
-  };
-  return { play, stopSound };
+  return { play };
 };

@@ -10,9 +10,10 @@ import "./style.scss";
 interface MessageBoxProps {
   className: string;
   message: Message;
+  curruntUserIsPlaying: boolean;
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ message, className }) => {
+const MessageBox: FC<MessageBoxProps> = ({ message, curruntUserIsPlaying, className }) => {
   const { avatar, username, message: msg, correct } = message;
   const { username: myUsername } = authStore((state) => state);
   const { play } = useSound();
@@ -23,12 +24,14 @@ const MessageBox: FC<MessageBoxProps> = ({ message, className }) => {
   });
 
   useEffect(() => {
+    if (curruntUserIsPlaying) return;
     if (correct && username === myUsername) {
       play("word-found-you");
-    } else if (correct && username !== myUsername) {
+    }
+    if (correct && username !== myUsername) {
       play("word-found-others");
     }
-  }, []);
+  }, [message]);
 
   function playerCheckName() {
     if (username === myUsername) {

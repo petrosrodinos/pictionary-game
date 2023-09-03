@@ -57,7 +57,12 @@ const Chat: FC<ChatProps> = ({ socket, currentUserIsPlaying }) => {
     <div className="chat-container">
       <div className="messages-container">
         {messages?.map((msg, index) => (
-          <MessageBox key={index} message={msg} className={playerCheck(msg.username, username)} />
+          <MessageBox
+            key={index}
+            curruntUserIsPlaying={currentUserIsPlaying}
+            message={msg}
+            className={playerCheck(msg.username, username)}
+          />
         ))}
       </div>
       {!currentUserIsPlaying && (

@@ -273,8 +273,8 @@ socket.on("connection", (socket: any) => {
       const newMessage = message;
       const cleanedMessage = removeGreekAccents(message.message);
       const cleanedWord = removeGreekAccents(room.word);
-
-      if (cleanedMessage === cleanedWord && !room.usersFoundWordOrder.includes(message.userId)) {
+      // && !room.usersFoundWordOrder.includes(message.userId)
+      if (cleanedMessage === cleanedWord) {
         room.players = room.players.map((u) => {
           if (u.userId === message.userId) {
             room.usersFoundWordOrder.push(u.userId);
