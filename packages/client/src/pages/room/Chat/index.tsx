@@ -23,7 +23,7 @@ const Chat: FC<ChatProps> = ({ socket, chat, currentUserIsPlaying }) => {
   const sendData = () => {
     if (!message) return;
     socket?.emit("game-input-message", {
-      message: message,
+      message,
       username,
       avatar,
       userId,
