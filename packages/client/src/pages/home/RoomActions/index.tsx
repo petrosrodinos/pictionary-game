@@ -2,7 +2,6 @@ import { FC } from "react";
 import Button from "../../../components/ui/Button";
 import { ModalType } from "..";
 import { useTranslation } from "react-i18next";
-import { useSound } from "../../../hooks/sound";
 import "./style.scss";
 
 interface RoomActionsProps {

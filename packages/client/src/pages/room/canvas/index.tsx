@@ -17,27 +17,27 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(5);
-  const [saveData, setSaveData] = useState<any>(null);
-  const [canvasWidth, setCanvasWidth] = useState<number>(700);
-  const [canvasHeight, setCanvasHeight] = useState<number>(600);
+  // const [saveData, setSaveData] = useState<any>(null);
+  // const [canvasWidth, setCanvasWidth] = useState<number>(700);
+  // const [canvasHeight, setCanvasHeight] = useState<number>(600);
 
-  useEffect(() => {
-    const updateCanvasSize = () => {
-      const canvasElement = ref.current?.parentNode as HTMLElement;
-      if (canvasElement) {
-        const { width, height } = canvasElement.getBoundingClientRect();
-        setCanvasWidth(width);
-        setCanvasHeight(height);
-      }
-    };
+  // useEffect(() => {
+  //   const updateCanvasSize = () => {
+  //     const canvasElement = ref.current?.parentNode as HTMLElement;
+  //     if (canvasElement) {
+  //       const { width, height } = canvasElement.getBoundingClientRect();
+  //       setCanvasWidth(width);
+  //       setCanvasHeight(height);
+  //     }
+  //   };
 
-    window.addEventListener("resize", updateCanvasSize);
-    updateCanvasSize();
+  //   window.addEventListener("resize", updateCanvasSize);
+  //   updateCanvasSize();
 
-    return () => {
-      window.removeEventListener("resize", updateCanvasSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", updateCanvasSize);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (!canvasData || canvasData.length == 0) {
@@ -54,7 +54,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
         ref.current?.clear();
       } else {
         console.log("data");
-        setSaveData(data);
+        // setSaveData(data);
         ref.current?.loadSaveData(data, true);
       }
     };

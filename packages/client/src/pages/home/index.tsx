@@ -19,7 +19,7 @@ export type ModalType = "join-room" | "create-room" | "waiting-room" | "";
 
 const Home: FC = () => {
   const { t } = useTranslation();
-  const { userId, updateProfile } = authStore((state) => state);
+  const { userId } = authStore((state) => state);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
