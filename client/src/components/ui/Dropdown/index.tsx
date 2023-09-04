@@ -8,7 +8,7 @@ interface DropdownProps {
   className?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { value: string; label: string }[];
-  error?: string;
+  error?: any;
   label: string;
 }
 

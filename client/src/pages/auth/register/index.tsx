@@ -52,7 +52,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     reset,
     formState: { errors },
     setValue,
-  } = useForm<NewUser>({
+  } = useForm<any>({
     resolver: yupResolver(isEditing ? EditProfileValidationSchema : RegisterValidationSchema),
     defaultValues: {
       username: "",

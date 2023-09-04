@@ -8,7 +8,7 @@ interface DatePickerProps {
   className?: string;
   style?: React.CSSProperties;
   onChange?: (e: React.ChangeEvent<HTMLDataElement>) => void;
-  error?: string;
+  error?: any;
   min?: string;
   max?: string;
 }
