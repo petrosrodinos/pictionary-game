@@ -1,13 +1,11 @@
 # INSTALLATION
 
-```sh
-from root:npm install
-```
-
 # client
 
 ```sh
-from root: npm run start-client
+cd client
+npm install --legacy-peer-devs
+npm run dev
 ```
 
 # server
@@ -15,7 +13,7 @@ from root: npm run start-client
 ### first time
 
 ```sh
-cd packages/server
+cd server
 npx prisma generate
 npx prisma db push
 npm run dev
@@ -23,4 +21,7 @@ npm run dev
 
 ### other times
 
-`from root: npm run dev`
+```sh
+cd server
+npm run dev
+```
