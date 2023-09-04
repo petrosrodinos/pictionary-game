@@ -17,6 +17,27 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(5);
+  const [saveData, setSaveData] = useState<any>(null);
+  const [canvasWidth, setCanvasWidth] = useState<number>(700);
+  const [canvasHeight, setCanvasHeight] = useState<number>(600);
+
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      const canvasElement = ref.current?.parentNode as HTMLElement;
+      if (canvasElement) {
+        const { width, height } = canvasElement.getBoundingClientRect();
+        setCanvasWidth(width);
+        setCanvasHeight(height);
+      }
+    };
+
+    window.addEventListener("resize", updateCanvasSize);
+    updateCanvasSize();
+
+    return () => {
+      window.removeEventListener("resize", updateCanvasSize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!canvasData || canvasData.length == 0) {
@@ -29,10 +50,11 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   useEffect(() => {
     const handler = (data: any) => {
       if (currentUserIsPlaying) return;
-
       if (data == null) {
         ref.current?.clear();
       } else {
+        console.log("data");
+        setSaveData(data);
         ref.current?.loadSaveData(data, true);
       }
     };
@@ -51,7 +73,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const handleChange = (canvas: any) => {
     if (!currentUserIsPlaying) return;
     const data = canvas?.getSaveData();
-    console.log(data.isDrawing);
+    console.log(JSON.parse(data));
     socket?.emit("send-changes", data);
   };
 
@@ -59,7 +81,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
 
   return (
     <div className="canvas-panel-container">
-      {true && (
+      {currentUserIsPlaying && (
         <>
           <div className="word-container">
             <Typography variant="text-accent" className="word-label">
@@ -76,27 +98,23 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
             onBrashSizeChange={setLineWidth}
             onClear={clearCanvas}
             onFingerDraw={handleFingerDraw}
+            onUndo={() => ref.current?.undo()}
           />
         </>
       )}
       <CanvasDraw
         ref={ref}
+        // saveData={saveData}
+        hideGrid={!currentUserIsPlaying}
         disabled={!currentUserIsPlaying}
         brushRadius={lineWidth}
         backgroundColor="white"
         brushColor={color}
         className="canvas"
-        canvasWidth={600}
+        canvasWidth={700}
         canvasHeight={600}
         onChange={handleChange}
       />
-      {/* <canvas
-        width={canvasWidth}
-        height={canvasHeight}
-        ref={canvasRef}
-        onMouseDown={onMouseDown}
-        className="canvas"
-      ></canvas> */}
     </div>
   );
 };

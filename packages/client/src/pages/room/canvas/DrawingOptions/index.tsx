@@ -5,6 +5,7 @@ import { MdOutlineColorLens } from "react-icons/md";
 import { TbHandFinger } from "react-icons/tb";
 import { ChromePicker } from "react-color";
 import { BsEraser } from "react-icons/bs";
+import { LiaUndoAltSolid } from "react-icons/lia";
 import "./style.scss";
 
 interface DrawingOptionsProps {
@@ -12,6 +13,7 @@ interface DrawingOptionsProps {
   onBrashSizeChange: (size: number) => void;
   onClear: () => void;
   onFingerDraw: () => void;
+  onUndo: () => void;
   color: string;
   brushSize: number;
 }
@@ -21,6 +23,7 @@ const DrawingOptions: FC<DrawingOptionsProps> = ({
   onBrashSizeChange,
   onClear,
   onFingerDraw,
+  onUndo,
   color,
   brushSize,
 }) => {
@@ -46,6 +49,7 @@ const DrawingOptions: FC<DrawingOptionsProps> = ({
               onClick={() => onColorChange(c)}
             />
           ))}
+          <LiaUndoAltSolid onClick={onUndo} className="pallet-icon pallet-item" />
           <AiOutlineClear onClick={onClear} className="pallet-icon pallet-item" />
           <MdOutlineColorLens className="pallet-icon pallet-item" onClick={handleClick} />
           <BsEraser

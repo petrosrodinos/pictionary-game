@@ -60,7 +60,10 @@ const Chat: FC<ChatProps> = ({ socket, chat, currentUserIsPlaying }) => {
 
   return (
     <div className="chat-container">
-      <div className="messages-container">
+      <div
+        style={{ maxHeight: `${currentUserIsPlaying ? "600px" : "500px"}` }}
+        className="messages-container"
+      >
         {messages?.map((msg, index) => (
           <MessageBox
             key={index}
