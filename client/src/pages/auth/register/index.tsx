@@ -111,7 +111,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
             return;
           }
           logIn({
-            userId: data.id,
+            userId: data._id,
             username: data.username,
             token: data.token,
             role: data.role,

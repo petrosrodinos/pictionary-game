@@ -46,9 +46,8 @@ const Login: FC = () => {
       {
         onSuccess: (data: any) => {
           if (data?.token) {
-            console.log("role", data.role);
             logIn({
-              userId: data.id,
+              userId: data._id,
               username: data.username,
               token: data.token,
               level: data.level,
