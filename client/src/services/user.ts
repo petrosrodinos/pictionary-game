@@ -32,7 +32,6 @@ export const registerUser = async (paylaod: NewUser): Promise<any> => {
 export const updateUser = async (payload: UserToUpdate): Promise<any> => {
   try {
     const result = await axios.put(`${API_URL}user/${payload.userId}`, payload, getConfig());
-    console.log("result", result.data);
     return result.data;
   } catch (err: any) {
     console.log("err", err);

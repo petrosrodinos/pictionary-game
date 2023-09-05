@@ -103,12 +103,9 @@ socket.on("connection", (socket: any) => {
         socket.in(code).emit("game-started", room);
         socket.emit("game-started", room);
         //starts timer for choosing word and emit event when time is up
-        // startChoosingWord(room, socket, code);
         room.status = Statuses.SELECTING_WORD;
         room.message = "";
         //starts timer for choosing word and emit event when time is up
-        // choosingWordTimer = setTimeout(() => {
-        // clearTimeout(rooms[code].choosingWordInterval);
         timers[code].choosingWord = setTimeout(() => {
           const nextRound = room.round + 1;
 
@@ -116,7 +113,6 @@ socket.on("connection", (socket: any) => {
             nextRound > findConnectedUsersLength(room.players) &&
             room.status !== Statuses.FINISHED
           ) {
-            // clearTimeout(roundTimer);
             clearTimeout(timers[code].round);
             room.status = Statuses.FINISHED;
             socket.emit("game-finished", room);
@@ -127,7 +123,6 @@ socket.on("connection", (socket: any) => {
             room.currentArtist = findNextArtist(room.players, room.round);
             socket.emit("choosing-word-time-finished", room);
             socket.in(code).emit("choosing-word-time-finished", room);
-            // startChoosingWord(room, socket, code);
           }
         }, room.choosingWordTime);
       });
@@ -136,7 +131,6 @@ socket.on("connection", (socket: any) => {
           delete rooms[code];
         } else if (room.status == Statuses.WAITING_ROOM) {
           console.log("disconnect", code);
-          // room.players = room.players.filter((u) => u.userId !== user.userId);
           room.players = room.players.map((u) => {
             if (u.userId === user.userId) {
               u.connected = false;
@@ -173,7 +167,6 @@ socket.on("connection", (socket: any) => {
     console.log("join-room", code);
     socket.join(code);
     socket.emit("send-info", room);
-    // socket.in(code).emit("send-info", room);
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       if (data == null) {
@@ -198,7 +191,6 @@ socket.on("connection", (socket: any) => {
       socket.emit("word-changed", room);
       socket.in(code).emit("word-changed", room);
       //starts timer for round and emit event when time is up
-      // roundTimer = setTimeout(() => {
       timers[code].round = setTimeout(() => {
         room.lastWord = room.word;
         startNextRound(room, socket, code);
@@ -225,7 +217,7 @@ socket.on("connection", (socket: any) => {
         room.status !== Statuses.FINISHED
       ) {
         clearTimeout(timers[code].choosingWord);
-        clearTimeout(timers[code].choosingWord);
+        clearTimeout(timers[code].round);
         room.message = "Looks like game is finished";
         room.status = Statuses.FINISHED;
         socket.in(code).emit("all-users-left", room);
@@ -280,6 +272,8 @@ function startNextRound(room: Room, socket: any, code: string) {
     room.status = Statuses.FINISHED;
     socket.emit("game-finished", room);
     socket.in(code).emit("game-finished", room);
+    clearTimeout(timers[code].choosingWord);
+    clearTimeout(timers[code].round);
     delete rooms[code];
     return;
   }
