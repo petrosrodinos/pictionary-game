@@ -24,8 +24,6 @@ const Home: FC = () => {
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
 
-  const CreateRoomComp = lazy(() => import("./CreateRoom"));
-
   //useEffect detects for searchParams change and opens the waiting room modal
   useEffect(() => {
     const waitingRoom = searchParams.get("room");
