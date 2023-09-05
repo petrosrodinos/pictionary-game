@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Spinner from "./components/ui/Spinner/index.tsx";
+import { Analytics } from "@vercel/analytics/react";
 import "react-toastify/dist/ReactToastify.css";
 import "./utils/i18n";
 import "./main.scss";
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Suspense fallback={<Spinner loading={true} />}>
       <QueryClientProvider client={queryClient}>
         <App />
+        <Analytics />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Suspense>

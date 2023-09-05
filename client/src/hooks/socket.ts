@@ -8,6 +8,8 @@ export const useSocket = () => {
     const s = io(`${API_BASE_URL}`);
     setSocket(s);
 
+    console.log("socket", s);
+
     return () => {
       s.disconnect();
     };

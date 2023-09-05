@@ -4,24 +4,14 @@
 
 ```sh
 cd client
-npm install --legacy-peer-devs
+npm install --force
 npm run dev
 ```
 
 # server
 
-### first time
-
 ```sh
-cd server
-npx prisma generate
-npx prisma db push
-npm run dev
-```
-
-### other times
-
-```sh
-cd server
+cd api
+npm install
 npm run dev
 ```

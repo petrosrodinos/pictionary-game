@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, lazy } from "react";
 import RoomActions from "./RoomActions";
 import LeaderBoard from "./LeaderBoard";
 import RecentGames from "./RecentGames";
@@ -23,6 +23,8 @@ const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeModal, setActiveModal] = useState<ModalType>("");
   const { socket } = useSocket();
+
+  const CreateRoomComp = lazy(() => import("./CreateRoom"));
 
   //useEffect detects for searchParams change and opens the waiting room modal
   useEffect(() => {

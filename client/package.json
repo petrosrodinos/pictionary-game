@@ -16,6 +16,7 @@
     "@tensorflow/tfjs-core": "^4.10.0",
     "@types/i18next": "^13.0.0",
     "@types/react-i18next": "^8.1.0",
+    "@vercel/analytics": "^1.0.2",
     "axios": "^1.4.0",
     "handsfree": "^8.5.1",
     "handtrackjs": "^0.1.5",
