@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, lazy } from "react";
+import { FC, useState, useEffect } from "react";
 import RoomActions from "./RoomActions";
 import LeaderBoard from "./LeaderBoard";
 import RecentGames from "./RecentGames";
