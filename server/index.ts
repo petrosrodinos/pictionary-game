@@ -2,14 +2,13 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import { ConnectedUser, Message, Room, Statuses } from "./interfaces/room";
 import cors from "cors";
 import { Points, removeGreekAccents } from "./utils/game";
-const EventEmitter = require("events");
-const eventEmitter = new EventEmitter();
 const usersRoutes = require("./routes/users");
 const bodyParser = require("body-parser");
 const io = require("socket.io");
-
+const mongoose = require("mongoose");
 const app: Application = express();
 const http = require("http").Server(app);
+require("dotenv/config");
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -18,13 +17,11 @@ app.use(cors());
 
 app.use("/api", usersRoutes);
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  res.json({ message: "Hello world!" });
-});
-
 const PORT: number = Number(process.env.PORT) || 3000;
-http.listen(PORT, () => {
-  console.log(`Server running on Port: ${PORT}`);
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  http.listen(PORT, () => {
+    console.log(`Server running on Port: ${PORT}`);
+  });
 });
 
 const socket = io(http, {

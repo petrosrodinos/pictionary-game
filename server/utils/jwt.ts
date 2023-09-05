@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
+require("dotenv/config");
+
 const accessTokenSecret = process.env.JWT_SECRET;
 
 module.exports = {
