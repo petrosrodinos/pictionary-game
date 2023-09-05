@@ -46,6 +46,7 @@ const Login: FC = () => {
       {
         onSuccess: (data: any) => {
           if (data?.token) {
+            console.log("role", data.role);
             logIn({
               userId: data.id,
               username: data.username,
@@ -53,6 +54,7 @@ const Login: FC = () => {
               level: data.level,
               xp: data.xp,
               avatar: data.avatar,
+              role: data.role,
             });
             navigate("/home");
           } else {
