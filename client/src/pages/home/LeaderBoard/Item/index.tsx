@@ -12,7 +12,7 @@ interface LeaderBoardItemProps {
 
 const LeaderBoardItem: FC<LeaderBoardItemProps> = ({ item }) => {
   const { t } = useTranslation();
-  const totalPoints = item.level * POINTS_PER_LEVEL + item.xp;
+  const totalPoints = item.level == 1 ? item.xp : item.level * POINTS_PER_LEVEL + item.xp;
   return (
     <div className="leader-board-item">
       <span className="rank-container">
