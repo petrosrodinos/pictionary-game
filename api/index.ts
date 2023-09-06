@@ -26,8 +26,9 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 
 const socket = io(http, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN,
-    // origin: "*",
+    // origin: process.env.CLIENT_ORIGIN,
+    transports: ["websocket", "polling"],
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
