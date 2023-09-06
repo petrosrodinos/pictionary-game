@@ -30,6 +30,7 @@ const socket = io(http, {
     transports: ["polling"],
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
+    "Access-Control-Allow-Origin": "*",
   },
 });
 
