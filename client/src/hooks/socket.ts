@@ -6,7 +6,7 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<any>();
   useEffect(() => {
     const s = io(`${API_BASE_URL}`, {
-      transports: ["websocket", "polling"],
+      transports: ["polling"],
     });
     setSocket(s);
 
