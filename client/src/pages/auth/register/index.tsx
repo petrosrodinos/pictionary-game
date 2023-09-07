@@ -52,6 +52,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     reset,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<any>({
     resolver: yupResolver(isEditing ? EditProfileValidationSchema : RegisterValidationSchema),
     defaultValues: {
@@ -232,13 +233,13 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
       />
       {selectedOption == "upload" ? (
         <ImagePicker
-          value={values?.avatar}
+          value={getValues("avatar") || values?.avatar}
           onChange={handleAvatarChange}
           name="avatar"
           label={t("select-avatar")}
         />
       ) : (
-        <SelectAvatar value={values?.avatar} onChange={handleAvatarChange} />
+        <SelectAvatar value={getValues("avatar") || values?.avatar} onChange={handleAvatarChange} />
       )}
       <Button
         type="submit"
