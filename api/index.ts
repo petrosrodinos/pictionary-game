@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors());
 
-app.use("/test", (res: Response) => {
+app.use("/test", (req: Request, res: Response, next: NextFunction) => {
   res.send("Hello World");
 });
 

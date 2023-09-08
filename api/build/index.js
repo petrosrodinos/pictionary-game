@@ -26,6 +26,9 @@ require("dotenv/config");
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use((0, cors_1.default)());
+app.use("/test", (res) => {
+    res.send("Hello World");
+});
 app.use("/api", usersRoutes);
 const PORT = Number(process.env.PORT) || 3000;
 mongoose.connect(process.env.MONGO_URI).then(() => {
