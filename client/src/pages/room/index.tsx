@@ -16,6 +16,7 @@ import { RoomInfo } from "../../interfaces/typing";
 import { useSound } from "../../hooks/sound";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
+import Spinner from "../../components/ui/Spinner";
 
 const Room: FC = () => {
   const { t } = useTranslation();
@@ -24,6 +25,7 @@ const Room: FC = () => {
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({} as RoomInfo);
   const [activeModal, setActiveModal] = useState<keyof typeof ModalComponents | "">();
   const [message, setMessage] = useState<string | null>();
+  const [joining, setJoining] = useState<boolean>(false);
   const { socket } = useSocket();
   const { play } = useSound();
   const navigate = useNavigate();
@@ -35,7 +37,11 @@ const Room: FC = () => {
       avatar,
       level,
     };
+    setJoining(true);
     socket?.emit("join-room", roomId, joinedUser);
+    setTimeout(() => {
+      setJoining(false);
+    }, 2000);
   }, [socket, roomId]);
 
   useEffect(() => {
@@ -63,6 +69,7 @@ const Room: FC = () => {
   }, [socket]);
 
   const handleInfoSended = (roomInfo: RoomInfo) => {
+    setJoining(false);
     if (!roomInfo) return;
     if (roomInfo.status == "waiting-room") {
       navigate(`/home?room=${roomInfo.code}`);
@@ -201,8 +208,15 @@ const Room: FC = () => {
           </Container>
         </>
       ) : (
-        <Modal title={message ? message : t("no-room-found")} isOpen={true}>
-          <NoRoom />
+        <Modal
+          title={message ? message : joining ? t("search-for-room") : t("no-room-found")}
+          isOpen={true}
+        >
+          {joining ? (
+            <Spinner style={{ padding: "20px", overflow: "hidden" }} loading={joining} />
+          ) : (
+            <NoRoom />
+          )}
         </Modal>
       )}
     </>

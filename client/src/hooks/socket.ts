@@ -5,12 +5,8 @@ import { API_BASE_URL } from "../constants";
 export const useSocket = () => {
   const [socket, setSocket] = useState<any>();
   useEffect(() => {
-    const s = io(`${API_BASE_URL}`, {
-      transports: ["polling"],
-    });
+    const s = io(`${API_BASE_URL}`, {});
     setSocket(s);
-
-    console.log("socket", s);
 
     return () => {
       s.disconnect();

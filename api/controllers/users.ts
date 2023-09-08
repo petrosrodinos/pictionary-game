@@ -139,11 +139,12 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
       dataToUpdate.password = hashedPassword;
     }
     if (game) {
-      dataToUpdate.games = {
-        ...dataToUpdate.games,
-        points: game.points,
-        rank: game.rank,
-        date: new Date(),
+      dataToUpdate.$push = {
+        games: {
+          points: game.points,
+          rank: game.rank,
+          date: new Date(),
+        },
       };
     }
 
