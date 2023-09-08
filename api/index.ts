@@ -30,9 +30,8 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 
 const socket = io(http, {
   cors: {
-    // origin: process.env.CLIENT_ORIGIN,
-    // transports: ["polling"],
-    origin: "*",
+    origin: process.env.CLIENT_ORIGIN,
+    // origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     "Access-Control-Allow-Origin": "*",
   },
@@ -217,11 +216,7 @@ socket.on("connection", (socket: any) => {
         room.status
       );
 
-      if (
-        findConnectedUsersLength(room.players) === 1 &&
-        room.maxPlayers > 2 &&
-        room.status !== Statuses.FINISHED
-      ) {
+      if (findConnectedUsersLength(room.players) === 1 && room.status !== Statuses.FINISHED) {
         clearTimeout(timers[code].choosingWord);
         clearTimeout(timers[code].round);
         room.message = "Looks like game is finished";
@@ -241,6 +236,7 @@ socket.on("connection", (socket: any) => {
         room.status = Statuses.SELECTING_WORD;
         room.message = "Artist left the game";
         socket.in(code).emit("round-finished", room);
+        clearTimeout(timers[code].round);
         startChoosingWord(room, socket, code);
       }
     });

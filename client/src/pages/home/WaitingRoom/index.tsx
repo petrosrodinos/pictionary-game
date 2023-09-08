@@ -13,18 +13,19 @@ import { STARTING_TIME_IN_SECONDS } from "../../../constants/game";
 import { RoomInfo as RoomInfoInt } from "../../../interfaces/typing";
 import { useSound } from "../../../hooks/sound";
 import { useTranslation } from "react-i18next";
+import Spinner from "../../../components/ui/Spinner";
 import "./style.scss";
-import { CLIENT_URL } from "../../../constants";
 
 interface WaitingRoomProps {}
 
 const WaitingRoom: FC<WaitingRoomProps> = () => {
-  const { t } = useTranslation();
   const { play } = useSound();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfoInt>();
+  const [joining, setJoining] = useState(false);
   const [searchParams, _] = useSearchParams();
   const { socket } = useSocket();
 
@@ -51,12 +52,16 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
       avatar,
       level,
     };
-    navigator.clipboard.writeText(`${CLIENT_URL}home?room=${waitingRoom}`);
+    setJoining(true);
     socket?.emit("join-waiting-room", waitingRoom, joinedUser);
+    setTimeout(() => {
+      setJoining(false);
+    }, 2000);
   }, [socket, searchParams]);
 
   const handleUserJoined = (roomInfo: RoomInfoInt) => {
     console.log("user-joined", roomInfo);
+    setJoining(false);
     play("enter-waiting-room");
     setRoomInfo(roomInfo);
   };
@@ -108,7 +113,9 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
           )}
         </>
       ) : (
-        <Typography variant="sub-header-main">{t("room-doest-exist")}</Typography>
+        <Typography variant="sub-header-main">
+          {joining ? <Spinner loading={joining} /> : t("room-doest-exist")}
+        </Typography>
       )}
     </div>
   );
