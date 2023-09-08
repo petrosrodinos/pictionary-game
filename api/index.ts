@@ -15,6 +15,10 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors());
 
+app.use("/test", (res: Response) => {
+  res.send("Hello World");
+});
+
 app.use("/api", usersRoutes);
 
 const PORT: number = Number(process.env.PORT) || 3000;
