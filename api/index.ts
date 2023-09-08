@@ -178,7 +178,7 @@ socket.on("connection", (socket: any) => {
         room.drawings = "";
       }
       // socket.in(code).emit("receive-changes", data);
-      socket.broadcast.to(code).emit("receive-changes", data);
+      socket.to(code).emit("receive-changes", data);
       if (data) {
         room.drawings = data;
       }

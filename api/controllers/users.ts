@@ -108,9 +108,12 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
       message: "You are not authorized",
     });
   }
+  const user = await User.findById(id);
 
-  if (password) {
-    hashedPassword = bcrypt.hashSync(password, 8);
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
   }
 
   try {
@@ -127,36 +130,26 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
       }
     }
 
-    let dataToUpdate: any = {
-      username,
-      role,
-      age,
-      avatar: avatarUrl,
-      level,
-      xp,
-    };
-    if (hashedPassword) {
-      dataToUpdate.password = hashedPassword;
+    user.username = username;
+    user.role = role;
+    user.age = age;
+    user.avatar = avatarUrl;
+    user.level = level;
+    user.xp = xp;
+
+    if (password) {
+      user.password = bcrypt.hashSync(password, 8);
     }
+
     if (game) {
-      dataToUpdate.$push = {
-        games: {
-          points: game.points,
-          rank: game.rank,
-          date: new Date(),
-        },
-      };
-    }
-
-    const user = await User.findByIdAndUpdate(id, dataToUpdate, {
-      new: true,
-    });
-
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
+      user.games.push({
+        points: game.points,
+        rank: game.rank,
+        date: new Date(),
       });
     }
+
+    user.save();
 
     const { password: _, ...userWithoutPassword } = exclude(user.toObject(), "password");
 

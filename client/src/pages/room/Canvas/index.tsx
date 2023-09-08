@@ -3,6 +3,7 @@ import Typography from "../../../components/ui/Typography";
 import DrawingOptions from "./DrawingOptions";
 import { useTranslation } from "react-i18next";
 import CanvasDraw from "react-canvas-draw";
+import { BrushSizes } from "../../../constants/game";
 import "./style.scss";
 
 interface CanvasProps {
@@ -16,7 +17,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const ref = useRef<any>(null);
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
-  const [lineWidth, setLineWidth] = useState<number>(5);
+  const [lineWidth, setLineWidth] = useState<number>(BrushSizes[0]);
   // const [saveData, setSaveData] = useState<any>(null);
   // const [canvasWidth, setCanvasWidth] = useState<number>(700);
   // const [canvasHeight, setCanvasHeight] = useState<number>(600);
@@ -40,6 +41,10 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   // }, []);
 
   useEffect(() => {
+    ref.current?.clear();
+  }, []);
+
+  useEffect(() => {
     if (!canvasData || canvasData.length == 0) {
       ref.current?.clear();
     } else {
@@ -53,7 +58,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       if (data == null) {
         ref.current?.clear();
       } else {
-        console.log("data");
         // setSaveData(data);
         ref.current?.loadSaveData(data, true);
       }
@@ -63,7 +67,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
     return () => {
       socket?.off("receive-changes", handler);
     };
-  }, [socket]);
+  }, [socket, currentUserIsPlaying]);
 
   const clearCanvas = () => {
     ref.current?.clear();
@@ -71,7 +75,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   };
 
   const handleChange = (canvas: any) => {
-    if (!currentUserIsPlaying) return;
+    // if (!currentUserIsPlaying) return;
     const data = canvas?.getSaveData();
     console.log(JSON.parse(data));
     socket?.emit("send-changes", data);
@@ -102,19 +106,34 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           />
         </>
       )}
-      <CanvasDraw
-        ref={ref}
-        // saveData={saveData}
-        hideGrid={!currentUserIsPlaying}
-        disabled={!currentUserIsPlaying}
-        brushRadius={lineWidth}
-        backgroundColor="white"
-        brushColor={color}
-        className="canvas"
-        canvasWidth={700}
-        canvasHeight={600}
-        onChange={handleChange}
-      />
+      {/*fucking possible bug on the component */}
+      {currentUserIsPlaying ? (
+        <CanvasDraw
+          ref={ref}
+          // saveData={saveData}
+          hideGrid={true}
+          brushRadius={lineWidth}
+          backgroundColor="white"
+          brushColor={color}
+          className="canvas"
+          canvasWidth={700}
+          canvasHeight={600}
+          onChange={handleChange}
+        />
+      ) : (
+        <CanvasDraw
+          ref={ref}
+          // saveData={saveData}
+          catenaryColor="white"
+          disabled={true}
+          hideGrid={true}
+          brushRadius={0}
+          backgroundColor="white"
+          className="canvas"
+          canvasWidth={700}
+          canvasHeight={600}
+        />
+      )}
     </div>
   );
 };

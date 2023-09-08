@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import Typography from "../Typography";
 import "./style.scss";
 
@@ -37,6 +37,12 @@ const DatePicker: FC<DatePickerProps> = ({
   label,
 }) => {
   const [dateValue, setDateValue] = useState(getDate(value));
+
+  useEffect(() => {
+    if (value) {
+      setDateValue(getDate(value));
+    }
+  }, [value]);
 
   const handleDateChange = (event: any) => {
     setDateValue(event.target.value);
