@@ -26,6 +26,7 @@ export interface Room {
   difficalty: string;
   chat: Message[];
   usersFoundWordOrder: string[];
+  language: string;
 }
 
 export type Status =
@@ -43,6 +44,7 @@ export interface ConnectedUser {
   level: number;
   points: number;
   connected: boolean;
+  language: string;
 }
 
 export interface Message {

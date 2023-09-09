@@ -15,7 +15,9 @@ import { GameSettings as GameSettingsInt } from "../../../interfaces/typing";
 import GameSettings from "./GameSettings";
 import Copable from "../../../components/ui/Copable";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import "./style.scss";
+import Toast from "../../../components/ui/Toast";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -23,7 +25,7 @@ interface CreateRoomProps {
 }
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [settings, setSettings] = useState<GameSettingsInt>({
     maxPlayers: PLAYERS_IN_ROOM,
     roundTime: ROUND_TIME_IN_SECONDS,
@@ -31,6 +33,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
     category: CATEGORIES[0],
     difficalty: Difficalty.EASY,
     code: createRoomCode(),
+    language: i18n.language,
   });
 
   const handleSettingsChanged = ({ name, value }: { name: string; value: string | number }) => {
@@ -47,7 +50,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       !settings.roundTime ||
       !settings.maxPlayers
     )
-      return alert(t("fill-out-all-fields"));
+      return toast.warn(t("fill-out-all-fields"));
 
     onCreate({
       ...settings,
@@ -59,6 +62,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
 
   return (
     <div className="create-room-container">
+      <Toast />
       <Typography variant="text-accent" className="text-primary-label">
         {t("play-with-friends")}
       </Typography>

@@ -60,6 +60,7 @@ interface GameSettings {
   category: string;
   code: string;
   difficalty: DifficaltyType;
+  language: string;
 }
 
 interface RoomInfo extends GameSettings {

@@ -21,12 +21,13 @@ interface WaitingRoomProps {}
 const WaitingRoom: FC<WaitingRoomProps> = () => {
   const { play } = useSound();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { countDownInSeconds, startCountDown } = useTimer(null, startGame);
   const { userId, username, avatar, level } = authStore((state) => state);
   const [roomInfo, setRoomInfo] = useState<RoomInfoInt>();
   const [joining, setJoining] = useState(false);
   const [searchParams, _] = useSearchParams();
+  const [differentLanguage, setDifferentLanguage] = useState<string>("");
   const { socket } = useSocket();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
       username,
       avatar,
       level,
+      language: i18n.language,
     };
     setJoining(true);
     socket?.emit("join-waiting-room", waitingRoom, joinedUser);
@@ -62,6 +64,10 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
   const handleUserJoined = (roomInfo: RoomInfoInt) => {
     console.log("user-joined", roomInfo);
     setJoining(false);
+    if (roomInfo.language !== i18n.language) {
+      setDifferentLanguage(roomInfo.language);
+      return;
+    }
     play("enter-waiting-room");
     setRoomInfo(roomInfo);
   };
@@ -114,7 +120,15 @@ const WaitingRoom: FC<WaitingRoomProps> = () => {
         </>
       ) : (
         <Typography variant="sub-header-main">
-          {joining ? <Spinner loading={joining} /> : t("room-doest-exist")}
+          {joining ? (
+            <Spinner loading={joining} />
+          ) : differentLanguage ? (
+            <span style={{ alignSelf: "center" }}>
+              {t("different-language", { language: t(differentLanguage) })}
+            </span>
+          ) : (
+            t("room-doest-exist")
+          )}
         </Typography>
       )}
     </div>
