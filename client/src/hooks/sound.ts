@@ -33,11 +33,17 @@ export const sounds: Record<SoundKey, string> = {
 
 export const useSound = () => {
   const { disabledSound, volume } = configStore((state) => state.config);
+  const { config: storeConfig, setConfig } = configStore((state) => state);
 
   const play = (sound: SoundKey, config: { loop: boolean } = { loop: false }) => {
     if (disabledSound) return;
     const audio = new Audio(sounds[sound]);
-    audio.volume = volume;
+    if (volume > 1) {
+      audio.volume = volume / 100;
+      setConfig({ ...storeConfig, volume: volume / 100 });
+    } else {
+      audio.volume = volume;
+    }
     audio.loop = config.loop;
     audio.play();
     return () => audio.pause();

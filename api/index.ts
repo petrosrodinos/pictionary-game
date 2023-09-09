@@ -30,8 +30,8 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 
 const socket = io(http, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN,
-    // origin: "*",
+    // origin: process.env.CLIENT_ORIGIN,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     "Access-Control-Allow-Origin": "*",
   },
@@ -66,21 +66,27 @@ socket.on("connection", (socket: any) => {
   //join waiting room
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
     let room = rooms[code];
+    console.log("ROOM", room);
     if (room) {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       //checks if user is already in room
-      socket.join(code);
       if (room.status == Statuses.WAITING_ROOM || room.status == Statuses.CREATED) {
         room.status = Statuses.WAITING_ROOM;
       }
       const playerToJoin = room.players.find((u) => u.userId === user.userId);
       if (!playerToJoin && room.players.length < room.maxPlayers) {
-        console.log("join-waiting-room", code);
-        room.players.push({
-          ...user,
-          points: 0,
-          connected: true,
-        });
+        console.log("join-waiting-room", code, user.username);
+        if (user.language == room.language) {
+          room.players.push({
+            ...user,
+            points: 0,
+            connected: true,
+          });
+          socket.join(code);
+        } else {
+          socket.emit("user-joined", room);
+          return;
+        }
         socket.in(code).emit("user-joined", room);
         socket.emit("user-joined", room);
       } else if (playerToJoin && !playerToJoin?.connected) {
@@ -216,7 +222,7 @@ socket.on("connection", (socket: any) => {
         room.status
       );
 
-      if (findConnectedUsersLength(room.players) === 1 && room.status !== Statuses.FINISHED) {
+      if (findConnectedUsersLength(room.players) == 1 && room.status !== Statuses.FINISHED) {
         clearTimeout(timers[code].choosingWord);
         clearTimeout(timers[code].round);
         room.message = "Looks like game is finished";

@@ -106,7 +106,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           />
         </>
       )}
-      {/*fucking possible bug on the component */}
+      {/*fucking bug on the component so i am doing it that way */}
       {currentUserIsPlaying ? (
         <CanvasDraw
           ref={ref}
