@@ -21,7 +21,7 @@ const Chat: FC<ChatProps> = ({ socket, chat, currentUserIsPlaying }) => {
   const [messages, setMessages] = useState<Message[]>();
 
   const sendData = () => {
-    if (!message) return;
+    if (!message || message.length > 20) return;
     socket?.emit("game-input-message", {
       message,
       username,
