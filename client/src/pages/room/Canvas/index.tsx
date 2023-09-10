@@ -4,7 +4,15 @@ import DrawingOptions from "./DrawingOptions";
 import { useTranslation } from "react-i18next";
 import CanvasDraw from "react-canvas-draw";
 import { BrushSizes } from "../../../constants/game";
+import * as handTrack from "handtrackjs";
 import "./style.scss";
+
+const modelParams = {
+  flipHorizontal: true,
+  maxNumBoxes: 1,
+  iouThreshold: 0.5,
+  scoreThreshold: 0.7,
+};
 
 interface CanvasProps {
   word: string;
@@ -18,6 +26,9 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(BrushSizes[0]);
+  const videoRef = useRef<any>(null);
+  let isDrawing = false;
+  let model: any = null;
   // const [saveData, setSaveData] = useState<any>(null);
   // const [canvasWidth, setCanvasWidth] = useState<number>(700);
   // const [canvasHeight, setCanvasHeight] = useState<number>(600);
@@ -37,6 +48,44 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
 
   //   return () => {
   //     window.removeEventListener("resize", updateCanvasSize);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const video = videoRef.current;
+  //   const canvas: any = ref.current;
+  //   if (!canvas) return;
+  //   const context = canvas.getContext("2d");
+
+  //   handTrack.load(modelParams).then((loadedModel: any) => {
+  //     model = loadedModel;
+
+  //     handTrack.startVideo(video).then((status: any) => {
+  //       if (status) {
+  //         const drawLoop = () => {
+  //           model.detect(video).then((predictions: any) => {
+  //             if (predictions.length > 0) {
+  //               const hand = predictions[0].bbox;
+  //               const [x, y, width, height] = hand;
+  //               console.log("x", x, "y", y, width, height);
+  //               // drawPixel({ x: x + width / 2, y: y + height / 2 });
+  //             } else {
+  //               isDrawing = false;
+  //             }
+  //             requestAnimationFrame(drawLoop);
+  //           });
+  //         };
+
+  //         drawLoop();
+  //       }
+  //     });
+  //   });
+
+  //   return () => {
+  //     if (video && video.srcObject) {
+  //       video.pause();
+  //       video.srcObject.getTracks().forEach((track: any) => track.stop());
+  //     }
   //   };
   // }, []);
 
@@ -107,6 +156,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
         </>
       )}
       {/*fucking bug on the component so i am doing it that way */}
+      <video ref={videoRef} width="1030" height="900" style={{ display: "none" }}></video>
       {currentUserIsPlaying ? (
         <CanvasDraw
           ref={ref}
