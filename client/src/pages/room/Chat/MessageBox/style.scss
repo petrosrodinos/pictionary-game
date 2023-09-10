@@ -8,6 +8,7 @@
   word-break: break-all;
   img {
     align-self: center;
+    justify-self: center;
   }
 }
 
@@ -27,4 +28,14 @@
 
 .message-box-username {
   color: var(--text-secondary-light);
+}
+
+@media (max-width: 700px) {
+  .message-box {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

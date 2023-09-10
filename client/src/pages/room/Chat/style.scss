@@ -4,7 +4,9 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
-  width: 400px;
+  width: 225px;
+  width: 100%;
+  // border: 1px solid red;
 }
 
 .messages-container {
@@ -28,9 +30,9 @@
   color: white;
 }
 
-// @media (max-width: 768px) {
-//   .chat-container {
-//     margin-top: 20px;
-//     max-width: 100%;
-//   }
-// }
+@media (max-width: 700px) {
+  .chat-container {
+    overflow: hidden;
+    width: 700px;
+  }
+}
