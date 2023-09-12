@@ -21,15 +21,31 @@ interface CanvasProps {
   canvasData: any[];
 }
 
+type Point = {
+  x: number;
+  y: number;
+};
+
+type Line = {
+  brushColor: string;
+  brushRadius: number;
+  points: Point[];
+};
+
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
   const ref = useRef<any>(null);
   const { t } = useTranslation();
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(BrushSizes[0]);
+  const [fingerDrawing, setFingerDrawing] = useState<boolean>(false);
+  const currentLine = useRef<Line>({
+    brushColor: color,
+    brushRadius: lineWidth,
+    points: [],
+  });
   const videoRef = useRef<any>(null);
   let isDrawing = false;
   let model: any = null;
-  // const [saveData, setSaveData] = useState<any>(null);
   // const [canvasWidth, setCanvasWidth] = useState<number>(700);
   // const [canvasHeight, setCanvasHeight] = useState<number>(600);
 
@@ -51,43 +67,97 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   //   };
   // }, []);
 
-  // useEffect(() => {
-  //   const video = videoRef.current;
-  //   const canvas: any = ref.current;
-  //   if (!canvas) return;
-  //   const context = canvas.getContext("2d");
+  useEffect(() => {
+    currentLine.current = {
+      ...currentLine.current,
+      brushColor: color,
+      brushRadius: lineWidth,
+    };
+  }, [color, lineWidth]);
 
-  //   handTrack.load(modelParams).then((loadedModel: any) => {
-  //     model = loadedModel;
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!fingerDrawing) {
+      if (video && video.srcObject) {
+        video.pause();
+        video.srcObject.getTracks().forEach((track: any) => track.stop());
+      }
+      return;
+    }
+    const canvas: any = ref.current;
+    if (!canvas || !video) return;
 
-  //     handTrack.startVideo(video).then((status: any) => {
-  //       if (status) {
-  //         const drawLoop = () => {
-  //           model.detect(video).then((predictions: any) => {
-  //             if (predictions.length > 0) {
-  //               const hand = predictions[0].bbox;
-  //               const [x, y, width, height] = hand;
-  //               console.log("x", x, "y", y, width, height);
-  //               // drawPixel({ x: x + width / 2, y: y + height / 2 });
-  //             } else {
-  //               isDrawing = false;
-  //             }
-  //             requestAnimationFrame(drawLoop);
-  //           });
-  //         };
+    handTrack.load(modelParams).then((model: any) => {
+      handTrack.startVideo(video).then((status: any) => {
+        if (status) {
+          const drawLoop = () => {
+            model.detect(video).then((predictions: any) => {
+              if (predictions.length > 0) {
+                const hand = predictions[0].bbox;
+                const [x, y, width, height] = hand;
+                if (height < 500) {
+                  isDrawing = true;
+                  console.log(x + width / 2, y + height / 2);
+                  currentLine.current = {
+                    ...currentLine.current,
+                    points: [
+                      ...currentLine.current.points,
+                      { x: x + width / 2, y: y + height / 2 },
+                    ],
+                  };
+                  // const existingData = JSON.parse(ref.current.getSaveData());
+                  // existingData.lines.push(currentLine.current);
+                  // ref.current.loadSaveData(JSON.stringify(existingData));
+                } else {
+                  if (isDrawing) {
+                    isDrawing = false;
+                    const existingData = JSON.parse(ref.current.getSaveData());
+                    existingData.lines.push(currentLine.current);
+                    ref.current.loadSaveData(JSON.stringify(existingData));
 
-  //         drawLoop();
-  //       }
-  //     });
-  //   });
+                    currentLine.current = {
+                      brushColor: color,
+                      brushRadius: lineWidth,
+                      points: [],
+                    };
 
-  //   return () => {
-  //     if (video && video.srcObject) {
-  //       video.pause();
-  //       video.srcObject.getTracks().forEach((track: any) => track.stop());
-  //     }
-  //   };
-  // }, []);
+                    // socket?.emit("send-changes", existingData);
+                  }
+                }
+              } else {
+                if (isDrawing) {
+                  isDrawing = false;
+
+                  const existingData = JSON.parse(ref.current.getSaveData());
+                  existingData.lines.push(currentLine.current);
+                  // ref.current.loadSaveData(JSON.stringify(existingData));
+
+                  currentLine.current = {
+                    brushColor: color,
+                    brushRadius: lineWidth,
+                    points: [],
+                  };
+
+                  // socket?.emit("send-changes", existingData);
+                }
+              }
+            });
+
+            requestAnimationFrame(drawLoop);
+          };
+
+          drawLoop();
+        }
+      });
+    });
+
+    return () => {
+      if (video && video.srcObject) {
+        video.pause();
+        video.srcObject.getTracks().forEach((track: any) => track.stop());
+      }
+    };
+  }, [fingerDrawing]);
 
   useEffect(() => {
     ref.current?.clear();
@@ -107,7 +177,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       if (data == null) {
         ref.current?.clear();
       } else {
-        // setSaveData(data);
         ref.current?.loadSaveData(data, true);
       }
     };
@@ -126,11 +195,13 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const handleChange = (canvas: any) => {
     // if (!currentUserIsPlaying) return;
     const data = canvas?.getSaveData();
-    console.log(JSON.parse(data));
+    // console.log(JSON.parse(data));
     socket?.emit("send-changes", data);
   };
 
-  const handleFingerDraw = () => {};
+  const handleFingerDraw = () => {
+    setFingerDrawing((prev) => !prev);
+  };
 
   return (
     <div className="canvas-panel-container">
@@ -156,11 +227,15 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
         </>
       )}
       {/*fucking bug on the component so i am doing it that way */}
-      <video ref={videoRef} width="1030" height="900" style={{ display: "none" }}></video>
+      <video
+        ref={videoRef}
+        width="1000"
+        height="1000"
+        style={{ position: "absolute", width: "100%", height: "100%" }}
+      ></video>
       {currentUserIsPlaying ? (
         <CanvasDraw
           ref={ref}
-          // saveData={saveData}
           hideGrid={true}
           brushRadius={lineWidth}
           backgroundColor="white"
@@ -173,7 +248,6 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
       ) : (
         <CanvasDraw
           ref={ref}
-          // saveData={saveData}
           catenaryColor="white"
           disabled={true}
           hideGrid={true}
@@ -182,6 +256,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
           className="canvas"
           canvasWidth={700}
           canvasHeight={600}
+          lazyRadius={0}
         />
       )}
     </div>
