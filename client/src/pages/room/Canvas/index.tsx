@@ -107,33 +107,19 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
         </>
       )}
       {/*fucking bug on the component so i am doing it that way */}
-      {currentUserIsPlaying ? (
-        <CanvasDraw
-          ref={ref}
-          // saveData={saveData}
-          hideGrid={true}
-          brushRadius={lineWidth}
-          backgroundColor="white"
-          brushColor={color}
-          className="canvas"
-          canvasWidth={700}
-          canvasHeight={600}
-          onChange={handleChange}
-        />
-      ) : (
-        <CanvasDraw
-          ref={ref}
-          // saveData={saveData}
-          catenaryColor="white"
-          disabled={true}
-          hideGrid={true}
-          brushRadius={0}
-          backgroundColor="white"
-          className="canvas"
-          canvasWidth={700}
-          canvasHeight={600}
-        />
-      )}
+      <CanvasDraw
+        ref={ref}
+        hideGrid={true}
+        brushRadius={currentUserIsPlaying ? lineWidth : 0}
+        backgroundColor="white"
+        brushColor={currentUserIsPlaying ? color : "white"}
+        className="canvas"
+        canvasWidth={700}
+        canvasHeight={600}
+        onChange={currentUserIsPlaying ? handleChange : undefined}
+        disabled={!currentUserIsPlaying}
+        catenaryColor={currentUserIsPlaying ? undefined : "white"}
+      />
     </div>
   );
 };

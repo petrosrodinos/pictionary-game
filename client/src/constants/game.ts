@@ -1,8 +1,8 @@
 export const PLAYERS_IN_ROOM = 2;
 export const MAX_PLAYERS_IN_ROOM = 10;
 export const MIN_PLAYERS_IN_ROOM = 2;
-export const ROUND_TIME_IN_SECONDS = 20000;
-export const MAX_ROUND_TIME_IN_SECONDS = 120000;
+export const ROUND_TIME_IN_SECONDS = 30;
+export const MAX_ROUND_TIME_IN_SECONDS = 120;
 export const MIN_ROUND_TIME_IN_SECONDS = 30;
 export const CHOOSING_WORD_TIME_IN_SECONDS = 10;
 export const MAX_CHOOSING_WORD_TIME_IN_SECONDS = 30;
