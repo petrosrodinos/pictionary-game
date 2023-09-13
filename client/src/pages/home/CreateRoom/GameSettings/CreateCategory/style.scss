@@ -1,0 +1,38 @@
+.create-category-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.add-category {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--fill-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--secondary-background-color-dark);
+  }
+}
+
+.category-field-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+  gap: 10px;
+
+  .category-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+}

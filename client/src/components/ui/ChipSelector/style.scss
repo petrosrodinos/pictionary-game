@@ -20,11 +20,15 @@
   cursor: pointer;
   box-shadow: 1px 1px 1px 1px var(--secondary-background-color-dark);
 
-  &:hover {
+  &:hover[disabled] {
     background-color: var(--secondary-background-color-dark);
   }
 }
 
 .selected-chip {
   background-color: var(--secondary-background-color-dark);
+}
+
+.disabled-chip {
+  cursor: not-allowed;
 }

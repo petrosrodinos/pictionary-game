@@ -3,12 +3,14 @@ import Typography from "../Typography";
 import { useTrail, animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
+import { CATEGORIES } from "../../../constants/game";
 
 interface ChipSelectorProps {
   chips: string[];
   name: string;
   value?: string;
   defaultValue?: boolean;
+  disabled?: boolean;
   onChange: (data: { name: string; value: string }) => void;
   style?: React.CSSProperties;
 }
@@ -18,6 +20,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   value,
   defaultValue,
   name,
+  disabled,
   onChange,
   style,
 }) => {
@@ -34,6 +37,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   }, [value]);
 
   const handleChange = (value: string) => {
+    if (disabled) return;
     setSelectedChip(value);
     onChange({
       name,
@@ -53,12 +57,16 @@ const ChipSelector: FC<ChipSelectorProps> = ({
         <animated.div
           key={index}
           style={props}
-          className={`chip-item ${selectedChip == chips[index] ? "selected-chip" : ""}`}
+          className={`chip-item ${disabled ? "disabled-chip" : ""} ${
+            selectedChip == chips[index] ? "selected-chip" : ""
+          }`}
           onClick={() => {
             handleChange(chips[index]);
           }}
         >
-          <Typography>{t(`${name}.${chips[index]}`)}</Typography>
+          <Typography>
+            {CATEGORIES.length > chips.length ? t(`${name}.${chips[index]}`) : chips[index]}
+          </Typography>
         </animated.div>
       ))}
     </div>

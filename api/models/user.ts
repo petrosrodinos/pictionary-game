@@ -16,6 +16,18 @@ const GameSchema = new Schema({
   },
 });
 
+const WordSchema = new Schema({
+  word: {
+    type: String,
+  },
+  category: {
+    type: String,
+  },
+  difficulty: {
+    type: String,
+  },
+});
+
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -45,6 +57,8 @@ const UserSchema = new Schema({
     type: String,
   },
   games: [GameSchema],
+  words: [WordSchema],
+  categories: [String],
 });
 
 const User = mongoose.model("User", UserSchema);

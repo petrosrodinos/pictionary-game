@@ -100,7 +100,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const updateUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { username, password, role, age, avatar, level, xp, game } = req.body;
+  const { username, password, role, age, avatar, level, xp, game, category } = req.body;
   let hashedPassword;
 
   if (req.userId !== id) {
@@ -145,6 +145,12 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
           rank: game.rank,
           date: new Date(),
         },
+      };
+    }
+
+    if (category) {
+      dataToUpdate.$push = {
+        categories: category,
       };
     }
 

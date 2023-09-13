@@ -16,8 +16,8 @@ import GameSettings from "./GameSettings";
 import Copable from "../../../components/ui/Copable";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import "./style.scss";
 import Toast from "../../../components/ui/Toast";
+import "./style.scss";
 
 interface CreateRoomProps {
   onCancel: () => void;
