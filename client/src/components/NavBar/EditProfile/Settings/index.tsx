@@ -29,10 +29,6 @@ const Preferences: FC = () => {
 
   return (
     <div className="preferences-container">
-      <Typography style={{ alignSelf: "center" }} variant="sub-header-main">
-        {t("preferences")}
-      </Typography>
-
       <div className="preferences-content">
         <div className="sound-item-container">
           <Typography variant="sub-header-main">{t("sound")}:</Typography>
