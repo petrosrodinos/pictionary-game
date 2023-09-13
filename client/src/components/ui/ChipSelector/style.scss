@@ -20,7 +20,7 @@
   cursor: pointer;
   box-shadow: 1px 1px 1px 1px var(--secondary-background-color-dark);
 
-  &:hover[disabled] {
+  &:hover:not(.disabled-chip) {
     background-color: var(--secondary-background-color-dark);
   }
 }

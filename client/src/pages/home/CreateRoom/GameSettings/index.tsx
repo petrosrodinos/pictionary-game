@@ -3,7 +3,7 @@ import Input from "../../../../components/ui/Input";
 import Typography from "../../../../components/ui/Typography";
 import {
   CATEGORIES,
-  Difficalty,
+  DifficaltyLevels,
   MAX_CHOOSING_WORD_TIME_IN_SECONDS,
   MAX_PLAYERS_IN_ROOM,
   MAX_ROUND_TIME_IN_SECONDS,
@@ -80,10 +80,9 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
       <ChipSelector
         defaultValue
         name="difficalty"
-        chips={Object.values(Difficalty)}
+        chips={DifficaltyLevels}
         onChange={handleChipChanged}
       />
-
       <Input
         label={t("max-players")}
         type="number"

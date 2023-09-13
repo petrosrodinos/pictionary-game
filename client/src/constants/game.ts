@@ -22,6 +22,8 @@ export const Difficalty = {
   HARD: "hard",
 } as const;
 
+export const DifficaltyLevels = Object.values(Difficalty);
+
 export const PalletColors = [
   "#000",
   "#fff",
