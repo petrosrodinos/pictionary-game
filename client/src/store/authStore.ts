@@ -9,6 +9,7 @@ interface AuthState {
   level: number;
   xp: number;
   avatar: string;
+  role: string;
   logOut: () => void;
   logIn: (payload: any) => void;
   updateProfile: (payload: any) => void;
@@ -22,6 +23,7 @@ const initialStateValues = {
   level: 0,
   xp: 0,
   avatar: "",
+  role: "",
 };
 
 export const authStore = create<AuthState>()(
@@ -43,6 +45,7 @@ export const authStore = create<AuthState>()(
             level: payload.level,
             xp: payload.xp,
             avatar: payload?.avatar,
+            role: payload.role,
           }),
         updateProfile: (payload: any) =>
           set((state) => ({
