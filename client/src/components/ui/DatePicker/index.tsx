@@ -13,18 +13,28 @@ interface DatePickerProps {
   max?: string;
 }
 
-const getDate = (date?: string): string => {
-  try {
-    if (date) {
-      const [day, month, year] = date.split("/");
-      const formattedDate = `${year}-${month}-${day}`;
-      return new Date(formattedDate).toISOString().slice(0, 10);
-    }
-    return new Date().toISOString().slice(0, 10);
-  } catch (e) {
-    return new Date().toISOString().slice(0, 10);
-  }
-};
+// const isValidDate = (d: Date) => {
+//   return d instanceof Date && !isNaN(d.getTime());
+// };
+
+// const getDate = (date?: string): string => {
+//   try {
+//     if (date) {
+//       const [day, month, year] = date.split("-");
+//       const formattedDate = `${year}-${month}-${day}`;
+//       const parsedDate = new Date(formattedDate);
+//       if (!isValidDate(parsedDate)) {
+//         console.error("Invalid date value:", date);
+//         return new Date().toISOString().slice(0, 10);
+//       }
+//       return parsedDate.toISOString().slice(0, 10);
+//     }
+//     return new Date().toISOString().slice(0, 10);
+//   } catch (e) {
+//     console.log(e);
+//     return new Date().toISOString().slice(0, 10);
+//   }
+// };
 
 const DatePicker: FC<DatePickerProps> = ({
   className = "",
@@ -36,17 +46,17 @@ const DatePicker: FC<DatePickerProps> = ({
   max,
   label,
 }) => {
-  const [dateValue, setDateValue] = useState(getDate(value));
+  const [dateValue, setDateValue] = useState("");
 
   useEffect(() => {
     if (value) {
-      setDateValue(getDate(value));
+      setDateValue(value);
     }
   }, [value]);
 
   const handleDateChange = (event: any) => {
     setDateValue(event.target.value);
-    onChange && onChange(event);
+    onChange?.(event);
   };
 
   return (
