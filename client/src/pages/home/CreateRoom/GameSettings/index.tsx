@@ -24,7 +24,7 @@ interface GameSettingsProps {
 }
 
 const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
-  const { role } = authStore((state) => state);
+  const { role, categories: newCategories } = authStore((state) => state);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
   const { t } = useTranslation();
 
@@ -60,6 +60,8 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
     return categories[categories.length - 1];
   }, [categories]);
 
+  const TotalCategories = [...categories, ...newCategories];
+
   return (
     <div className="settings-container">
       <Typography variant="header-main" className="settings-label">
@@ -72,7 +74,7 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         disabled={categories.length > CATEGORIES.length}
         value={selectedCategory}
         name="category"
-        chips={categories}
+        chips={TotalCategories}
         onChange={handleChipChanged}
       />
       {createCategoryRoles.includes(role) && (
