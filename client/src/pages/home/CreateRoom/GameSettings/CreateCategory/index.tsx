@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
-import "./style.scss";
 import Button from "../../../../../components/ui/Button";
 import { useMutation } from "react-query";
 import { UserToUpdate } from "../../../../../interfaces/typing";
@@ -10,6 +9,7 @@ import { authStore } from "../../../../../store/authStore";
 import TabMenu from "../../../../../components/ui/TabMenu";
 import { DifficaltyLevels } from "../../../../../constants/game";
 import ChipSelector from "../../../../../components/ui/ChipSelector";
+import "./style.scss";
 
 interface CreateCategoryProps {
   onCreateCategory: (e: any) => void;
@@ -112,6 +112,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory, onCancel })
               style={{ justifyContent: "unset" }}
               translate={false}
               chips={words[selectedTab]}
+              deletable
             />
             <div className="input-icon">
               <Input

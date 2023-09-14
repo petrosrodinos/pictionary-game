@@ -8,6 +8,7 @@
 }
 
 .chip-item {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -31,4 +32,21 @@
 
 .disabled-chip {
   cursor: not-allowed;
+}
+
+.deletable-chip {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: var(--secondary-background-color-dark);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -5px;
+  right: 5px;
+
+  &:hover {
+    background-color: var(--fill-primary);
+  }
 }

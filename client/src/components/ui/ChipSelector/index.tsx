@@ -3,6 +3,7 @@ import Typography from "../Typography";
 import { useTrail, animated } from "react-spring";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../../../constants/game";
+import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
 
 interface ChipSelectorProps {
@@ -12,6 +13,7 @@ interface ChipSelectorProps {
   defaultValue?: boolean;
   disabled?: boolean;
   translate?: boolean;
+  deletable?: boolean;
   onChange?: (data: { name: string; value: string }) => void;
   style?: React.CSSProperties;
 }
@@ -23,6 +25,7 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   name,
   disabled,
   translate = true,
+  deletable,
   onChange,
   style,
 }) => {
@@ -66,6 +69,11 @@ const ChipSelector: FC<ChipSelectorProps> = ({
             handleChange(chips[index]);
           }}
         >
+          {deletable && (
+            <span className="deletable-chip">
+              <AiOutlineClose />
+            </span>
+          )}
           <Typography>
             {CATEGORIES.length < chips.length
               ? index == chips.length - 1
