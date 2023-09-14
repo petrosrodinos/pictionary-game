@@ -16,7 +16,7 @@ interface CreateCategoryProps {
   onCancel: () => void;
 }
 
-interface Words {
+export interface AddedWords {
   [key: string]: string[];
 }
 
@@ -26,13 +26,13 @@ const defaultWords = DifficaltyLevels.map((item) => ({ [item]: [] })).reduce((ac
 }));
 
 const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory, onCancel }) => {
-  const { userId } = authStore((state) => state);
+  const { userId, updateProfile, words: newWords } = authStore((state) => state);
   const [word, setWord] = useState("");
   const [category, setCategory] = useState("");
   const [active, setActive] = useState(false);
   const [created, setCreated] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
-  const [words, setWords] = useState<Words>(defaultWords);
+  const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : defaultWords);
 
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
@@ -58,9 +58,9 @@ const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory, onCancel })
     createCategory(
       { category, words: JSON.stringify(words), userId },
       {
-        onSuccess: () => {
+        onSuccess: (data: any) => {
           setCreated(false);
-          onCreateCategory(category);
+          updateProfile({ words: data.words, categories: data.categories });
         },
         onError: () => {
           toggleActive();
@@ -78,7 +78,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory, onCancel })
   };
 
   const closeCreateCategory = () => {
-    setWords(defaultWords);
+    setWords(newWords ? JSON.parse(newWords) : defaultWords);
     setCreated(false);
     onCancel();
   };
