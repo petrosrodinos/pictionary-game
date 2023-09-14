@@ -59,3 +59,11 @@
   display: flex;
   gap: 10px;
 }
+
+.add-words-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  max-width: 50%;
+  margin: 0 auto;
+}

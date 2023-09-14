@@ -119,6 +119,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
             avatar: data.avatar,
             xp: data.xp,
             categories: data.categories,
+            words: data.words,
           });
           navigate("/home");
         },

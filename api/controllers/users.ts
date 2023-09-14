@@ -100,7 +100,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const updateUser = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { username, password, role, age, avatar, level, xp, game, category } = req.body;
+  const { username, password, role, age, avatar, level, xp, game, category, words } = req.body;
   let hashedPassword;
 
   if (req.userId !== id) {
@@ -134,6 +134,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
       avatar: avatarUrl,
       level,
       xp,
+      words,
     };
     if (hashedPassword) {
       dataToUpdate.password = hashedPassword;

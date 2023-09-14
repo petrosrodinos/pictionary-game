@@ -49,9 +49,13 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
     // });
   };
 
+  const handleCancelCreateCategory = () => {
+    setCategories((prev) => prev.slice(0, prev.length - 1));
+  };
+
   const selectedCategory = useMemo(() => {
     if (categories.length <= CATEGORIES.length) {
-      return "";
+      return categories[0];
     }
     return categories[categories.length - 1];
   }, [categories]);
@@ -65,14 +69,17 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
         {t("word-category")}
       </Typography>
       <ChipSelector
-        disabled={!!selectedCategory}
+        disabled={categories.length > CATEGORIES.length}
         value={selectedCategory}
         name="category"
         chips={categories}
         onChange={handleChipChanged}
       />
       {createCategoryRoles.includes(role) && (
-        <CreateCategory onCreateCategory={handleCreateCategory} />
+        <CreateCategory
+          onCancel={handleCancelCreateCategory}
+          onCreateCategory={handleCreateCategory}
+        />
       )}
       <Typography variant="text-main" className="category-label">
         {t("difficalty-label")}

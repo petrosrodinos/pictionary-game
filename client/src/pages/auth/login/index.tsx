@@ -55,6 +55,7 @@ const Login: FC = () => {
               avatar: data.avatar,
               role: data.role,
               categories: data.categories,
+              words: data.words,
             });
             navigate("/home");
           } else {

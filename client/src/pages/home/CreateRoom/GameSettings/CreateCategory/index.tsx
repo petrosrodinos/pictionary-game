@@ -9,69 +9,78 @@ import { updateUser } from "../../../../../services/user";
 import { authStore } from "../../../../../store/authStore";
 import TabMenu from "../../../../../components/ui/TabMenu";
 import { DifficaltyLevels } from "../../../../../constants/game";
-import Typography from "../../../../../components/ui/Typography";
 import ChipSelector from "../../../../../components/ui/ChipSelector";
 
 interface CreateCategoryProps {
   onCreateCategory: (e: any) => void;
+  onCancel: () => void;
 }
 
 interface Words {
   [key: string]: string[];
 }
 
-const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory }) => {
+const defaultWords = DifficaltyLevels.map((item) => ({ [item]: [] })).reduce((acc, item) => ({
+  ...acc,
+  ...item,
+}));
+
+const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory, onCancel }) => {
   const { userId } = authStore((state) => state);
-  const [value, setValue] = useState("");
+  const [word, setWord] = useState("");
+  const [category, setCategory] = useState("");
   const [active, setActive] = useState(false);
   const [created, setCreated] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
-  const [words, setWords] = useState<Words>(
-    DifficaltyLevels.map((item) => ({ [item]: [] })).reduce((acc, item) => ({ ...acc, ...item }))
-  );
+  const [words, setWords] = useState<Words>(defaultWords);
 
-  //   const { mutate: createCategory, isLoading } = useMutation(
-  //     (user: UserToUpdate) => {
-  //       return updateUser(user);
-  //     }
-  //   );
+  const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
+    return updateUser(user);
+  });
 
-  const toggleActive = () => {
-    setActive(!active);
-  };
-
-  const handleChange = (e: any) => {
-    setValue(e.target.value);
-  };
-
-  const handleCreate = () => {
-    if (!value || value.length > 20) return;
-    onCreateCategory(value);
-    setValue("");
+  const handleAddCategory = () => {
+    if (!category || category.length > 20) return;
+    onCreateCategory(category);
     toggleActive();
     setCreated(true);
-    // createCategory({ category,userId },{
-    //     onSuccess: () => {
-    //         toggleActive();
-    //         onCreateCategory(category);
-    //     },
-    //     onError: () => {
-    //         toggleActive();
-    //     }
-    // });
+  };
+
+  const handleAddWord = () => {
+    if (!word || word.length > 20) return;
+    setWords((prev) => ({
+      ...prev,
+      [selectedTab]: [...prev[selectedTab], word],
+    }));
+    setWord("");
+  };
+
+  const handleAddWords = () => {
+    createCategory(
+      { category, words: JSON.stringify(words), userId },
+      {
+        onSuccess: () => {
+          setCreated(false);
+          onCreateCategory(category);
+        },
+        onError: () => {
+          toggleActive();
+        },
+      }
+    );
   };
 
   const handleTabChange = (tab: { name: string; value: string }) => {
     setSelectedTab(tab.value);
   };
 
-  const handleAddWord = () => {
-    if (!value || value.length > 20) return;
-    setWords((prev) => ({
-      ...prev,
-      [selectedTab]: [...prev[selectedTab], value],
-    }));
-    setValue("");
+  const toggleActive = () => {
+    setActive(!active);
+  };
+
+  const closeCreateCategory = () => {
+    setWords(defaultWords);
+    setCreated(false);
+    onCancel();
   };
 
   const items = DifficaltyLevels.map((item) => {
@@ -83,9 +92,14 @@ const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory }) => {
       {!active && !created && <AddIcon onClick={toggleActive} />}
       {active && !created && (
         <div className="category-field-container">
-          <Input value={value} name="category" placeholder="Category" onChange={handleChange} />
+          <Input
+            value={category}
+            name="category"
+            placeholder="Category"
+            onChange={(e) => setCategory(e.target.value)}
+          />
           <div className="category-buttons">
-            <Button onClick={handleCreate} title="Create" />
+            <Button onClick={handleAddCategory} title="Create" />
             <Button onClick={toggleActive} title="Cancel" variant="secondary" />
           </div>
         </div>
@@ -102,13 +116,22 @@ const CreateCategory: FC<CreateCategoryProps> = ({ onCreateCategory }) => {
             <div className="input-icon">
               <Input
                 className="add-word-input"
-                placeholder={`word-${words[selectedTab].length + 1}`}
-                onChange={handleChange}
-                value={value}
+                placeholder={`word ${words[selectedTab].length + 1}`}
+                onChange={(e) => setWord(e.target.value)}
+                value={word}
                 name="word"
               />
               <AddIcon onClick={handleAddWord} />
             </div>
+          </div>
+          <div className="add-words-buttons">
+            <Button onClick={handleAddWords} title="Create" loading={isLoading} />
+            <Button
+              onClick={closeCreateCategory}
+              title="Cancel"
+              variant="secondary"
+              disabled={isLoading}
+            />
           </div>
         </div>
       )}
