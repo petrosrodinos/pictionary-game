@@ -14,7 +14,9 @@ interface ChipSelectorProps {
   disabled?: boolean;
   translate?: boolean;
   deletable?: boolean;
+  selectable?: boolean;
   onChange?: (data: { name: string; value: string }) => void;
+  onDeleteChip?: (data: { name: string; value: string }) => void;
   style?: React.CSSProperties;
 }
 
@@ -26,7 +28,9 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   disabled,
   translate = true,
   deletable,
+  selectable = true,
   onChange,
+  onDeleteChip,
   style,
 }) => {
   const { t } = useTranslation();
@@ -42,11 +46,18 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   }, [value]);
 
   const handleChange = (value: string) => {
-    if (disabled) return;
+    if (disabled || !selectable) return;
     setSelectedChip(value);
     onChange?.({
       name: name || "chip",
       value,
+    });
+  };
+
+  const handleDeleteChip = (value: string) => {
+    onDeleteChip?.({
+      name: name || "chip",
+      value: value,
     });
   };
 
@@ -55,22 +66,22 @@ const ChipSelector: FC<ChipSelectorProps> = ({
     to: { transform: "rotate3d(1, 0, 0, 0deg)", opacity: 1 },
     config: { tension: 280, friction: 30 },
   });
-
+  // , backgroundColor: selectable ? "#f5f5f5" : "red"
   return (
     <div style={style} className="chip-selector-container">
       {trail.map((props, index) => (
         <animated.div
           key={index}
-          style={props}
+          style={{ ...props }}
           className={`chip-item ${disabled ? "disabled-chip" : ""} ${
             selectedChip == chips[index] ? "selected-chip" : ""
-          }`}
+          } ${selectable ? "selectable" : ""}`}
           onClick={() => {
             handleChange(chips[index]);
           }}
         >
           {deletable && (
-            <span className="deletable-chip">
+            <span onClick={() => handleDeleteChip(chips[index])} className="deletable-chip">
               <AiOutlineClose />
             </span>
           )}

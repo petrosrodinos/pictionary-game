@@ -1,8 +1,7 @@
-import { FC, useState, useMemo } from "react";
+import { FC } from "react";
 import Input from "../../../../components/ui/Input";
 import Typography from "../../../../components/ui/Typography";
 import {
-  CATEGORIES,
   DifficaltyLevels,
   MAX_CHOOSING_WORD_TIME_IN_SECONDS,
   MAX_PLAYERS_IN_ROOM,
@@ -14,8 +13,7 @@ import {
 import ChipSelector from "../../../../components/ui/ChipSelector";
 import { GameSettings as GameSettingsInt } from "../../../../interfaces/typing";
 import { useTranslation } from "react-i18next";
-import CreateCategory from "./CreateCategory";
-import { authStore } from "../../../../store/authStore";
+import ChooseCategory from "./ChooseCategory";
 import "./style.scss";
 
 interface GameSettingsProps {
@@ -24,11 +22,7 @@ interface GameSettingsProps {
 }
 
 const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
-  const { role, categories: newCategories } = authStore((state) => state);
-  const [categories, setCategories] = useState<string[]>(CATEGORIES);
   const { t } = useTranslation();
-
-  const createCategoryRoles = ["parent", "teacher"];
 
   const handleChange = (e: any) => {
     onChange({ name: e.target.name, value: e.target.value });
@@ -41,27 +35,6 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
     });
   };
 
-  const handleCreateCategory = (category: string) => {
-    setCategories((prev) => [...prev, category]);
-    // onChange({
-    //   name: "category",
-    //   value: category,
-    // });
-  };
-
-  const handleCancelCreateCategory = () => {
-    setCategories((prev) => prev.slice(0, prev.length - 1));
-  };
-
-  const selectedCategory = useMemo(() => {
-    if (categories.length <= CATEGORIES.length) {
-      return categories[0];
-    }
-    return categories[categories.length - 1];
-  }, [categories]);
-
-  const TotalCategories = [...categories, ...newCategories];
-
   return (
     <div className="settings-container">
       <Typography variant="header-main" className="settings-label">
@@ -70,19 +43,8 @@ const GameSettings: FC<GameSettingsProps> = ({ onChange, settings }) => {
       <Typography variant="text-main" className="category-label">
         {t("word-category")}
       </Typography>
-      <ChipSelector
-        disabled={categories.length > CATEGORIES.length}
-        value={selectedCategory}
-        name="category"
-        chips={TotalCategories}
-        onChange={handleChipChanged}
-      />
-      {createCategoryRoles.includes(role) && (
-        <CreateCategory
-          onCancel={handleCancelCreateCategory}
-          onCreateCategory={handleCreateCategory}
-        />
-      )}
+
+      <ChooseCategory onCategorySelected={handleChipChanged} />
       <Typography variant="text-main" className="category-label">
         {t("difficalty-label")}
       </Typography>
