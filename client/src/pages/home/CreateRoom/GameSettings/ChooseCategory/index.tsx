@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useMemo } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
@@ -16,7 +16,7 @@ interface ChooseCategoryProps {
 }
 
 export interface AddedWords {
-  [key: string]: string[];
+  [key: string]: { [key: string]: string[] };
 }
 
 const createCategoryRoles = ["parent", "teacher"];
@@ -29,17 +29,16 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     role,
     categories: newCategories,
   } = authStore((state) => state);
-  // const defaultWords = newCategories.reduce((acc, category) => {
-  //   acc[category] = { easy: [], medium: [], hard: [] };
-  //   return acc;
-  // }, {} as AddedWords);
-  const defaultWords: AddedWords[] = [];
+  const defaultWords = newCategories.reduce((acc, category) => {
+    acc[category] = { easy: [], medium: [], hard: [] };
+    return acc;
+  }, {} as AddedWords);
   const [word, setWord] = useState("");
   const [category, setCategory] = useState("");
   const [active, setActive] = useState(false);
   const [created, setCreated] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
-  const [words, setWords] = useState<AddedWords[]>(newWords ? JSON.parse(newWords) : defaultWords);
+  const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : defaultWords);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
 
@@ -51,28 +50,27 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     if (!category || category.length > 20) return;
     setCategories((prev) => [...prev, category]);
     setSelectedCategory(category);
-    setWords((prev) => [...prev, { [category]: { easy: [], medium: [], hard: [] } }]);
     toggleActive();
     setCreated(true);
   };
 
-  // const handleAddWord = () => {
-  //   if (!word || word.length > 20) return;
-  //   setWords((prev) => ({
-  //     ...prev,
-  //     [selectedCategory]: { [selectedTab]: [...prev[selectedTab], word] },
-  //   }));
-  //   setWord("");
-  // };
+  const handleAddWord = () => {
+    if (!word || word.length > 20) return;
+    setWords((prev) => ({
+      ...prev,
+      [selectedCategory]: { [selectedTab]: [...prev[selectedCategory][selectedTab], word] },
+    }));
+    setWord("");
+  };
 
-  // const handleDeleteWord = (data: { name: string; value: string }) => {
-  //   setWords((prev) => ({
-  //     ...prev,
-  //     [selectedCategory]: {
-  //       [selectedTab]: prev[selectedCategory][selectedTab].filter((item) => item !== data.value),
-  //     },
-  //   }));
-  // };
+  const handleDeleteWord = (data: { name: string; value: string }) => {
+    setWords((prev) => ({
+      ...prev,
+      [selectedCategory]: {
+        [selectedTab]: prev[selectedCategory][selectedTab].filter((item) => item !== data.value),
+      },
+    }));
+  };
 
   const handleAddWords = () => {
     const newCategoryWithWords = {
@@ -155,7 +153,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
               </div>
             </div>
           )}
-          {/* {created && (
+          {created && (
             <div className="add-word-container">
               <TabMenu
                 items={items}
@@ -175,7 +173,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 <div className="input-icon">
                   <Input
                     className="add-word-input"
-                    placeholder={`word ${words?.[selectedCategory][selectedTab]?.length + 1}`}
+                    placeholder={`word ${words?.[selectedCategory]?.[selectedTab]?.length + 1}`}
                     onChange={(e) => setWord(e.target.value)}
                     value={word}
                     name="word"
@@ -193,7 +191,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 />
               </div>
             </div>
-          )} */}
+          )}
         </div>
       )}
     </>
