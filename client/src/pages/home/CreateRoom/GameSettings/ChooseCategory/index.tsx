@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
@@ -37,14 +37,19 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const [category, setCategory] = useState("");
   const [active, setActive] = useState(false);
   const [created, setCreated] = useState(false);
+  const [selectedUsersCategory, setSelectedUsersCategory] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
-  const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : defaultWords);
+  const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : {});
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
 
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
+
+  useEffect(() => {
+    console.log("Def", words);
+  }, [words]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
@@ -56,10 +61,31 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
 
   const handleAddWord = () => {
     if (!word || word.length > 20) return;
-    setWords((prev) => ({
-      ...prev,
-      [selectedCategory]: { [selectedTab]: [...prev[selectedCategory][selectedTab], word] },
-    }));
+    let newWord = word.trim().toLowerCase();
+    if (words[selectedCategory]?.[selectedTab]?.includes(newWord)) return;
+    if (!words[selectedCategory]) {
+      setWords((prev) => ({
+        ...prev,
+        [selectedCategory]: { [selectedTab]: [newWord] },
+      }));
+    } else if (!words[selectedCategory][selectedTab]) {
+      setWords((prev) => ({
+        ...prev,
+        [selectedCategory]: {
+          ...prev[selectedCategory],
+          [selectedTab]: [newWord],
+        },
+      }));
+    } else {
+      let newWords = {
+        ...words,
+        [selectedCategory]: {
+          ...words[selectedCategory],
+          [selectedTab]: [...words[selectedCategory][selectedTab], newWord],
+        },
+      };
+      setWords(newWords);
+    }
     setWord("");
   };
 
@@ -67,20 +93,22 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setWords((prev) => ({
       ...prev,
       [selectedCategory]: {
-        [selectedTab]: prev[selectedCategory][selectedTab].filter((item) => item !== data.value),
+        ...prev[selectedCategory],
+        [selectedTab]: prev[selectedCategory][selectedTab].filter((word) => word !== data.value),
       },
     }));
   };
 
   const handleAddWords = () => {
-    const newCategoryWithWords = {
-      ...JSON.parse(newWords ? newWords : "{}"),
-      [category]: words,
-    };
+    // for(let tab in DifficaltyLevels){
+    //   if(words[selectedCategory][tab].length<8){
+    //     console.log("add more words")
+    //   }
+    // }
     createCategory(
       {
         category,
-        words: JSON.stringify(newCategoryWithWords),
+        words: JSON.stringify(words),
         userId,
       },
       {
@@ -98,6 +126,13 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const handleCategoryChange = (data: { name: string; value: string }) => {
     setSelectedCategory(data.value);
     onCategorySelected(data);
+    if (newCategories.includes(data.value)) {
+      setCreated(true);
+      setSelectedUsersCategory(true);
+    } else {
+      setCreated(false);
+      setSelectedUsersCategory(false);
+    }
   };
 
   const handleTabChange = (tab: { name: string; value: string }) => {
@@ -108,22 +143,17 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setActive(!active);
   };
 
-  const closeCreateCategory = () => {
-    setWords(newWords ? JSON.parse(newWords) : defaultWords);
-    setCategories((prev) => prev.slice(0, prev.length - 1));
+  const cancelCreateCategory = () => {
+    setWords(newWords ? JSON.parse(newWords) : {});
+    if (!selectedUsersCategory) {
+      setCategories((prev) => prev.slice(0, prev.length - 1));
+    }
     setCreated(false);
   };
 
   const items = DifficaltyLevels.map((item) => {
     return { label: item, value: item };
   });
-
-  // const selectedCategoryValue = useMemo(() => {
-  //   if (categories.length <= CATEGORIES.length) {
-  //     return categories[0];
-  //   }
-  //   return categories[categories.length - 1];
-  // }, [categories]);
 
   const TotalCategories = [...categories, ...newCategories];
 
@@ -165,7 +195,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 <ChipSelector
                   style={{ justifyContent: "unset" }}
                   translate={false}
-                  chips={[]}
+                  chips={words?.[selectedCategory]?.[selectedTab] || []}
                   deletable
                   selectable={false}
                   onDeleteChip={handleDeleteWord}
@@ -173,7 +203,9 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 <div className="input-icon">
                   <Input
                     className="add-word-input"
-                    placeholder={`word ${words?.[selectedCategory]?.[selectedTab]?.length + 1}`}
+                    placeholder={`word ${
+                      words?.[selectedCategory]?.[selectedTab]?.length + 1 || 1
+                    }`}
                     onChange={(e) => setWord(e.target.value)}
                     value={word}
                     name="word"
@@ -184,7 +216,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
               <div className="add-words-buttons">
                 <Button onClick={handleAddWords} title="Add" loading={isLoading} />
                 <Button
-                  onClick={closeCreateCategory}
+                  onClick={cancelCreateCategory}
                   title="Cancel"
                   variant="secondary"
                   disabled={isLoading}
