@@ -89,6 +89,8 @@ const ChipSelector: FC<ChipSelectorProps> = ({
             {CATEGORIES.length < chips.length
               ? index == chips.length - 1
                 ? chips[index]
+                : t(`${name}.${chips[index]}`) == `${name}.${chips[index]}`
+                ? chips[index]
                 : t(`${name}.${chips[index]}`)
               : translate
               ? t(`${name}.${chips[index]}`)

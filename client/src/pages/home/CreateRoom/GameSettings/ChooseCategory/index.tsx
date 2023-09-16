@@ -29,10 +29,6 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     role,
     categories: newCategories,
   } = authStore((state) => state);
-  const defaultWords = newCategories.reduce((acc, category) => {
-    acc[category] = { easy: [], medium: [], hard: [] };
-    return acc;
-  }, {} as AddedWords);
   const [word, setWord] = useState("");
   const [category, setCategory] = useState("");
   const [active, setActive] = useState(false);
@@ -40,21 +36,22 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const [selectedUsersCategory, setSelectedUsersCategory] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
   const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : {});
-  const [categories, setCategories] = useState<string[]>(CATEGORIES);
+  const [categories, setCategories] = useState<string[]>([...CATEGORIES, ...newCategories]);
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
 
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
 
-  useEffect(() => {
-    console.log("Def", words);
-  }, [words]);
+  // useEffect(() => {
+  //   console.log("categories", categories);
+  // }, [categories]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
     setCategories((prev) => [...prev, category]);
     setSelectedCategory(category);
+    setSelectedUsersCategory(false);
     toggleActive();
     setCreated(true);
   };
@@ -77,14 +74,13 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         },
       }));
     } else {
-      let newWords = {
+      setWords({
         ...words,
         [selectedCategory]: {
           ...words[selectedCategory],
           [selectedTab]: [...words[selectedCategory][selectedTab], newWord],
         },
-      };
-      setWords(newWords);
+      });
     }
     setWord("");
   };
@@ -155,15 +151,13 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     return { label: item, value: item };
   });
 
-  const TotalCategories = [...categories, ...newCategories];
-
   return (
     <>
       <ChipSelector
-        disabled={categories.length > CATEGORIES.length}
+        disabled={categories.length - newCategories.length > CATEGORIES.length}
         value={selectedCategory}
         name="category"
-        chips={TotalCategories}
+        chips={categories}
         onChange={handleCategoryChange}
       />
       {createCategoryRoles.includes(role) && (
