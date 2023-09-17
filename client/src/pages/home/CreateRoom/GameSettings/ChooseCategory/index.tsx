@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect } from "react";
+import { FC, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
@@ -42,10 +42,6 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
-
-  // useEffect(() => {
-  //   console.log("categories", categories);
-  // }, [categories]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
@@ -110,7 +106,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
       {
         onSuccess: (data: any) => {
           setCreated(false);
-          // updateProfile({ words: data.words, categories: data.categories });
+          updateProfile({ words: data.words, categories: data.categories });
         },
         onError: () => {
           toggleActive();
@@ -188,7 +184,6 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
               <div className="add-word-field-container">
                 <ChipSelector
                   style={{ justifyContent: "unset" }}
-                  translate={false}
                   chips={words?.[selectedCategory]?.[selectedTab] || []}
                   deletable
                   selectable={false}

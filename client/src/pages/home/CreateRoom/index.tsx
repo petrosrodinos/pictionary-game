@@ -17,6 +17,7 @@ import Copable from "../../../components/ui/Copable";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Toast from "../../../components/ui/Toast";
+import { authStore } from "../../../store/authStore";
 import "./style.scss";
 
 interface CreateRoomProps {
@@ -26,6 +27,7 @@ interface CreateRoomProps {
 
 const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
   const { t, i18n } = useTranslation();
+  const { words, categories } = authStore();
   const [settings, setSettings] = useState<GameSettingsInt>({
     maxPlayers: PLAYERS_IN_ROOM,
     roundTime: ROUND_TIME_IN_SECONDS,
@@ -34,6 +36,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
     difficalty: Difficalty.EASY,
     code: createRoomCode(),
     language: i18n.language,
+    customWords: [],
   });
 
   const handleSettingsChanged = ({ name, value }: { name: string; value: string | number }) => {
@@ -44,20 +47,19 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
   };
 
   const handleCreateRoom = () => {
-    if (
-      !settings.category ||
-      !settings.choosingWordTime ||
-      !settings.roundTime ||
-      !settings.maxPlayers
-    )
+    if (!settings.choosingWordTime || !settings.roundTime || !settings.maxPlayers)
       return toast.warn(t("fill-out-all-fields"));
 
-    onCreate({
+    let gameSettings = {
       ...settings,
       maxPlayers: Number(settings.maxPlayers),
       choosingWordTime: transformToMilliseconds(settings.choosingWordTime),
       roundTime: transformToMilliseconds(settings.roundTime),
-    });
+    };
+    if (categories.includes(settings.category)) {
+      gameSettings.customWords = JSON.parse(words)[settings.category][settings.difficalty];
+    }
+    onCreate(gameSettings);
   };
 
   return (

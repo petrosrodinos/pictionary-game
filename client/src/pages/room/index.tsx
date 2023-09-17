@@ -153,6 +153,7 @@ const Room: FC = () => {
         players={roomInfo.players}
         category={roomInfo.category}
         difficalty={roomInfo.difficalty}
+        customWords={roomInfo.customWords}
         message={message}
       />
     ),

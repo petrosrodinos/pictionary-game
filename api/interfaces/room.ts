@@ -27,6 +27,7 @@ export interface Room {
   chat: Message[];
   usersFoundWordOrder: string[];
   language: string;
+  customWords: string[];
 }
 
 export type Status =

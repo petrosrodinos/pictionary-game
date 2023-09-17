@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import Typography from "../Typography";
 import { useTrail, animated } from "react-spring";
 import { useTranslation } from "react-i18next";
-import { CATEGORIES } from "../../../constants/game";
 import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
 
@@ -12,7 +11,6 @@ interface ChipSelectorProps {
   value?: string;
   defaultValue?: boolean;
   disabled?: boolean;
-  translate?: boolean;
   deletable?: boolean;
   selectable?: boolean;
   onChange?: (data: { name: string; value: string }) => void;
@@ -26,7 +24,6 @@ const ChipSelector: FC<ChipSelectorProps> = ({
   defaultValue,
   name,
   disabled,
-  translate = true,
   deletable,
   selectable = true,
   onChange,
@@ -66,7 +63,6 @@ const ChipSelector: FC<ChipSelectorProps> = ({
     to: { transform: "rotate3d(1, 0, 0, 0deg)", opacity: 1 },
     config: { tension: 280, friction: 30 },
   });
-  // , backgroundColor: selectable ? "#f5f5f5" : "red"
   return (
     <div style={style} className="chip-selector-container">
       {trail.map((props, index) => (
@@ -86,15 +82,9 @@ const ChipSelector: FC<ChipSelectorProps> = ({
             </span>
           )}
           <Typography>
-            {CATEGORIES.length < chips.length
-              ? index == chips.length - 1
-                ? chips[index]
-                : t(`${name}.${chips[index]}`) == `${name}.${chips[index]}`
-                ? chips[index]
-                : t(`${name}.${chips[index]}`)
-              : translate
-              ? t(`${name}.${chips[index]}`)
-              : chips[index]}
+            {t(`${name}.${chips[index]}`) == `${name}.${chips[index]}`
+              ? chips[index]
+              : t(`${name}.${chips[index]}`)}
           </Typography>
         </animated.div>
       ))}

@@ -12,7 +12,13 @@ interface RoomSettingsProps {
 const RoomSettings: FC<RoomSettingsProps> = ({ roomInfo }) => {
   const { t } = useTranslation();
   const items = [
-    { label: t("CATEGORY"), stat: t(`category.${roomInfo.category}`) },
+    {
+      label: t("CATEGORY"),
+      stat:
+        t(`category.${roomInfo.category}`) == `category.${roomInfo.category}`
+          ? roomInfo.category
+          : t(`category.${roomInfo.category}`),
+    },
     { label: t("DIFFICULTY"), stat: t(`difficalty.${roomInfo.difficalty}`) },
     { label: t("MAX-PLAYERS"), stat: roomInfo.maxPlayers },
     { label: t("ROUND-TIME"), stat: `${roomInfo.roundTime / 1000} (s)` },

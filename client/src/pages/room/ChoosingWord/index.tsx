@@ -13,8 +13,9 @@ interface ChoosingWordProps {
   players: UserType[];
   category: string;
   difficalty: string;
-  onWordSelected: (word: string) => void;
+  customWords: string[];
   message?: string | null;
+  onWordSelected: (word: string) => void;
 }
 
 const ChoosingWord: FC<ChoosingWordProps> = ({
@@ -23,11 +24,18 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
   category,
   difficalty,
   message,
+  customWords,
   onWordSelected,
 }) => {
   const { t } = useTranslation();
+
   const getRandomWords = (length: number = SELECTABLE_WORDS_LIST_LENGTH) => {
-    const words = WORD_LIST[category][difficalty];
+    let words = [];
+    if (customWords.length > 0) {
+      words = customWords;
+    } else {
+      words = WORD_LIST[category][difficalty];
+    }
     const randomWords: string[] = [];
     while (randomWords.length < length) {
       const randomIndex = Math.floor(Math.random() * words.length);
@@ -59,7 +67,11 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
         chips={getRandomWords()}
         name="the-words"
         onChange={(e: any) => {
-          onWordSelected(t(`the-words.${e.value}`));
+          onWordSelected(
+            t(`the-words.${e.value}`) == `the-words.${e.value}`
+              ? e.value
+              : t(`the-words.${e.value}`)
+          );
         }}
       />
       <Players players={players} />
