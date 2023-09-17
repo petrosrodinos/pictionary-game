@@ -1,11 +1,19 @@
-# INSTALLATION
+## client
 
-# client
+# RUN
 
 ```sh
 cd client
 npm install --force
 npm run dev
+```
+
+# BUILD
+
+```sh
+cd client
+npm install --force
+npm run build
 ```
 
 # server

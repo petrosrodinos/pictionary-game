@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Suspense fallback={<Spinner loading={true} />}>
       <QueryClientProvider client={queryClient}>
         <App />
-        {/* <Analytics /> */}
+        <Analytics />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Suspense>
