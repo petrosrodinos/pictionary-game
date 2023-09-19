@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useMemo } from "react";
-import Canvas from "./Canvas";
+import Canvas from "./Canvas2";
 import { authStore } from "../../store/authStore";
 import Info from "./Info";
 import Modal from "../../components/ui/Modal";
@@ -44,29 +44,29 @@ const Room: FC = () => {
     }, 2000);
   }, [socket, roomId]);
 
-  useEffect(() => {
-    socket?.on("send-info", handleInfoSended);
-    socket?.on("word-changed", handleWordChanged);
-    socket?.on("round-finished", handleRoundFinished);
-    socket?.on("choosing-word-time-finished", handleChoosingWordTimeFinished);
-    socket?.on("artist-left", handleArtistLeft);
-    socket?.on("all-users-left", handleAllUsersLeft);
-    socket?.on("game-finished", handleGameFinished);
+  // useEffect(() => {
+  //   socket?.on("send-info", handleInfoSended);
+  //   socket?.on("word-changed", handleWordChanged);
+  //   socket?.on("round-finished", handleRoundFinished);
+  //   socket?.on("choosing-word-time-finished", handleChoosingWordTimeFinished);
+  //   socket?.on("artist-left", handleArtistLeft);
+  //   socket?.on("all-users-left", handleAllUsersLeft);
+  //   socket?.on("game-finished", handleGameFinished);
 
-    return () => {
-      socket?.off("send-info");
-      socket?.off("word-changed");
-      socket?.off("round-finished");
-      socket?.off("choosing-word-time-finished");
-      socket?.off("artist-left");
-      socket?.off("all-users-left");
-      socket?.off("game-finished");
+  //   return () => {
+  //     socket?.off("send-info");
+  //     socket?.off("word-changed");
+  //     socket?.off("round-finished");
+  //     socket?.off("choosing-word-time-finished");
+  //     socket?.off("artist-left");
+  //     socket?.off("all-users-left");
+  //     socket?.off("game-finished");
 
-      () => {
-        return "Are you sure you want to leave?";
-      };
-    };
-  }, [socket]);
+  //     () => {
+  //       return "Are you sure you want to leave?";
+  //     };
+  //   };
+  // }, [socket]);
 
   const handleInfoSended = (roomInfo: RoomInfo) => {
     setJoining(false);
@@ -186,11 +186,12 @@ const Room: FC = () => {
 
   return (
     <>
-      {Object.keys(roomInfo).length != 0 ? (
+      {/* {Object.keys(roomInfo).length != 0 ? ( */}
+      {true ? (
         <>
-          <Modal title={chooseTitle()} isOpen={!!activeModal}>
+          {/* <Modal title={chooseTitle()} isOpen={!!activeModal}>
             {ModalComponents[activeModal || "choosing-word"]}
-          </Modal>
+          </Modal> */}
           <Container className="room-page-container">
             <Info timer={takeTime} artist={roomInfo?.currentArtist?.username || ""} />
             <div className="canvas-chat-container">
@@ -198,7 +199,7 @@ const Room: FC = () => {
                 canvasData={roomInfo?.drawings}
                 socket={socket}
                 word={roomInfo?.word}
-                currentUserIsPlaying={username == roomInfo?.currentArtist?.username}
+                currentUserIsPlaying={true}
               />
               <Chat
                 chat={roomInfo?.chat}
@@ -209,16 +210,17 @@ const Room: FC = () => {
           </Container>
         </>
       ) : (
-        <Modal
-          title={message ? message : joining ? t("search-for-room") : t("no-room-found")}
-          isOpen={true}
-        >
-          {joining ? (
-            <Spinner style={{ padding: "20px", overflow: "hidden" }} loading={joining} />
-          ) : (
-            <NoRoom />
-          )}
-        </Modal>
+        <></>
+        // <Modal
+        //   title={message ? message : joining ? t("search-for-room") : t("no-room-found")}
+        //   isOpen={true}
+        // >
+        //   {joining ? (
+        //     <Spinner style={{ padding: "20px", overflow: "hidden" }} loading={joining} />
+        //   ) : (
+        //     <NoRoom />
+        //   )}
+        // </Modal>
       )}
     </>
   );
