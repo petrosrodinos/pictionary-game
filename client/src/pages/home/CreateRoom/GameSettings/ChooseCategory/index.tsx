@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
@@ -10,6 +10,7 @@ import TabMenu from "../../../../../components/ui/TabMenu";
 import { CATEGORIES, DifficaltyLevels } from "../../../../../constants/game";
 import ChipSelector from "../../../../../components/ui/ChipSelector";
 import "./style.scss";
+import AIWords from "./AIWords";
 
 interface ChooseCategoryProps {
   onCategorySelected: (data: { name: string; value: string }) => void;
@@ -42,6 +43,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
+
+  useEffect(() => {
+    console.log("words", words);
+  }, [words]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
@@ -143,6 +148,30 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setCreated(false);
   };
 
+  const handleWordsGenerated = (data: any) => {
+    const temp = {
+      [selectedCategory]: data,
+    };
+
+    console.log({
+      ...words,
+      temp,
+    });
+
+    setWords((prev) => ({
+      ...prev,
+      ...temp,
+    }));
+
+    // setWords((prev) => ({
+    //   ...prev,
+    //   [selectedCategory]: {
+    //     ...prev[selectedCategory],
+    //     [selectedTab]: data,
+    //   },
+    // }));
+  };
+
   const items = DifficaltyLevels.map((item) => {
     return { label: item, value: item };
   });
@@ -189,6 +218,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                   selectable={false}
                   onDeleteChip={handleDeleteWord}
                 />
+                <AIWords category={category} onWordsGenerated={handleWordsGenerated} />
                 <div className="input-icon">
                   <Input
                     className="add-word-input"
@@ -203,7 +233,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 </div>
               </div>
               <div className="add-words-buttons">
-                <Button onClick={handleAddWords} title="Add" loading={isLoading} />
+                <Button onClick={handleAddWords} title="Save" loading={isLoading} />
                 <Button
                   onClick={cancelCreateCategory}
                   title="Cancel"

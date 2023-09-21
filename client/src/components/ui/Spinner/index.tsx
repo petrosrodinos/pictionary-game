@@ -1,21 +1,38 @@
 import { CSSProperties, FC } from "react";
-import { PacmanLoader } from "react-spinners";
+import { PacmanLoader, CircleLoader } from "react-spinners";
 
 interface SpinnerProps {
   loading: boolean;
   style?: CSSProperties;
+  size?: number;
+  variant?: "primary" | "secondary";
+  color?: string;
 }
 
-const Spinner: FC<SpinnerProps> = ({ loading, style }) => {
+const Spinner: FC<SpinnerProps> = ({
+  loading,
+  style,
+  size = 40,
+  variant = "primary",
+  color = "#eac7c7",
+}) => {
   const override: CSSProperties = {
     margin: "0 auto",
   };
+
+  const Loader: any = {
+    primary: PacmanLoader,
+    secondary: CircleLoader,
+  };
+
+  const LoaderComponent = Loader[variant];
+
   return (
-    <PacmanLoader
-      color="#eac7c7"
+    <LoaderComponent
+      color={color}
       loading={loading}
       cssOverride={{ ...override, ...style }}
-      size={40}
+      size={size}
       aria-label="Loading Spinner"
       data-testid="loader"
     />
