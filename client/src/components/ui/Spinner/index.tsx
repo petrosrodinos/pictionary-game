@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { PacmanLoader, ScaleLoader, ClipLoader } from "react-spinners";
+import { PacmanLoader, ClipLoader } from "react-spinners";
 
 interface SpinnerProps {
   loading: boolean;

@@ -14,6 +14,8 @@
   "could-not-update-profile": "Could not update profile, please try later",
   "profile-updated": "Profile updated successfully",
   "save": "Save",
+  "generate-words": "Generate words with artificial intelligence",
+  "add-more-words": "Add more than {{number}} words per category.",
   "could-not-add-category": "Could not add category",
   "category-added-successfully": "Category added successfully",
   "edit-profile": "Edit Profile",

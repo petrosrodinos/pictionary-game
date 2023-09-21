@@ -6,6 +6,7 @@ import Spinner from "../../../../../../components/ui/Spinner";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { DifficaltyLevels, WORDS_TO_GENERATE } from "../../../../../../constants/game";
+import { Tooltip } from "react-tooltip";
 import "./style.scss";
 
 interface AIWordsProps {
@@ -45,15 +46,24 @@ const AIWords: FC<AIWordsProps> = ({ onWordsGenerated, category, className = "",
       <Spinner color="white" variant="secondary" size={30} loading={isLoading} />
 
       {!isLoading && (
-        <div
-          onClick={handleGenerateWords}
-          className={`ai-words-container ${className}`}
-          style={style}
-        >
-          <div className="ai-words-content">
-            {!isLoading && <img className="ai-icon" src={AIIcon} alt="ai-icon" />}
+        <>
+          <div
+            data-tooltip-id="ai-tooltip"
+            onClick={handleGenerateWords}
+            className={`ai-words-container ${className}`}
+            style={style}
+          >
+            <div className="ai-words-content">
+              {!isLoading && <img className="ai-icon" src={AIIcon} alt="ai-icon" />}
+            </div>
           </div>
-        </div>
+          <Tooltip
+            style={{ zIndex: "10", fontFamily: "Averia Libre" }}
+            id="ai-tooltip"
+            place="bottom"
+            content={t("generate-words")}
+          />
+        </>
       )}
     </div>
   );

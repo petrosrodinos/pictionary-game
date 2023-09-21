@@ -7,7 +7,12 @@ import { UserToUpdate } from "../../../../../interfaces/typing";
 import { updateUser } from "../../../../../services/user";
 import { authStore } from "../../../../../store/authStore";
 import TabMenu from "../../../../../components/ui/TabMenu";
-import { CATEGORIES, DifficaltyLevels } from "../../../../../constants/game";
+import {
+  CATEGORIES,
+  DifficaltyLevels,
+  NEW_CATEGORY_MAX_WORDS,
+  NEW_CATEGORY_MIN_WORDS,
+} from "../../../../../constants/game";
 import ChipSelector from "../../../../../components/ui/ChipSelector";
 import AIWords from "./AIWords";
 import { toast } from "react-toastify";
@@ -53,13 +58,14 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   });
 
   useEffect(() => {
-    console.log("words", words);
-  }, [words]);
+    console.log("selectedCategory", selectedCategory);
+  }, [selectedCategory]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
     setCategories((prev) => [...prev, category]);
     setSelectedCategory(category);
+    onCategorySelected({ name: "category", value: category });
     setSelectedUsersCategory(false);
     toggleActive();
     setCreated(true);
@@ -67,8 +73,17 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
 
   const handleAddWord = () => {
     if (!word || word.length > 20) return;
+
     let newWord = word.trim().toLowerCase();
+
     if (words[selectedCategory]?.[selectedTab]?.includes(newWord)) return;
+
+    if (words[selectedCategory]?.[selectedTab]?.length >= NEW_CATEGORY_MAX_WORDS) {
+      toast.warn(`The word limit of ${NEW_CATEGORY_MAX_WORDS} words has been exceeded`);
+
+      return;
+    }
+
     if (!words[selectedCategory]) {
       setWords((prev) => ({
         ...prev,
@@ -91,6 +106,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         },
       });
     }
+
     setWord("");
   };
 
@@ -105,11 +121,15 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   };
 
   const handleAddWords = () => {
-    // for(let tab in DifficaltyLevels){
-    //   if(words[selectedCategory][tab].length<8){
-    //     console.log("add more words")
-    //   }
-    // }
+    for (let tab of DifficaltyLevels) {
+      if (
+        !words?.[selectedCategory]?.[tab] ||
+        words[selectedCategory]?.[tab]?.length < NEW_CATEGORY_MIN_WORDS
+      ) {
+        toast.warn(t("add-more-words", { number: NEW_CATEGORY_MIN_WORDS }));
+        return;
+      }
+    }
     createCategory(
       {
         category,
@@ -172,7 +192,13 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
           const existingWords = updatedWordsForCategory[difficultyLevel] || [];
           const newWords = data[difficultyLevel];
 
-          updatedWordsForCategory[difficultyLevel] = [...new Set([...existingWords, ...newWords])];
+          const mergedWords = [...new Set([...existingWords, ...newWords])];
+
+          if (mergedWords.length > NEW_CATEGORY_MAX_WORDS) {
+            updatedWordsForCategory[difficultyLevel] = mergedWords.slice(0, NEW_CATEGORY_MAX_WORDS);
+          } else {
+            updatedWordsForCategory[difficultyLevel] = mergedWords;
+          }
         }
       }
 
@@ -229,7 +255,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                   selectable={false}
                   onDeleteChip={handleDeleteWord}
                 />
-                <AIWords category={category} onWordsGenerated={handleWordsGenerated} />
+                <AIWords category={selectedCategory} onWordsGenerated={handleWordsGenerated} />
                 <div className="input-icon">
                   <Input
                     className="add-word-input"
