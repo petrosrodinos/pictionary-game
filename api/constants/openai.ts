@@ -5,5 +5,7 @@ export const Prompt = (category: any, words: any, difficultyLevels: any) => {
     medium:[word1,word2,...${words}],
     hard:[word1,word2,...${words}]
     }
-    NOTE:your answer should only return only the generated object in JSON format and no other text`;
+    NOTE 1:your answer should only return only the generated object in JSON format and no other text
+    ΝΟΤΕ 2:respect the given language of the category and generate words in the same language
+    `;
 };

@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { PacmanLoader, CircleLoader } from "react-spinners";
+import { PacmanLoader, ScaleLoader, ClipLoader } from "react-spinners";
 
 interface SpinnerProps {
   loading: boolean;
@@ -22,7 +22,7 @@ const Spinner: FC<SpinnerProps> = ({
 
   const Loader: any = {
     primary: PacmanLoader,
-    secondary: CircleLoader,
+    secondary: ClipLoader,
   };
 
   const LoaderComponent = Loader[variant];

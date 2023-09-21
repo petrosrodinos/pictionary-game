@@ -120,11 +120,11 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         onSuccess: (data: any) => {
           setCreated(false);
           updateProfile({ words: data.words, categories: data.categories });
-          toast.success(t("could-not-generate-words"));
+          toast.success(t("category-added-successfully"));
         },
         onError: () => {
           toggleActive();
-          toast.error(t("could-not-generate-words"));
+          toast.error(t("could-not-add-category"));
         },
       }
     );
@@ -164,26 +164,22 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         ...prev,
         [selectedCategory]: data,
       }));
-    } else if (!words[selectedCategory][selectedTab]) {
+    } else {
+      const updatedWordsForCategory = { ...words[selectedCategory] };
+
+      for (const difficultyLevel in data) {
+        if (data.hasOwnProperty(difficultyLevel)) {
+          const existingWords = updatedWordsForCategory[difficultyLevel] || [];
+          const newWords = data[difficultyLevel];
+
+          updatedWordsForCategory[difficultyLevel] = [...new Set([...existingWords, ...newWords])];
+        }
+      }
+
       setWords((prev) => ({
         ...prev,
-        [selectedCategory]: {
-          ...prev[selectedCategory],
-          [selectedTab]: data[selectedTab],
-        },
+        [selectedCategory]: updatedWordsForCategory,
       }));
-    } else {
-      const currentWords = words[selectedCategory][selectedTab];
-      const newWords = data[selectedTab];
-      const mergedWords = [...new Set([...currentWords, ...newWords])];
-
-      setWords({
-        ...words,
-        [selectedCategory]: {
-          ...words[selectedCategory],
-          [selectedTab]: mergedWords,
-        },
-      });
     }
   };
 
