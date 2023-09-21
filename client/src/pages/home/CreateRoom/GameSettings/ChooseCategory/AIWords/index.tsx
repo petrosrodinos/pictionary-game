@@ -6,6 +6,7 @@ import Spinner from "../../../../../../components/ui/Spinner";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
+import { DifficaltyLevels, WORDS_TO_GENERATE } from "../../../../../../constants/game";
 
 interface AIWordsProps {
   category: string;
@@ -25,8 +26,8 @@ const AIWords: FC<AIWordsProps> = ({ onWordsGenerated, category, className = "",
     generateWords(
       {
         category,
-        difficaltyLevels: "easy,medium,hard",
-        numberOfWords: 10,
+        difficaltyLevels: DifficaltyLevels.join(","),
+        numberOfWords: WORDS_TO_GENERATE,
       },
       {
         onSuccess: (data) => {

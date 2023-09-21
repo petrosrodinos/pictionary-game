@@ -9,8 +9,15 @@ import { authStore } from "../../../../../store/authStore";
 import TabMenu from "../../../../../components/ui/TabMenu";
 import { CATEGORIES, DifficaltyLevels } from "../../../../../constants/game";
 import ChipSelector from "../../../../../components/ui/ChipSelector";
-import "./style.scss";
 import AIWords from "./AIWords";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
+import "./style.scss";
+
+interface Words {
+  [key: string]: string[];
+}
 
 interface ChooseCategoryProps {
   onCategorySelected: (data: { name: string; value: string }) => void;
@@ -23,6 +30,7 @@ export interface AddedWords {
 const createCategoryRoles = ["parent", "teacher"];
 
 const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
+  const { t } = useTranslation();
   const {
     userId,
     updateProfile,
@@ -112,9 +120,11 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         onSuccess: (data: any) => {
           setCreated(false);
           updateProfile({ words: data.words, categories: data.categories });
+          toast.success(t("could-not-generate-words"));
         },
         onError: () => {
           toggleActive();
+          toast.error(t("could-not-generate-words"));
         },
       }
     );
@@ -148,32 +158,37 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setCreated(false);
   };
 
-  const handleWordsGenerated = (data: any) => {
-    const temp = {
-      [selectedCategory]: data,
-    };
+  const handleWordsGenerated = (data: Words) => {
+    if (!words[selectedCategory]) {
+      setWords((prev) => ({
+        ...prev,
+        [selectedCategory]: data,
+      }));
+    } else if (!words[selectedCategory][selectedTab]) {
+      setWords((prev) => ({
+        ...prev,
+        [selectedCategory]: {
+          ...prev[selectedCategory],
+          [selectedTab]: data[selectedTab],
+        },
+      }));
+    } else {
+      const currentWords = words[selectedCategory][selectedTab];
+      const newWords = data[selectedTab];
+      const mergedWords = [...new Set([...currentWords, ...newWords])];
 
-    console.log({
-      ...words,
-      temp,
-    });
-
-    setWords((prev) => ({
-      ...prev,
-      ...temp,
-    }));
-
-    // setWords((prev) => ({
-    //   ...prev,
-    //   [selectedCategory]: {
-    //     ...prev[selectedCategory],
-    //     [selectedTab]: data,
-    //   },
-    // }));
+      setWords({
+        ...words,
+        [selectedCategory]: {
+          ...words[selectedCategory],
+          [selectedTab]: mergedWords,
+        },
+      });
+    }
   };
 
   const items = DifficaltyLevels.map((item) => {
-    return { label: item, value: item };
+    return { label: t(`difficalty.${item}`), value: item };
   });
 
   return (
@@ -193,12 +208,12 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
               <Input
                 value={category}
                 name="category"
-                placeholder="Category"
+                placeholder={t("Category")}
                 onChange={(e) => setCategory(e.target.value)}
               />
               <div className="category-buttons">
-                <Button onClick={handleAddCategory} title="Create" />
-                <Button onClick={toggleActive} title="Cancel" variant="secondary" />
+                <Button onClick={handleAddCategory} title={t("create")} />
+                <Button onClick={toggleActive} title={t("cancel")} variant="secondary" />
               </div>
             </div>
           )}
@@ -222,7 +237,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 <div className="input-icon">
                   <Input
                     className="add-word-input"
-                    placeholder={`word ${
+                    placeholder={`${t("word")} ${
                       words?.[selectedCategory]?.[selectedTab]?.length + 1 || 1
                     }`}
                     onChange={(e) => setWord(e.target.value)}
@@ -233,10 +248,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
                 </div>
               </div>
               <div className="add-words-buttons">
-                <Button onClick={handleAddWords} title="Save" loading={isLoading} />
+                <Button onClick={handleAddWords} title={t("save")} loading={isLoading} />
                 <Button
                   onClick={cancelCreateCategory}
-                  title="Cancel"
+                  title={t("cancel")}
                   variant="secondary"
                   disabled={isLoading}
                 />

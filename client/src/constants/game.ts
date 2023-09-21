@@ -16,6 +16,10 @@ export const MAX_LEVEL = 99;
 
 export const SELECTABLE_WORDS_LIST_LENGTH = 5;
 
+export const WORDS_TO_GENERATE = 10;
+
+export const NEW_CATEGORY_MAX_WORDS = 50;
+
 export const Difficalty = {
   EASY: "easy",
   MEDIUM: "medium",
