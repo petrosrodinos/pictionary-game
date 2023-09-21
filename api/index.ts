@@ -50,7 +50,7 @@ socket.on("connection", (socket: any) => {
     rooms[settings.code] = {
       ...settings,
       players: [],
-      drawings: "",
+      drawings: "[]",
       status: Statuses.CREATED,
       round: 1,
       message: "",
@@ -66,7 +66,6 @@ socket.on("connection", (socket: any) => {
   //join waiting room
   socket.on("join-waiting-room", async (code: string, user: ConnectedUser) => {
     let room = rooms[code];
-    console.log("ROOM", room);
     if (room) {
       //&& rooms[code].players.length !== rooms[code].maxPlayers
       //checks if user is already in room
@@ -181,12 +180,14 @@ socket.on("connection", (socket: any) => {
     //when artist drawing transmits data to other players
     socket.on("send-changes", (data: any) => {
       if (data == null) {
-        room.drawings = "";
+        room.drawings = "[]";
       }
       // socket.in(code).emit("receive-changes", data);
       socket.to(code).emit("receive-changes", data);
       if (data) {
-        room.drawings = data;
+        // let x = JSON.parse(room.drawings || "[]").push(data);
+        // console.log("temp", x);
+        room.drawings = JSON.stringify(JSON.parse(room.drawings).concat(data));
       }
     });
     //when artist selects word
@@ -196,7 +197,7 @@ socket.on("connection", (socket: any) => {
       clearTimeout(timers[code].round);
       room.usersFoundWordOrder = [];
       room.chat = [];
-      room.drawings = "";
+      room.drawings = "[]";
       room.word = word;
       room.status = Statuses.PLAYING;
       socket.emit("word-changed", room);

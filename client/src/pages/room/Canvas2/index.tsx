@@ -2,7 +2,6 @@ import { FC, useState, useEffect, useRef } from "react";
 import Typography from "../../../components/ui/Typography";
 import DrawingOptions from "../Canvas/DrawingOptions";
 import { useTranslation } from "react-i18next";
-import CanvasDraw from "react-canvas-draw";
 import { BrushSizes } from "../../../constants/game";
 import { useCanvas } from "../../../hooks/useCanvas";
 import "@tensorflow/tfjs-backend-webgl";
@@ -13,7 +12,7 @@ interface CanvasProps {
   word: string;
   currentUserIsPlaying: boolean;
   socket: any;
-  canvasData: any[];
+  canvasData: string;
 }
 
 const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socket }) => {
@@ -22,15 +21,23 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   const [color, setColor] = useState<string>("#000");
   const [lineWidth, setLineWidth] = useState<number>(BrushSizes[0]);
   const webcamRef = useRef<any>(null);
-  const { canvasRef, startDrawing, finishDrawing, draw, handDraw, isDrawing, setIsDrawing } =
-    useCanvas();
+  const {
+    canvasRef,
+    startDrawing,
+    finishDrawing,
+    draw,
+    handDraw,
+    isDrawing,
+    setIsDrawing,
+    clearCanvas: clear,
+  } = useCanvas(sendChanges);
   const prevPositionRef = useRef({ x: 0, y: 0 });
   useEffect(() => {
-    ref.current?.clear();
+    clear();
   }, []);
 
   useEffect(() => {
-    runHandpose();
+    // runHandpose();
   }, []);
 
   const runHandpose = async () => {
@@ -38,7 +45,7 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
     console.log("Handpose model loaded.");
     setInterval(() => {
       detect(net);
-    }, 400);
+    }, 100);
   };
 
   const detect = async (net: any) => {
@@ -55,20 +62,18 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
 
       const hand = await net.estimateHands(video);
       if (hand.length > 0) {
-        console.log("Hand detected");
-
         const fingerTip = hand[0].annotations.indexFinger[3];
 
         let relativeX = (fingerTip[0] / videoWidth) * 700;
         let relativeY = (fingerTip[1] / videoHeight) * 600;
 
-        // Averaging
         relativeX = (relativeX + prevPositionRef.current.x) / 2;
         relativeY = (relativeY + prevPositionRef.current.y) / 2;
         relativeX = Math.round(relativeX);
         relativeY = Math.round(relativeY);
+
         prevPositionRef.current = { x: relativeX, y: relativeY };
-        handDraw(relativeX, relativeY);
+        handDraw({ offsetX: relativeX, offsetY: relativeY });
       } else {
         if (isDrawing) {
           finishDrawing();
@@ -80,9 +85,12 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
 
   useEffect(() => {
     if (!canvasData || canvasData.length == 0) {
-      ref.current?.clear();
+      clear();
     } else {
-      ref.current?.loadSaveData(canvasData, true);
+      clear();
+      JSON.parse(canvasData).map((data: any) => {
+        handDraw(data);
+      });
     }
   }, [canvasData]);
 
@@ -90,10 +98,9 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
     const handler = (data: any) => {
       if (currentUserIsPlaying) return;
       if (data == null) {
-        ref.current?.clear();
+        clear();
       } else {
-        // setSaveData(data);
-        ref.current?.loadSaveData(data, true);
+        handDraw(data);
       }
     };
     socket?.on("receive-changes", handler);
@@ -104,16 +111,13 @@ const Canvas: FC<CanvasProps> = ({ word, currentUserIsPlaying, canvasData, socke
   }, [socket, currentUserIsPlaying]);
 
   const clearCanvas = () => {
-    ref.current?.clear();
+    clear();
     socket?.emit("send-changes", null);
   };
 
-  const handleChange = (canvas: any) => {
-    // if (!currentUserIsPlaying) return;
-    const data = canvas?.getSaveData();
-    console.log(JSON.parse(data));
+  function sendChanges(data: any) {
     socket?.emit("send-changes", data);
-  };
+  }
 
   const handleFingerDraw = () => {};
 

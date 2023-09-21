@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-export const useCanvas = () => {
+export const useCanvas = (sendChanges: any) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const canvasRef = useRef<any>(null);
   const contextRef = useRef<any>(null);
@@ -39,10 +39,11 @@ export const useCanvas = () => {
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
+    sendChanges({ offsetX, offsetY });
   };
 
-  const handDraw = (x: number, y: number) => {
-    contextRef.current.lineTo(x, y);
+  const handDraw = ({ offsetX, offsetY }: { offsetX: number; offsetY: number }) => {
+    contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
   };
 
