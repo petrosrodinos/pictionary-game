@@ -140,6 +140,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         onSuccess: (data: any) => {
           setCreated(false);
           updateProfile({ words: data.words, categories: data.categories });
+          setCategory("");
           toast.success(t("category-added-successfully"));
         },
         onError: () => {
