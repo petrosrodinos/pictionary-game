@@ -4,7 +4,7 @@ import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
 import { useMutation } from "react-query";
 import { UserToUpdate } from "../../../../../interfaces/typing";
-import { updateUser } from "../../../../../services/user";
+import { updateUser, deleteCategory } from "../../../../../services/user";
 import { authStore } from "../../../../../store/authStore";
 import TabMenu from "../../../../../components/ui/TabMenu";
 import {
@@ -55,6 +55,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
 
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
+  });
+
+  const { mutate: deleteCategoryMutation } = useMutation((categoryId: string) => {
+    return deleteCategory(userId, categoryId);
   });
 
   useEffect(() => {
@@ -224,7 +228,18 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   };
 
   const handleDeleteCategory = (data: ChipValue) => {
-    setCategories((prev) => prev.filter((category) => category.value !== data.value));
+    setCreated(false);
+    deleteCategoryMutation(data.id, {
+      onSuccess: () => {
+        const filteredCategories = categories.filter((category) => category.value !== data.value);
+        setCategories(filteredCategories);
+        updateProfile({ categories: filteredCategories });
+        toast.success(t("category-deleted-successfully"));
+      },
+      onError: () => {
+        toast.error(t("could-not-delete-category"));
+      },
+    });
   };
 
   const items = DifficaltyLevels.map((item) => {

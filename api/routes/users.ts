@@ -18,4 +18,6 @@ router.get("/users", authMiddleware, usersController.getUsers);
 
 router.get("/words", authMiddleware, wordsController.getWords);
 
+router.delete("/user/:id/category/:categoryId", authMiddleware, usersController.removeCategory);
+
 module.exports = router;

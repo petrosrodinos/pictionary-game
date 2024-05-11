@@ -269,6 +269,37 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
+export const removeCategory = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+  const { id, categoryId } = req.params;
+
+  if (req.userId !== id) {
+    return res.status(401).json({
+      message: "You are not authorized",
+    });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(id, {
+      $pull: {
+        categories: { _id: categoryId },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json(user);
+  } catch (err: any) {
+    res.status(500).json({
+      message: "Could not remove category",
+      error: err.message,
+    });
+  }
+};
+
 function exclude(user: any, ...keys: any) {
   for (let key of keys) {
     delete user[key];

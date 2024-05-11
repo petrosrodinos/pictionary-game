@@ -71,3 +71,16 @@ export const getUsers = async (): Promise<any> => {
     throw err;
   }
 };
+
+export const deleteCategory = async (userId: string, categoryId: string): Promise<any> => {
+  try {
+    const result = await axios.delete(
+      `${API_URL}user/${userId}/category/${categoryId}`,
+      getConfig()
+    );
+    return result.data;
+  } catch (err) {
+    console.log("err", err);
+    throw err;
+  }
+};
