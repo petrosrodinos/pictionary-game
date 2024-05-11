@@ -45,7 +45,12 @@ export const updateUser = async (payload: UserToUpdate): Promise<any> => {
       payload,
       getConfigWithFormData()
     );
-    return result.data;
+    return {
+      ...result.data,
+      categories: result.data.categories.map((category: any) => {
+        return { ...category, id: category._id };
+      }),
+    };
   } catch (err: any) {
     console.log("err", err);
     throw err?.response?.data?.message;

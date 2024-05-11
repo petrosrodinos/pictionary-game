@@ -80,15 +80,14 @@ const ChipSelector: FC<ChipSelectorProps> = ({
             handleChange(chips[index]);
           }}
         >
-          {deletable ||
-            (chips[index].id && (
-              <span
-                onClick={(e: any) => handleDeleteChip(e, chips[index])}
-                className="deletable-chip"
-              >
-                <AiOutlineClose />
-              </span>
-            ))}
+          {(deletable || chips[index].id) && (
+            <span
+              onClick={(e: any) => handleDeleteChip(e, chips[index])}
+              className="deletable-chip"
+            >
+              <AiOutlineClose />
+            </span>
+          )}
           <Typography>
             {t(`${name}.${chips[index].value}`) == `${name}.${chips[index].value}`
               ? chips[index].value

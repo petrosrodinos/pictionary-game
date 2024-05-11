@@ -57,9 +57,11 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     return updateUser(user);
   });
 
-  const { mutate: deleteCategoryMutation } = useMutation((categoryId: string) => {
-    return deleteCategory(userId, categoryId);
-  });
+  const { mutate: deleteCategoryMutation, isLoading: isDeleting } = useMutation(
+    (categoryId: string) => {
+      return deleteCategory(userId, categoryId);
+    }
+  );
 
   useEffect(() => {
     let totalCategories: ChipValue[] = CATEGORIES.map((category) => {
@@ -70,7 +72,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     });
     setCategories([...totalCategories, ...newCategories]);
     setSelectedCategory(totalCategories[0].value);
-  }, []);
+  }, [newCategories]);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
@@ -87,6 +89,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     toggleActive();
     setCreated(true);
   };
+
+  useEffect(() => {
+    document.body.style.cursor = isDeleting ? "wait" : "default";
+  }, [isDeleting]);
 
   const handleAddWord = () => {
     if (!word || word.length > 20) return;
@@ -231,9 +237,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setCreated(false);
     deleteCategoryMutation(data.id, {
       onSuccess: () => {
-        const filteredCategories = categories.filter((category) => category.value !== data.value);
-        setCategories(filteredCategories);
-        updateProfile({ categories: filteredCategories });
+        const userFilteredCategories = newCategories.filter(
+          (category) => category.value !== data.value
+        );
+        updateProfile({ categories: userFilteredCategories });
         toast.success(t("category-deleted-successfully"));
       },
       onError: () => {

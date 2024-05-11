@@ -18,6 +18,8 @@
   "add-more-words": "Add more than {{number}} words per category.",
   "could-not-add-category": "Could not add category",
   "category-added-successfully": "Category added successfully",
+  "category-deleted-successfully": "Category deleted successfully",
+  "could-not-delete-category": "Could not delete category",
   "edit-profile": "Edit Profile",
   "student": "Student",
   "teacher": "Teacher",
