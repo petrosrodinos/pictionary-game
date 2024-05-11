@@ -115,6 +115,8 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
   const { username, password, role, age, avatar, level, xp, game, category, words } = req.body;
   let hashedPassword;
 
+  console.log("RE", req.body);
+
   if (req.userId !== id) {
     return res.status(401).json({
       message: "You are not authorized",
@@ -141,7 +143,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
 
     if (avatar && avatar.includes("http")) {
       avatarUrl = avatar;
-    } else {
+    } else if (req.file) {
       avatarUrl = process.env.API_URL + "/" + req.file.path;
     }
 
@@ -169,7 +171,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
 
     if (category) {
       dataToUpdate.$push = {
-        categories: category,
+        categories: { value: category },
       };
     }
 
@@ -187,6 +189,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
 
     res.status(200).json(userWithoutPassword);
   } catch (err: any) {
+    console.log("ERROR", err);
     if (err.code === 11000 && err.keyPattern.username) {
       res.status(409).json({
         message: "Username already exists",

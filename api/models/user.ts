@@ -16,39 +16,48 @@ const GameSchema = new Schema({
   },
 });
 
-const UserSchema = new Schema({
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
+const CategorySchema = new Schema({
+  value: {
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    required: true,
-  },
-  xp: {
-    type: Number,
-    default: 0,
-  },
-  level: {
-    type: Number,
-    default: 1,
-  },
-  avatar: {
-    type: String,
-  },
-  age: {
-    type: String,
-  },
-  games: [GameSchema],
-  categories: [String],
-  words: String,
 });
-UserSchema.set("timestamps", true);
+
+const UserSchema = new Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+    },
+    xp: {
+      type: Number,
+      default: 0,
+    },
+    level: {
+      type: Number,
+      default: 1,
+    },
+    avatar: {
+      type: String,
+    },
+    age: {
+      type: String,
+    },
+    games: [GameSchema],
+    categories: [CategorySchema],
+    words: String,
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", UserSchema);
 export default User;
