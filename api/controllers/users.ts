@@ -32,7 +32,7 @@ export const register = async (req: any, res: Response, next: NextFunction) => {
     if (avatar && avatar.include("http")) {
       avatarUrl = avatar;
     } else {
-      avatarUrl = req.file.filename;
+      avatarUrl = process.env.API_URL + "/" + req.file.path;
     }
 
     console.log("FILE", req.file);

@@ -1,10 +1,11 @@
 import { FC, useState, useEffect } from "react";
 import { getRandomAvatar } from "../../utils/avatar";
 import "./style.scss";
+import { convertBase64 } from "../../utils/image";
 
 interface SelectAvatarProps {
-  value?: string;
-  onChange: (value: string) => void;
+  value?: File | string;
+  onChange: (value: any) => void;
 }
 
 const SelectAvatar: FC<SelectAvatarProps> = ({ onChange, value }) => {
@@ -12,17 +13,28 @@ const SelectAvatar: FC<SelectAvatarProps> = ({ onChange, value }) => {
   const [avatars, setAvatars] = useState<string[]>([]);
 
   useEffect(() => {
-    let avatars = [...Array(35)].map((_) => getRandomAvatar());
-    if (value) {
-      avatars.splice(0, 1, value);
-      setSelectedAvatar(0);
-    }
-    setAvatars(avatars);
-  }, []);
+    setUpAvatars();
+  }, [value]);
 
-  const handleAvatarChange = (index: number) => {
+  const setUpAvatars = async () => {
+    let avatars = [...Array(35)].map((_) => getRandomAvatar());
+    if (value && typeof value == "object") {
+      const base64 = await convertBase64(value);
+      avatars.splice(0, 1, base64);
+    } else if (value && typeof value == "string") {
+      avatars.splice(0, 1, value);
+    }
+    setSelectedAvatar(0);
+    setAvatars(avatars);
+  };
+
+  const handleAvatarChange = async (index: number) => {
     setSelectedAvatar(index);
-    onChange(avatars[index]);
+    // const avatarFile = await convertStringUrlToFile(avatars[index]);
+    onChange({
+      file: "",
+      image: avatars[index],
+    });
   };
 
   return (
