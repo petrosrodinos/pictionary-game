@@ -89,8 +89,7 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
   };
 
   const handleAvatarChangeSelection = (value: ImagePickerOnChange) => {
-    console.log("VV", value);
-    setValue("avatar", value.file);
+    setValue("avatar", value.image);
   };
 
   const avatarOptionChange = (data: { name: string; value: string }) => {

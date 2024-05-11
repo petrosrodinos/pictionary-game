@@ -29,7 +29,7 @@ export const register = async (req: ExtendedRequest, res: Response, next: NextFu
     // }
 
     //if it is an avatar selected from ui
-    if (avatar && avatar.include("http")) {
+    if (avatar && avatar.includes("http")) {
       avatarUrl = avatar;
     } else {
       avatarUrl = process.env.API_URL + "/" + req.file.path;
@@ -139,7 +139,7 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
     //   }
     // }
 
-    if (avatar && avatar.include("http")) {
+    if (avatar && avatar.includes("http")) {
       avatarUrl = avatar;
     } else {
       avatarUrl = process.env.API_URL + "/" + req.file.path;
