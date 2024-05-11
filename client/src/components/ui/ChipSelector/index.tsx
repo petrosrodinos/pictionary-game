@@ -19,7 +19,7 @@ interface ChipSelectorProps {
   deletable?: boolean;
   selectable?: boolean;
   onChange?: (data: { name: string; value: string; id: string }) => void;
-  onDeleteChip?: (data: { name: string; value: string }) => void;
+  onDeleteChip?: (data: ChipValue) => void;
   style?: React.CSSProperties;
 }
 
@@ -57,11 +57,9 @@ const ChipSelector: FC<ChipSelectorProps> = ({
     });
   };
 
-  const handleDeleteChip = (value: string) => {
-    onDeleteChip?.({
-      name: name || "chip",
-      value: value,
-    });
+  const handleDeleteChip = (e: any, value: ChipValue) => {
+    e.stopPropagation();
+    onDeleteChip?.(value);
   };
 
   const trail = useTrail(chips.length, {
@@ -82,11 +80,15 @@ const ChipSelector: FC<ChipSelectorProps> = ({
             handleChange(chips[index]);
           }}
         >
-          {deletable && (
-            <span onClick={() => handleDeleteChip(chips[index].value)} className="deletable-chip">
-              <AiOutlineClose />
-            </span>
-          )}
+          {deletable ||
+            (chips[index].id && (
+              <span
+                onClick={(e: any) => handleDeleteChip(e, chips[index])}
+                className="deletable-chip"
+              >
+                <AiOutlineClose />
+              </span>
+            ))}
           <Typography>
             {t(`${name}.${chips[index].value}`) == `${name}.${chips[index].value}`
               ? chips[index].value

@@ -61,7 +61,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     let totalCategories: ChipValue[] = CATEGORIES.map((category) => {
       return {
         value: category,
-        id: category,
+        id: "",
       };
     });
     setCategories([...totalCategories, ...newCategories]);
@@ -70,7 +70,13 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
-    // setCategories((prev) => [...prev, category]);
+    setCategories((prev) => [
+      ...prev,
+      {
+        value: category,
+        id: category,
+      },
+    ]);
     setSelectedCategory(category);
     onCategorySelected({ name: "category", value: category });
     setSelectedUsersCategory(false);
@@ -117,7 +123,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     setWord("");
   };
 
-  const handleDeleteWord = (data: { name: string; value: string }) => {
+  const handleDeleteWord = (data: ChipValue) => {
     setWords((prev) => ({
       ...prev,
       [selectedCategory]: {
@@ -159,7 +165,6 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   };
 
   const handleCategoryChange = (data: { name: string; value: string; id: string }) => {
-    console.log("Changed", data);
     setSelectedCategory(data.value);
     onCategorySelected(data);
     if (newCategories.find((category) => category.value === data.value)) {
@@ -218,6 +223,10 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     }
   };
 
+  const handleDeleteCategory = (data: ChipValue) => {
+    setCategories((prev) => prev.filter((category) => category.value !== data.value));
+  };
+
   const items = DifficaltyLevels.map((item) => {
     return { label: t(`difficalty.${item.value}`), value: item.value };
   });
@@ -239,6 +248,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
         name="category"
         chips={categories}
         onChange={handleCategoryChange}
+        onDeleteChip={handleDeleteCategory}
       />
       {createCategoryRoles.includes(role) && (
         <div className="create-category-container">

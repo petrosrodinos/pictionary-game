@@ -29,7 +29,7 @@ export const Difficalty = {
 
 export const DifficaltyLevels = Object.values(Difficalty).map((level) => ({
   value: level,
-  id: level,
+  id: "",
 }));
 
 export const PalletColors = [
