@@ -7,10 +7,15 @@ import "./style.scss";
 interface ImageUploaderProps {
   style?: React.CSSProperties;
   className?: string;
-  onChange: (image: string) => void;
+  onChange: ({ image, file }: ImagePickerOnChange) => void;
   name?: string;
   label?: string;
-  value?: string;
+  value?: File;
+}
+
+export interface ImagePickerOnChange {
+  image: string;
+  file: File;
 }
 
 const ImagePicker: FC<ImageUploaderProps> = ({
@@ -19,14 +24,16 @@ const ImagePicker: FC<ImageUploaderProps> = ({
   onChange,
   name,
   label,
-  value = "",
+  value,
 }) => {
   const [avatarImage, setAvatarImage] = useState<any>(value);
   const inputFile = useRef<any>();
 
   useEffect(() => {
     if (value) {
-      setAvatarImage(value);
+      convertBase64(value).then((res) => {
+        setAvatarImage(res);
+      });
     }
   }, [value]);
 
@@ -34,7 +41,10 @@ const ImagePicker: FC<ImageUploaderProps> = ({
     const file: File = e.target?.files?.[0];
     const base64: any = await convertBase64(file);
     setAvatarImage(base64);
-    onChange(base64);
+    onChange({
+      image: base64,
+      file,
+    });
   };
 
   const convertBase64 = (file: File): Promise<any> => {

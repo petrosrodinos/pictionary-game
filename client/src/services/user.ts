@@ -9,6 +9,15 @@ const getConfig = () => {
   };
 };
 
+const getConfigWithFormData = () => {
+  return {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${getAuthState().token}`,
+    },
+  };
+};
+
 export const loginUser = async (paylaod: UserLogin): Promise<any> => {
   try {
     const result = await axios.post(`${API_URL}user/login`, paylaod);
@@ -19,9 +28,9 @@ export const loginUser = async (paylaod: UserLogin): Promise<any> => {
   }
 };
 
-export const registerUser = async (paylaod: NewUser): Promise<any> => {
+export const registerUser = async (payload: NewUser): Promise<any> => {
   try {
-    const result = await axios.post(`${API_URL}user/register`, paylaod);
+    const result = await axios.post(`${API_URL}user/register`, payload, getConfigWithFormData());
     return result.data;
   } catch (err: any) {
     console.log("err", err);

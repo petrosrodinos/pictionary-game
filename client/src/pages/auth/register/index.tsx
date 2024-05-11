@@ -14,7 +14,7 @@ import Dropdown from "../../../components/ui/Dropdown";
 import DatePicker from "../../../components/ui/DatePicker";
 import { useMutation } from "react-query";
 import { registerUser, updateUser } from "../../../services/user";
-import ImagePicker from "../../../components/ui/ImagePicker";
+import ImagePicker, { ImagePickerOnChange } from "../../../components/ui/ImagePicker";
 import { BsPerson } from "react-icons/bs";
 import { NewUser, UserToUpdate } from "../../../interfaces/typing";
 import TabMenu from "../../../components/ui/TabMenu";
@@ -84,8 +84,12 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
     setValue("age", e.target.value);
   };
 
-  const handleAvatarChange = (image: string) => {
-    setValue("avatar", image);
+  const handleAvatarChange = (value: ImagePickerOnChange) => {
+    setValue("avatar", value.file);
+  };
+
+  const handleAvatarChangeSelection = (value: string) => {
+    setValue("avatar", value);
   };
 
   const avatarOptionChange = (data: { name: string; value: string }) => {
@@ -241,7 +245,10 @@ const Register: FC<RegisterProps> = ({ isEditing, values }) => {
           label={t("select-avatar")}
         />
       ) : (
-        <SelectAvatar value={getValues("avatar") || values?.avatar} onChange={handleAvatarChange} />
+        <SelectAvatar
+          value={getValues("avatar") || values?.avatar}
+          onChange={handleAvatarChangeSelection}
+        />
       )}
       <Button
         type="submit"
