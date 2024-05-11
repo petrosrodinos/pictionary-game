@@ -8,11 +8,12 @@ const io = require("socket.io");
 const mongoose = require("mongoose");
 const app: Application = express();
 const http = require("http").Server(app);
+const path = require("path");
 require("dotenv/config");
 
+app.use(express.static(path.join(__dirname, "/uploads")));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-
 app.use(cors());
 
 app.use("/test", (req: Request, res: Response, next: NextFunction) => {

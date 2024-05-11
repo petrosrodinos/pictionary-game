@@ -8,22 +8,34 @@ import User from "../models/user";
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
+export const register = async (req: any, res: Response, next: NextFunction) => {
   const { username, password, role, age, avatar } = req.body;
+
+  console.log("BODY", req.body);
 
   const hashedPassword = bcrypt.hashSync(password, 8);
 
   let avatarUrl;
 
   try {
-    if (avatar.length <= 500) {
+    //if it is an avatar selected from ui
+    // if (avatar.length <= 500) {
+    //   avatarUrl = avatar;
+    // } else {
+    //   const result = await cloudinary.uploader.upload(avatar, {
+    //     folder: "avatars",
+    //   });
+    //   avatarUrl = result.url;
+    // }
+
+    //if it is an avatar selected from ui
+    if (avatar && avatar.include("http")) {
       avatarUrl = avatar;
     } else {
-      const result = await cloudinary.uploader.upload(avatar, {
-        folder: "avatars",
-      });
-      avatarUrl = result.url;
+      avatarUrl = req.file.filename;
     }
+
+    console.log("FILE", req.file);
 
     const newUser = new User({
       username: username,

@@ -48,6 +48,7 @@ const UserSchema = new Schema({
   categories: [String],
   words: String,
 });
+UserSchema.set("timestamps", true);
 
 const User = mongoose.model("User", UserSchema);
 export default User;

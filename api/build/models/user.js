@@ -45,6 +45,8 @@ const UserSchema = new Schema({
         type: String,
     },
     games: [GameSchema],
+    categories: [String],
+    words: String,
 });
 const User = mongoose.model("User", UserSchema);
 exports.default = User;

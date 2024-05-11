@@ -105,7 +105,7 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
 exports.login = login;
 const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { username, password, role, age, avatar, level, xp, game } = req.body;
+    const { username, password, role, age, avatar, level, xp, game, category, words } = req.body;
     let hashedPassword;
     if (req.userId !== id) {
         return res.status(401).json({
@@ -135,12 +135,24 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             avatar: avatarUrl,
             level,
             xp,
+            words,
         };
         if (hashedPassword) {
             dataToUpdate.password = hashedPassword;
         }
         if (game) {
-            dataToUpdate.games = Object.assign(Object.assign({}, dataToUpdate.games), { points: game.points, rank: game.rank, date: new Date() });
+            dataToUpdate.$push = {
+                games: {
+                    points: game.points,
+                    rank: game.rank,
+                    date: new Date(),
+                },
+            };
+        }
+        if (category) {
+            dataToUpdate.$push = {
+                categories: category,
+            };
         }
         const user = yield user_1.default.findByIdAndUpdate(id, dataToUpdate, {
             new: true,

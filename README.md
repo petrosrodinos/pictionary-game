@@ -1,5 +1,9 @@
 ## client
 
+# NODE_VERSION
+
+18.18.3
+
 # RUN
 
 ```sh
@@ -16,7 +20,7 @@ npm install --force
 npm run build
 ```
 
-# server
+# api
 
 ```sh
 cd api

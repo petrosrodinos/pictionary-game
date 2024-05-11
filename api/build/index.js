@@ -26,7 +26,7 @@ require("dotenv/config");
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use((0, cors_1.default)());
-app.use("/test", (res) => {
+app.use("/test", (req, res, next) => {
     res.send("Hello World");
 });
 app.use("/api", usersRoutes);
@@ -38,9 +38,8 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 });
 const socket = io(http, {
     cors: {
-        origin: process.env.CLIENT_ORIGIN,
-        transports: ["polling"],
-        // origin: "*",
+        // origin: process.env.CLIENT_ORIGIN,
+        origin: "*",
         methods: ["GET", "POST", "PUT", "DELETE"],
         "Access-Control-Allow-Origin": "*",
     },
@@ -59,17 +58,24 @@ socket.on("connection", (socket) => {
     //join waiting room
     socket.on("join-waiting-room", (code, user) => __awaiter(void 0, void 0, void 0, function* () {
         let room = rooms[code];
+        console.log("ROOM", room);
         if (room) {
             //&& rooms[code].players.length !== rooms[code].maxPlayers
             //checks if user is already in room
-            socket.join(code);
             if (room.status == room_1.Statuses.WAITING_ROOM || room.status == room_1.Statuses.CREATED) {
                 room.status = room_1.Statuses.WAITING_ROOM;
             }
             const playerToJoin = room.players.find((u) => u.userId === user.userId);
             if (!playerToJoin && room.players.length < room.maxPlayers) {
-                console.log("join-waiting-room", code);
-                room.players.push(Object.assign(Object.assign({}, user), { points: 0, connected: true }));
+                console.log("join-waiting-room", code, user.username);
+                if (user.language == room.language) {
+                    room.players.push(Object.assign(Object.assign({}, user), { points: 0, connected: true }));
+                    socket.join(code);
+                }
+                else {
+                    socket.emit("user-joined", room);
+                    return;
+                }
                 socket.in(code).emit("user-joined", room);
                 socket.emit("user-joined", room);
             }
@@ -162,7 +168,7 @@ socket.on("connection", (socket) => {
                 room.drawings = "";
             }
             // socket.in(code).emit("receive-changes", data);
-            socket.broadcast.to(code).emit("receive-changes", data);
+            socket.to(code).emit("receive-changes", data);
             if (data) {
                 room.drawings = data;
             }
@@ -193,9 +199,7 @@ socket.on("connection", (socket) => {
                 return u;
             });
             console.log("disconnect", findConnectedUsersLength(room.players), room.maxPlayers, room.status);
-            if (findConnectedUsersLength(room.players) === 1 &&
-                room.maxPlayers > 2 &&
-                room.status !== room_1.Statuses.FINISHED) {
+            if (findConnectedUsersLength(room.players) == 1 && room.status !== room_1.Statuses.FINISHED) {
                 clearTimeout(timers[code].choosingWord);
                 clearTimeout(timers[code].round);
                 room.message = "Looks like game is finished";
@@ -213,6 +217,7 @@ socket.on("connection", (socket) => {
                 room.status = room_1.Statuses.SELECTING_WORD;
                 room.message = "Artist left the game";
                 socket.in(code).emit("round-finished", room);
+                clearTimeout(timers[code].round);
                 startChoosingWord(room, socket, code);
             }
         });
