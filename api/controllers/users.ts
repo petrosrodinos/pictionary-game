@@ -8,7 +8,7 @@ import User from "../models/user";
 const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 
-export const register = async (req: any, res: Response, next: NextFunction) => {
+export const register = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { username, password, role, age, avatar } = req.body;
 
   console.log("BODY", req.body);
@@ -128,15 +128,21 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
   try {
     let avatarUrl;
 
-    if (avatar) {
-      if (avatar.length <= 500) {
-        avatarUrl = avatar;
-      } else {
-        const result = await cloudinary.uploader.upload(avatar, {
-          folder: "avatars",
-        });
-        avatarUrl = result.url;
-      }
+    // if (avatar) {
+    //   if (avatar.length <= 500) {
+    //     avatarUrl = avatar;
+    //   } else {
+    //     const result = await cloudinary.uploader.upload(avatar, {
+    //       folder: "avatars",
+    //     });
+    //     avatarUrl = result.url;
+    //   }
+    // }
+
+    if (avatar && avatar.include("http")) {
+      avatarUrl = avatar;
+    } else {
+      avatarUrl = process.env.API_URL + "/" + req.file.path;
     }
 
     let dataToUpdate: any = {
