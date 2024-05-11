@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { ChipValue } from "../components/ui/ChipSelector";
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -10,7 +11,7 @@ interface AuthState {
   xp: number;
   avatar: string;
   role: string;
-  categories: string[];
+  categories: ChipValue[];
   words: string;
   logOut: () => void;
   logIn: (payload: any) => void;
@@ -50,7 +51,9 @@ export const authStore = create<AuthState>()(
             xp: payload.xp,
             avatar: payload?.avatar,
             role: payload.role,
-            categories: payload.categories,
+            categories: payload.categories.map((category: any) => {
+              return { id: category._id, value: category.value };
+            }),
             words: payload.words,
           }),
         updateProfile: (payload: any) =>

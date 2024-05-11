@@ -5,15 +5,20 @@ import { useTranslation } from "react-i18next";
 import { AiOutlineClose } from "react-icons/ai";
 import "./style.scss";
 
+export interface ChipValue {
+  id: string;
+  value: string;
+}
+
 interface ChipSelectorProps {
-  chips: string[];
+  chips: ChipValue[];
   name?: string;
   value?: string;
   defaultValue?: boolean;
   disabled?: boolean;
   deletable?: boolean;
   selectable?: boolean;
-  onChange?: (data: { name: string; value: string }) => void;
+  onChange?: (data: { name: string; value: string; id: string }) => void;
   onDeleteChip?: (data: { name: string; value: string }) => void;
   style?: React.CSSProperties;
 }
@@ -38,16 +43,17 @@ const ChipSelector: FC<ChipSelectorProps> = ({
       setSelectedChip(value);
     }
     if (defaultValue) {
-      setSelectedChip(chips[0]);
+      setSelectedChip(chips[0].value);
     }
   }, [value]);
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: ChipValue) => {
     if (disabled || !selectable) return;
-    setSelectedChip(value);
+    setSelectedChip(value.value);
     onChange?.({
       name: name || "chip",
-      value,
+      value: value.value,
+      id: value.id,
     });
   };
 
@@ -70,21 +76,21 @@ const ChipSelector: FC<ChipSelectorProps> = ({
           key={index}
           style={{ ...props }}
           className={`chip-item ${disabled ? "disabled-chip" : ""} ${
-            selectedChip == chips[index] ? "selected-chip" : ""
+            selectedChip == chips[index].value ? "selected-chip" : ""
           } ${selectable ? "selectable" : ""}`}
           onClick={() => {
             handleChange(chips[index]);
           }}
         >
           {deletable && (
-            <span onClick={() => handleDeleteChip(chips[index])} className="deletable-chip">
+            <span onClick={() => handleDeleteChip(chips[index].value)} className="deletable-chip">
               <AiOutlineClose />
             </span>
           )}
           <Typography>
-            {t(`${name}.${chips[index]}`) == `${name}.${chips[index]}`
-              ? chips[index]
-              : t(`${name}.${chips[index]}`)}
+            {t(`${name}.${chips[index].value}`) == `${name}.${chips[index].value}`
+              ? chips[index].value
+              : t(`${name}.${chips[index].value}`)}
           </Typography>
         </animated.div>
       ))}

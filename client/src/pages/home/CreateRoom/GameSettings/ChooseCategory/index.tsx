@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Input from "../../../../../components/ui/Input";
 import Button from "../../../../../components/ui/Button";
@@ -13,7 +13,7 @@ import {
   NEW_CATEGORY_MAX_WORDS,
   NEW_CATEGORY_MIN_WORDS,
 } from "../../../../../constants/game";
-import ChipSelector from "../../../../../components/ui/ChipSelector";
+import ChipSelector, { ChipValue } from "../../../../../components/ui/ChipSelector";
 import AIWords from "./AIWords";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -48,22 +48,29 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const [active, setActive] = useState(false);
   const [created, setCreated] = useState(false);
   const [selectedUsersCategory, setSelectedUsersCategory] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0]);
+  const [selectedTab, setSelectedTab] = useState<string>(DifficaltyLevels[0].value);
   const [words, setWords] = useState<AddedWords>(newWords ? JSON.parse(newWords) : {});
-  const [categories, setCategories] = useState<string[]>([...CATEGORIES, ...newCategories]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
+  const [categories, setCategories] = useState<ChipValue[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(categories?.[0]?.value);
 
   const { mutate: createCategory, isLoading } = useMutation((user: UserToUpdate) => {
     return updateUser(user);
   });
 
   useEffect(() => {
-    console.log("selectedCategory", selectedCategory);
-  }, [selectedCategory]);
+    let totalCategories: ChipValue[] = CATEGORIES.map((category) => {
+      return {
+        value: category,
+        id: category,
+      };
+    });
+    setCategories([...totalCategories, ...newCategories]);
+    setSelectedCategory(totalCategories[0].value);
+  }, []);
 
   const handleAddCategory = () => {
     if (!category || category.length > 20) return;
-    setCategories((prev) => [...prev, category]);
+    // setCategories((prev) => [...prev, category]);
     setSelectedCategory(category);
     onCategorySelected({ name: "category", value: category });
     setSelectedUsersCategory(false);
@@ -123,8 +130,8 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   const handleAddWords = () => {
     for (let tab of DifficaltyLevels) {
       if (
-        !words?.[selectedCategory]?.[tab] ||
-        words[selectedCategory]?.[tab]?.length < NEW_CATEGORY_MIN_WORDS
+        !words?.[selectedCategory]?.[tab.value] ||
+        words[selectedCategory]?.[tab.value]?.length < NEW_CATEGORY_MIN_WORDS
       ) {
         toast.warn(t("add-more-words", { number: NEW_CATEGORY_MIN_WORDS }));
         return;
@@ -151,10 +158,11 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
     );
   };
 
-  const handleCategoryChange = (data: { name: string; value: string }) => {
+  const handleCategoryChange = (data: { name: string; value: string; id: string }) => {
+    console.log("Changed", data);
     setSelectedCategory(data.value);
     onCategorySelected(data);
-    if (newCategories.includes(data.value)) {
+    if (newCategories.find((category) => category.value === data.value)) {
       setCreated(true);
       setSelectedUsersCategory(true);
     } else {
@@ -211,8 +219,17 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
   };
 
   const items = DifficaltyLevels.map((item) => {
-    return { label: t(`difficalty.${item}`), value: item };
+    return { label: t(`difficalty.${item.value}`), value: item.value };
   });
+
+  const categoryWords = useCallback(() => {
+    return words?.[selectedCategory]?.[selectedTab].map((word: string) => {
+      return {
+        id: word,
+        value: word,
+      };
+    });
+  }, [selectedCategory, selectedTab, words]);
 
   return (
     <>
@@ -251,7 +268,7 @@ const ChooseCategory: FC<ChooseCategoryProps> = ({ onCategorySelected }) => {
               <div className="add-word-field-container">
                 <ChipSelector
                   style={{ justifyContent: "unset" }}
-                  chips={words?.[selectedCategory]?.[selectedTab] || []}
+                  chips={categoryWords() || []}
                   deletable
                   selectable={false}
                   onDeleteChip={handleDeleteWord}

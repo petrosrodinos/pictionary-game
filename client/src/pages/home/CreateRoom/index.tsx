@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import Toast from "../../../components/ui/Toast";
 import { authStore } from "../../../store/authStore";
 import "./style.scss";
+import { ChipValue } from "../../../components/ui/ChipSelector";
 
 interface CreateRoomProps {
   onCancel: () => void;
@@ -56,7 +57,7 @@ const CreateRoom: FC<CreateRoomProps> = ({ onCancel, onCreate }) => {
       choosingWordTime: transformToMilliseconds(settings.choosingWordTime),
       roundTime: transformToMilliseconds(settings.roundTime),
     };
-    if (categories.includes(settings.category)) {
+    if (categories.find((category: ChipValue) => settings.category === category.value)) {
       gameSettings.customWords = JSON.parse(words)[settings.category][settings.difficalty];
     }
     onCreate(gameSettings);
