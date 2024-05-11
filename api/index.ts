@@ -22,6 +22,11 @@ app.use("/test", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/api", usersRoutes);
 
+app.use(express.static(path.join("dist")));
+app.use((req, res, next) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
+
 const PORT: number = Number(process.env.PORT) || 3000;
 mongoose.connect(process.env.MONGO_URI).then(() => {
   http.listen(PORT, () => {

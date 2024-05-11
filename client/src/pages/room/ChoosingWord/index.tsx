@@ -43,7 +43,12 @@ const ChoosingWord: FC<ChoosingWordProps> = ({
       randomWords.push(words[randomIndex]);
     }
 
-    return randomWords;
+    return randomWords.map((word: string) => {
+      return {
+        id: "",
+        value: word,
+      };
+    });
   };
 
   return (
