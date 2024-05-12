@@ -1,10 +1,8 @@
-## client
+#### NODE VERSION: 18.18.2
 
-# NODE_VERSION
+# CLIENT
 
-18.18.3
-
-# RUN
+## RUN
 
 ```sh
 cd client
@@ -20,10 +18,32 @@ npm install --force
 npm run build
 ```
 
-# api
+# API
+
+## FOR DEVELOPING
 
 ```sh
 cd api
 npm install
 npm run dev
 ```
+
+## FOR PRODUCTION
+
+```sh
+cd api
+npm install
+npm run build
+npm start
+```
+
+# BUILD DOCKER IMAGE
+
+```sh
+cd ./
+docker build -t pictionary .
+```
+
+### notes
+
+By running the api, it also serves the client routes under the same port.
