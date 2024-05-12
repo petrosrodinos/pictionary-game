@@ -44,6 +44,12 @@ cd ./
 docker build -t pictionary .
 ```
 
+# RUN DOCKER IMAGE
+
+```sh
+docker run -p 5000:5000 pictionary
+```
+
 ### notes
 
 By running the api, it also serves the client routes under the same port.

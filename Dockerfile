@@ -38,12 +38,3 @@ EXPOSE 5000
 
 CMD ["npm", "start"]
 
-
-
-# FROM nginx
-# COPY client/nginx/nginx.conf /etc/nginx/nginx.conf
-# COPY --from=build /app/client/dist /usr/share/nginx/html
-
-# EXPOSE 5173
-
-# Set entry point and command
