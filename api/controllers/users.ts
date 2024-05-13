@@ -11,8 +11,6 @@ const bcrypt = require("bcryptjs");
 export const register = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { username, password, role, age, avatar } = req.body;
 
-  console.log("BODY", req.body);
-
   const hashedPassword = bcrypt.hashSync(password, 8);
 
   let avatarUrl;
@@ -34,8 +32,6 @@ export const register = async (req: ExtendedRequest, res: Response, next: NextFu
     } else {
       avatarUrl = process.env.API_URL + "/" + req.file.path;
     }
-
-    console.log("FILE", req.file);
 
     const newUser = new User({
       username: username,
@@ -115,8 +111,6 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
   const { username, password, role, age, avatar, level, xp, game, category, words } = req.body;
   let hashedPassword;
 
-  console.log("RE", req.body);
-
   if (req.userId !== id) {
     return res.status(401).json({
       message: "You are not authorized",
@@ -189,7 +183,6 @@ export const updateUser = async (req: ExtendedRequest, res: Response, next: Next
 
     res.status(200).json(userWithoutPassword);
   } catch (err: any) {
-    console.log("ERROR", err);
     if (err.code === 11000 && err.keyPattern.username) {
       res.status(409).json({
         message: "Username already exists",
