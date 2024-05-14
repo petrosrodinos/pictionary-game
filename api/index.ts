@@ -22,15 +22,14 @@ app.use("/test", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/api", usersRoutes);
 
-app.use(express.static(path.join("dist")));
+// app.use((req, res, next) => {
+//   if (req.url.endsWith(".js")) {
+//     res.type("application/javascript");
+//   }
+//   next();
+// });
 
-app.use((req, res, next) => {
-  if (req.url.endsWith(".js")) {
-    res.type("application/javascript");
-  }
-  next();
-});
-
+app.use(express.static(path.join("build/dist")));
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
