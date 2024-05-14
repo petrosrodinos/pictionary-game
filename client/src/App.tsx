@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import Room from "./pages/room";
 import { authStore } from "./store/authStore";
 import "./App.scss";
+import Footer from "./components/Footer";
 
 function App() {
   const { isLoggedIn } = authStore((state) => state);
@@ -28,6 +29,7 @@ function App() {
           )}
           <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/login"} />} />
         </Routes>
+        <Footer />
       </div>
     </BrowserRouter>
   );
