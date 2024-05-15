@@ -54,7 +54,7 @@
   "difficalty-label": "Δυσκολία",
   "players": "Παίκτες",
   "max-players": "Μέγιστος αριθμός παικτών",
-  "could-not-generate-words": "Αδυναμία δημιουργίας λέξεων",
+  "could-not-generate-words": "Αδυναμία δημιουργίας λέξεων,ελεγξε το API κλειδι",
   "round-time": "Χρόνος γύρου (δ)",
   "choosing-word-time": "Χρόνος επιλογής λέξης (δ)",
   "fill-out-all-fields": "Συμπλήρωσε όλα τα πεδία",

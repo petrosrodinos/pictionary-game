@@ -54,7 +54,7 @@
   "difficalty-label": "Difficulty",
   "players": "Players",
   "max-players": "Max Players",
-  "could-not-generate-words": "Could not generate words",
+  "could-not-generate-words": "Could not generate words,check your API key",
   "round-time": "Round Time (s)",
   "choosing-word-time": "Choosing Word Time (s)",
   "fill-out-all-fields": "Please fill out all fields",
