@@ -23,7 +23,6 @@ const AIWords: FC<AIWordsProps> = ({ onWordsGenerated, category, className = "",
   });
 
   const handleGenerateWords = () => {
-    // return;
     if (isLoading) return;
     generateWords(
       {
