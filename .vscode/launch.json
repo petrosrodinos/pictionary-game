@@ -7,10 +7,22 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch API",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\api\\index.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/api",
+      "outFiles": ["${workspaceFolder}/api/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Client",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/client",
+      "outFiles": ["${workspaceFolder}/client/**/*.js"]
     }
   ]
 }
