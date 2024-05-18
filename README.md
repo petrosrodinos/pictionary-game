@@ -47,7 +47,7 @@ docker build -t pictionary .
 # RUN DOCKER IMAGE
 
 ```sh
-docker run -p 5000:5000 pictionary
+docker run -d -p 5000:5000 -v ./storage:/app/uploads --name pictionary pictionary
 ```
 
 ### notes
